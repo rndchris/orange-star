@@ -1,0 +1,8 @@
+.banner{
+    text-align: center;
+    color: orange;
+}
+
+.menuItem{
+    user-select: none;
+}

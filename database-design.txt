@@ -1,0 +1,5 @@
+Menu Table
+food foodCategories pointCategories points
+
+User Table
+user passwordHash sessionToken

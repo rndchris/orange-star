@@ -1,0 +1,21 @@
+html{
+    background-color: black;
+    /*https://commons.wikimedia.org/wiki/File:Polarlicht_2.jpg*/
+    background-image: url(./assets/images/background.jpg);
+    background-size: cover;
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+    gap: 3vh;
+    align-items: center;
+    justify-content: center;
+}
+
+.content{
+    background-color: rgba(255,255,255,.3);
+    border: 1pt solid rgba(255,255,255,.8);
+    border-radius: 30px;
+    padding: 30px
+}
