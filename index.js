@@ -44,14 +44,61 @@ var menu = [
     },
 ];
 
-app.get("/api/menu", async (req, res) => {
-    res.json(menu);
-  })
-
 app.get("/", async (req, res) => {
     res.sendFile(__dirname + "/public/app.html");
   })
 
+//API Endpoints
+app.delete("/api/menu/:id", async (req, res) => {
+  //Remove menu item to be coded here
+})
+
+app.get("/api/menu", async (req, res) => {
+    res.json(menu);
+  })
+
+app.post("/api/menu/add", (req, res) => {
+  console.log(req.body);
+  let categoryIndex = getMenuCategoryIndex(req.body.category);
+
+  //create category if it doens't exist
+  if (categoryIndex == -1){
+    categoryIndex = menu.length + 1;
+    menu.push({
+      category: req.body.category,
+      items: [{
+        id: 1,
+        title: req.body.title,
+      }],
+    });
+    res.send("SUCCESS");
+  } else {
+  const newMenuItem = {
+    id: menu[categoryIndex].items.length + 1,
+    title: req.body.title,
+  };
+  menu[categoryIndex].items.push(newMenuItem);
+  
+  console.log("Item Added")
+  console.log(newMenuItem)
+
+  res.send("SUCCESS");
+}
+
+  });
+
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
   });
+
+  //Menu Library Functions*********************************************************************
+
+function getMenuCategoryIndex(itemCategory){
+  /*Returns -1 if category not found */
+  for (let categoryIndex = 0; categoryIndex < menu.length; categoryIndex++){
+    if (itemCategory == menu[categoryIndex].category){
+      return categoryIndex;
+    }
+  }
+  return -1;
+}

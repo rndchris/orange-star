@@ -1,5 +1,5 @@
 # Orange Star
-Where Eating Out is Eating In"
+Where Eating Out is Eating In
 
 ## Primary Goals of App
 

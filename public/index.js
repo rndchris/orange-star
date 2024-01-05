@@ -4,6 +4,25 @@ var menu = [];
 //Main
 getMenu();
 
+function addMenuItemButton(){
+    addMenuItem(document.querySelector("#categoryText").value, document.querySelector("#menuItemText").value);
+}
+
+async function addMenuItem(categoryText, titleText){
+    const content = {
+        category: categoryText,
+        title: titleText,
+    }
+    const response = await fetch("./api/menu/add", {
+        method: "POST",
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(content),
+    })
+    getMenu();
+    console.log(response);
+    return response;
+}
+
 //Functionland
 function getMenu(){
     fetch("./api/menu")

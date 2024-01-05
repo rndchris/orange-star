@@ -3,6 +3,7 @@ html{
     /*https://commons.wikimedia.org/wiki/File:Polarlicht_2.jpg*/
     background-image: url(./assets/images/background.jpg);
     background-size: cover;
+    font-family: sans-serif;
 }
 
 .container{
@@ -11,6 +12,7 @@ html{
     gap: 3vh;
     align-items: center;
     justify-content: center;
+    margin-bottom: 3vh;
 }
 
 .content{
