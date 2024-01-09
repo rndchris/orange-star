@@ -15,33 +15,20 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 var menu = [
-    {
-        category: "Appetizers",
-        items: [
-            {title: "Chips and Guac", id: 1},
-            {title: "Trisuits and Hummus", id: 2},
-            {title: "Mixed Nuts", id: 3},
-            {title: "Frozen Fruit"}
-        ]
-    },
-    {
-        category: "Main Courses",
-        items: [
-            {title: "Rice and Beans"},
-            {title: "Beef Stew"},
-            {title: "Curry"},
-            {title: "Chili"}
-        ]
-    },
-    {
-        category: "Sweet Stuff",
-        items: [
-            {title: "Hot Chocolate"},
-            {title: "Quick Bread"},
-            {title: "Cake"},
-            {title: "Ice Cream"}
-        ]
-    },
+  {title: "Chips and Guac", id: 1, category: "Appetizers"},
+  {title: "Trisuits and Hummus", id: 2, category: "Appetizers"},
+  {title: "Mixed Nuts", id: 3, category: "Appetizers"},
+  {title: "Frozen Fruit", id: 4, category: "Appetizers"},
+
+  {title: "Rice and Beans", category: "Main Course"},
+  {title: "Beef Stew", category: "Main Course"},
+  {title: "Curry", category: "Main Course"},
+  {title: "Chili", category: "Main Course"},
+
+  {title: "Hot Chocolate", category: "Sweet Stuff"},
+  {title: "Quick Bread", category: "Sweet Stuff"},
+  {title: "Cake", category: "Sweet Stuff"},
+  {title: "Ice Cream", category: "Sweet Stuff"},
 ];
 
 app.get("/", async (req, res) => {
@@ -51,7 +38,9 @@ app.get("/", async (req, res) => {
 //API Endpoints
 app.delete("/api/menu/:id", async (req, res) => {
   //Remove menu item to be coded here
-  const id = parseInt(req.params.id);
+  const deleteId = parseInt(req.params.id);
+  menu = menu.filter((menu) => menu.id != deleteId);
+  res.send("Item Removed")
   //const searchIndex = menu.findIndex((joke) => joke.id === id);
 
 })
@@ -62,32 +51,13 @@ app.get("/api/menu", async (req, res) => {
 
 app.post("/api/menu/add", (req, res) => {
   console.log(req.body);
-  let categoryIndex = getMenuCategoryIndex(req.body.category);
-
-  //create category if it doens't exist
-  if (categoryIndex == -1){
-    categoryIndex = menu.length + 1;
+    const id = menu.length + 1;
     menu.push({
+      id: id,
+      title: req.body.title,
       category: req.body.category,
-      items: [{
-        id: 1,
-        title: req.body.title,
-      }],
     });
-    res.send("SUCCESS");
-  } else {
-  const newMenuItem = {
-    id: menu[categoryIndex].items.length + 1,
-    title: req.body.title,
-  };
-  menu[categoryIndex].items.push(newMenuItem);
-  
-  console.log("Item Added")
-  console.log(newMenuItem)
-
   res.send("SUCCESS");
-}
-
   });
 
 app.listen(port, () => {
