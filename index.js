@@ -51,6 +51,9 @@ app.get("/", async (req, res) => {
 //API Endpoints
 app.delete("/api/menu/:id", async (req, res) => {
   //Remove menu item to be coded here
+  const id = parseInt(req.params.id);
+  //const searchIndex = menu.findIndex((joke) => joke.id === id);
+
 })
 
 app.get("/api/menu", async (req, res) => {
