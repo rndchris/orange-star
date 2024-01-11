@@ -1,5 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
+import pg from "pg";
+import dbInfo from "./database.js";
 
 import { dirname } from "path";
 import { fileURLToPath } from "url";
@@ -8,6 +10,11 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const app = express();
 const port = 3500;
+
+//connect to database
+const db = new pg.Client(dbInfo)
+db.connect();
+
 
 //middleware
 app.use(express.static("public"))
@@ -33,13 +40,11 @@ app.get("/", async (req, res) => {
     res.sendFile(__dirname + "/public/app.html");
   })
 
-//API Endpoints
+//MENU API Endpoints////////////////////////////////////////////////////////////////////////////////////////////////
 app.delete("/api/menu/:id", async (req, res) => {
-  //Remove menu item to be coded here
   const deleteId = parseInt(req.params.id);
   menu = menu.filter((menu) => menu.id != deleteId);
-  res.send("Item Removed")
-  //const searchIndex = menu.findIndex((joke) => joke.id === id);
+  res.send("Item Removed");
 
 })
 

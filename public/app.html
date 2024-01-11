@@ -12,6 +12,24 @@
     <h2 class="banner">Where eating in is eating out</h2>
 
     <div class="content">
+        <h2>Menu Item Editor</h2>
+        <input id="categoryInput" placeholder="Category">
+        <input id="itemInput" placeholder="Item">
+        <input id="cookTimeInput" placeholder="Total Recipe Cook Time">
+        <div id="recipeIngredientManager">
+            <div id="recipeIngredients"></div>
+            <input id="ingredientNameInput" placeholder="Ingredient">
+            <input id="quantityInput" placeholder="Quantity">
+            <input id="essentialInput" type="checkbox">
+            <button onclick="addIngredientButton()">Add Ingredient</button>
+            <div><input id="directionsInput" placeholder="Directions"></div>
+            <div class="controls">
+                <button onclick="addFullMenuItemButton()">Add Item to Menu</button>
+            </div>    
+        </div>
+    </div>
+
+    <div class="content">
         <h2>Grocery List</h2>
         <h2>Click Action</h2>
         <select id="groceryClickAction">
