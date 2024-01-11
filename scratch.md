@@ -19,6 +19,19 @@ I want inventory to be flexible. Basically, I still want it to be useful even if
 6. Recipes can have ingredients that are not in inventory (not zero in inventory, just straight up not tracked).
     - maybe implement with something like quantity -1 is not tracked, quantity -2 is always in stock
 
+Consider using stupid inventory (tm). Don't track quantity of items in stock at all, rather an item is either in stock or not in stock. When user chooses to cook recipe, they mark whether or not all of an ingredient has been used rather than tracking exact quantity.
+
+Why?   
+    1. Only resteraunts care about exact quantities.
+    2. Either you have it or you don't is much faster than tracking exact quantity.
+
+Consider even stupider inventory/ingredients. No ingredients table. Ingredients are literally just text, and inventory comparison is just text comparison.
+    1. Force inventory to be simple and prevent feature bloating in future. Inventory is supposed to be stupid so that it's easy to use.
+    2. Still will need to be an object on the recipe side to track whether or not it's essential for a recipe.
+    3. Flexible ingredients might just need to tracked seperate from regular ingredients or be magic keywords. Like, when intepreting ingredients PROTEIN is read as chicken, tofu, beef, etc.
+        1. PROTEIN: Chicken, javascript only dipslays Chicken to user, but recognizes it as a flexible ingredient.
+    4. OR have an extra spot on a recipe object where appropriate substitutes are aligned with an ingredient.
+
 ## Approach to development
 
 Seperate based on what user will need to interact with.
@@ -33,3 +46,5 @@ Interfaces should be generic and serve multiple functions: for example, the menu
 ## Note to self -- My main reason for developing this is other apps like Grocry requrie a lot of overhead to maintain recipes/inventory/planning. As an end user, I want to spend less than five minutes with the app choosing what to eat, and then I want it to poop out what I need to do.
 
 Super cool feature to consider much later after base app is functional: Barcode scanner for phone to add items to inventory.
+
+Will need to develop way to control display order.

@@ -16,4 +16,15 @@ Primary Objective: Make choosing what to eat at home like choosing from resturan
 5. Easy inventory that still works pretty well even if you half-ass it.
 
 
-Automenu 
+## Screens that need to be developed
+
+- Menu Interface: Remove Items, View Recipes, Add to Grocery List, Cook
+- Recipe Interface: View and Edit Recipes
+- Inventory Interface: View, add, and remove items from inventory
+- Grocery list interface: View grocery list, remove, and add items from grocery list
+- Recipe Creator
+- Menu Creator
+
+
+## Screens that should be developed, but maybe aren't needed for a functional product
+- Meal Plan Interface

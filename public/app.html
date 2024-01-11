@@ -11,31 +11,68 @@
     <h1 class="banner">Orange Star</h1>
     <h2 class="banner">Where eating in is eating out</h2>
 
-    <div class="container">
-        <div class="content">
-            <input id="categoryText" placeholder="Category">
-            <input id="menuItemText" placeholder="Item">
-            <button onclick="addMenuItemButton()"">Add Item</button>
-        </div>
-
-        <div class="content">
-            <h2>Menu Click Action</h2>
-            <select id="clickAction">
-                <option value="nothing">Nothing</option>
-                <option value="recipe">Cook it</option>
-                <option value="grocery">Add to grocery list</option>
-                <option value="mealPlan">Add to meal plan</option>
-                <option value="remove">Remove From Menu</option>
-            </select>
-        </div>
-
-        <div class="content">
-            <input id="lunchTime" placeholder="Lunch Time">
-        </div>
+    <div class="content">
+        <h2>Grocery List</h2>
+        <h2>Click Action</h2>
+        <select id="groceryClickAction">
+            <option value="nothing">Nothing</option>
+            <option value="remove">Remove From Menu</option>
+        </select>
+        <input id="groceryInput" placeholder="Item">
+        <button onclick="addGroceryButton()"">Add Item</button>
+        <div class="content" id="groceryList"></div>
+    </div>
+    
+    <div class="content">
+        <h2>Inventory</h2>
+        <h2>Click Action</h2>
+        <select id="inventoryClickAction">
+            <option value="nothing">Nothing</option>
+            <option value="remove">Remove From Menu</option>
+        </select>
+        <input id="inventoryInput" placeholder="Item">
+        <button onclick="addInventoryButton()">Add Item</button>
+        <div class="content" id="inventoryList"></div>
+    </div>
+    
+    <div class="content">
+        <h2>Recipe Interface</h2>
+        <div class="content" id="recipe"></div>
     </div>
 
-    <div class="container" id="menu"></div>
-    
-    <script src="./index.js"></script>
+
+
+    <div class="content">
+        <h2>Menu Interface</h2>
+        <div class="container">
+            <div class="content">
+                <input id="categoryText" placeholder="Category">
+                <input id="menuItemText" placeholder="Item">
+                <button onclick="addMenuItemButton()"">Add Item</button>
+            </div>
+
+            <div class="content">
+                <h2>Menu Click Action</h2>
+                <select id="clickAction">
+                    <option value="nothing">Nothing</option>
+                    <option value="cook">Cook It!</option>
+                    <option value="recipe">View Recipe</option>
+                    <option value="grocery">Add to grocery list</option>
+                    <option value="mealPlan">Add to meal plan</option>
+                    <option value="remove">Remove From Menu</option>
+                </select>
+            </div>
+
+            <div class="content">
+                <input id="lunchTime" placeholder="Lunch Time">
+            </div>
+        </div>
+
+        <div class="container" id="menu"></div>
+    </div>
+    <script src="./menu.js"></script>
+    <script src="./recipe.js"></script>
+    <script src="./list.js"></script>
+    <script src="./inventory.js"></script>
 </body>
 </html>

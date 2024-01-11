@@ -19,12 +19,10 @@ var menu = [
   {title: "Trisuits and Hummus", id: 2, category: "Appetizers"},
   {title: "Mixed Nuts", id: 3, category: "Appetizers"},
   {title: "Frozen Fruit", id: 4, category: "Appetizers"},
-
   {title: "Rice and Beans", category: "Main Course"},
   {title: "Beef Stew", category: "Main Course"},
   {title: "Curry", category: "Main Course"},
   {title: "Chili", category: "Main Course"},
-
   {title: "Hot Chocolate", category: "Sweet Stuff"},
   {title: "Quick Bread", category: "Sweet Stuff"},
   {title: "Cake", category: "Sweet Stuff"},

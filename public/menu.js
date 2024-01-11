@@ -50,7 +50,6 @@ function drawMenu(menu){
     for (let i = 0; i<menu.length; i++){
         menuHTML = menuHTML + "<div class=\"content\"><h2>" + menu[i].category + "</h2><ul>";
         for (let j = 0; j<menu[i].items.length; j++){
-            console.log(menu[i].items[j].id)
             menuHTML = menuHTML + "<li class=\"menuItem\" menuid=\"" + menu[i].items[j].id + "\">" + menu[i].items[j].title + "</li>";
         }
         menuHTML = menuHTML + "</ul></div>";
@@ -63,7 +62,6 @@ function createDisplayableMenu(menu){
     displayMenu = []
     for (let i = 0; i<menu.length; i++){
         categoryIndex = getMenuCategoryIndex(menu[i].category, displayMenu);
-        console.log(menu[i].category)
         if (categoryIndex == -1){
             displayMenu.push({
                 category: menu[i].category,
@@ -90,8 +88,6 @@ function makeMenuClickable(){
     let renderedMenu = document.querySelectorAll(".menuItem");
     for (var i = 0; i<renderedMenu.length; i++){
         renderedMenu[i].addEventListener("click", function(){
-            console.log(this.innerHTML);
-            console.log(this.getAttribute("menuid"));
             clickMenuItem(this.getAttribute("menuid"));
         })
     }
@@ -102,13 +98,10 @@ async function removeMenuItem(itemID){
         method: "Delete",
     })
     getMenu();
-    console.log(response);
     return response;
 }
 
 function clickMenuItem(menuID){
-    console.log(menuID);
-    console.log(document.querySelector("#clickAction").value)
     switch(document.querySelector("#clickAction").value){
         case "remove":
                 console.log("Attempting Removal");
