@@ -39,6 +39,7 @@
         <input id="groceryInput" placeholder="Item">
         <button onclick="addGroceryButton()"">Add Item</button>
         <div class="content" id="groceryList"></div>
+        <button onclick="goShoppingButton()">Add Grocery List to Inventory</button>
     </div>
     
     <div class="content">
@@ -56,6 +57,8 @@
     <div class="content">
         <h2>Recipe Interface</h2>
         <div class="content" id="recipe"></div>
+        <button onclick="addRecipeToGroceryListButton()">Add to Grocery List</button>
+        <button onclick="cookRecipeButton()">Cook Recipe (Remove Ingredients from Inventory)</button>
     </div>
 
 
@@ -63,11 +66,6 @@
     <div class="content">
         <h2>Menu Interface</h2>
         <div class="container">
-            <div class="content">
-                <input id="categoryText" placeholder="Category">
-                <input id="menuItemText" placeholder="Item">
-                <button onclick="addMenuItemButton()"">Add Item</button>
-            </div>
 
             <div class="content">
                 <h2>Menu Click Action</h2>
@@ -87,6 +85,7 @@
         </div>
 
         <div class="container" id="menu"></div>
+        <button onclick="whatCanICook()">Show what I can Cook based on inventory</button>
     </div>
     <script src="./menu.js"></script>
     <script src="./recipe.js"></script>

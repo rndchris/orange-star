@@ -5,13 +5,14 @@ var menu = [];
 getMenu();
 
 function addMenuItemButton(){
-    addMenuItem(document.querySelector("#categoryText").value, document.querySelector("#menuItemText").value);
+    addMenuItem(document.querySelector("#categoryText").value, document.querySelector("#menuItemText").value, document.querySelector("#recipeNumberText").value) ;
 }
 
-async function addMenuItem(categoryText, titleText){
+async function addMenuItem(categoryText, titleText, recipeNumber){
     const content = {
         category: categoryText,
         title: titleText,
+        recipe: recipeNumber,
     }
     const response = await fetch("./api/menu/add", {
         method: "POST",
@@ -50,7 +51,7 @@ function drawMenu(menu){
     for (let i = 0; i<menu.length; i++){
         menuHTML = menuHTML + "<div class=\"content\"><h2>" + menu[i].category + "</h2><ul>";
         for (let j = 0; j<menu[i].items.length; j++){
-            menuHTML = menuHTML + "<li class=\"menuItem\" menuid=\"" + menu[i].items[j].id + "\">" + menu[i].items[j].title + "</li>";
+            menuHTML = menuHTML + "<li class=\"menuItem\" menuid=\"" + i + "\">" + menu[i].items[j].title + "</li>";
         }
         menuHTML = menuHTML + "</ul></div>";
     }
@@ -101,12 +102,25 @@ async function removeMenuItem(itemID){
     return response;
 }
 
-function clickMenuItem(menuID){
+async function clickMenuItem(menuID){
     switch(document.querySelector("#clickAction").value){
         case "remove":
                 console.log("Attempting Removal");
                 removeMenuItem(menuID);
                 getMenu();
+            break;
+        case "recipe":
+            console.log(menu[menuID].recipe);
+            activeRecipe = await getRecipe(menu[menuID].recipe);
+            displayRecipe(activeRecipe);
+            break;
+        case "grocery":
+            console.log(menu[menuID].recipe);
+            addRecipeToGroceryList(await getRecipe(menu[menuID].recipe))
+            break;
+        case "cook":
+            console.log(menu[menuID].recipe);
+            removeRecipeFromInventory(await getRecipe(menu[menuID].recipe))
             break;
     }
     //switch statement to determine action based on current mode
