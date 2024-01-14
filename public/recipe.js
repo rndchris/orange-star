@@ -16,6 +16,10 @@ var activeRecipe = {
     ingredients: []
 };
 
+var newRecipe = {
+    ingredients: []
+}
+
 
 function addIngredientButton(){
     let ingredientName = document.querySelector("#ingredientNameInput").value;
@@ -29,8 +33,8 @@ function addIngredientButton(){
     }
 
     if (ingredientName){
-        activeRecipe.ingredients.push(newIngredient);
-        drawIngredientsinEditor(activeRecipe);
+        newRecipe.ingredients.push(newIngredient);
+        drawIngredientsinEditor(newRecipe);
     }
     
 }
@@ -48,9 +52,27 @@ function displayRecipeInEditor(recipe){
     recipeDirections.value = recipe.directions;
 }
 
+function clearRecipeEditor(){
+    let recipeCategory = document.querySelector("#categoryInput");
+    let recipeTitle = document.querySelector("#itemInput");
+    let recipeCookTime = document.querySelector("#cookTimeInput");
+    let recipeDirections = document.querySelector("#directionsInput");
+
+    newRecipe = {
+        ingredients: []
+    };
+    
+    recipeCategory.value = "";
+    recipeTitle.value = "";
+    recipeCookTime.value = "0";
+    drawIngredientsinEditor(newRecipe);
+    recipeDirections.value = "";
+}
+
 function addFullMenuItemButton(){
-    updateActiveRecipe()
-    addRecipe(activeRecipe);
+    updateNewRecipe()
+    addRecipe(newRecipe);
+    clearRecipeEditor();
 }
 
 async function addRecipe(recipe){
@@ -78,6 +100,20 @@ function updateActiveRecipe(){
     displayRecipe(activeRecipe, "#recipe");
 }
 
+function updateNewRecipe(){
+    let recipeCategory = document.querySelector("#categoryInput");
+    let recipeTitle = document.querySelector("#itemInput");
+    let recipeCookTime = document.querySelector("#cookTimeInput");
+    let recipeDirections = document.querySelector("#directionsInput");
+
+    newRecipe.title = recipeTitle.value;
+    newRecipe.category = recipeCategory.value;
+    newRecipe.cookTime = recipeCookTime.value;
+    newRecipe.directions = recipeDirections.value;
+
+    displayRecipe(newRecipe, "#recipe");
+}
+
 function drawIngredientsinEditor(recipe){
     let recipeIngredients = document.querySelector("#recipeIngredients");
     let ingredientsHTML = "<ul>"
@@ -95,7 +131,7 @@ function makeIngredientsClickable(){
     for (var i = 0; i<renderedMenu.length; i++){
         renderedMenu[i].addEventListener("click", function(){
             let removeIndex = this.getAttribute("ingredientIndex");
-            activeRecipe.ingredients.splice(removeIndex, 1);
+            newRecipe.ingredients.splice(removeIndex, 1);
             this.remove();
         })
     }

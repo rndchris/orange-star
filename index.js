@@ -199,10 +199,16 @@ async function addToList(items, listID){
     if (!currentList.includes(items[i])){
       //let result = await db.query("INSERT INTO " + getListTableName(listID) + " (name) VALUES ('" + items[i] + "');");
       valuesList = valuesList + "('" + items[i] + "')"
+      //console.log(valuesList);
+      //console.log(items.length);
       if (i != items.length - 1){
         valuesList = valuesList + ",";
       }
     }
+  }
+  //if final character is , in values list, pull it off
+  if (valuesList.slice(valuesList.length - 1) == ","){
+    valuesList = valuesList.slice(0, valuesList.length -1);
   }
   if (valuesList.length){
     query = query + valuesList + ";";
