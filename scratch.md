@@ -48,3 +48,6 @@ Interfaces should be generic and serve multiple functions: for example, the menu
 Super cool feature to consider much later after base app is functional: Barcode scanner for phone to add items to inventory.
 
 Will need to develop way to control display order.
+
+## Screens that should be developed, but maybe aren't needed for a functional product
+- Meal Plan Interface

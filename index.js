@@ -21,21 +21,6 @@ app.use(express.static("public"))
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-var menu = [
-  {title: "Chips and Guac", id: 1, category: "Appetizers"},
-  {title: "Trisuits and Hummus", id: 2, category: "Appetizers"},
-  {title: "Mixed Nuts", id: 3, category: "Appetizers"},
-  {title: "Frozen Fruit", id: 4, category: "Appetizers"},
-  {title: "Rice and Beans", category: "Main Course"},
-  {title: "Beef Stew", category: "Main Course"},
-  {title: "Curry", category: "Main Course"},
-  {title: "Chili", category: "Main Course"},
-  {title: "Hot Chocolate", category: "Sweet Stuff"},
-  {title: "Quick Bread", category: "Sweet Stuff"},
-  {title: "Cake", category: "Sweet Stuff"},
-  {title: "Ice Cream", category: "Sweet Stuff"},
-];
-
 app.get("/", async (req, res) => {
     res.sendFile(__dirname + "/public/app.html");
   })
@@ -43,14 +28,14 @@ app.get("/", async (req, res) => {
 //MENU API Endpoints////////////////////////////////////////////////////////////////////////////////////////////////
 app.delete("/api/menu/:id", async (req, res) => {
   const deleteId = parseInt(req.params.id);
-  menu = menu.filter((menu) => menu.id != deleteId);
+  //menu = menu.filter((menu) => menu.id != deleteId);
   res.send("Item Removed");
 
 })
 
 app.get("/api/menu", async (req, res) => {
     const result = await db.query("SELECT * FROM menu;");
-    console.log(result.rows);
+    //console.log(result.rows);
     res.json(result.rows);
   })
 
@@ -67,14 +52,14 @@ app.get("/api/menu/inventory", async (req, res) => {
         ingredients.push(ingredient.name);
       }  
     })
-    console.log(haveAllIngredients(ingredients, inventory));
-    console.log(ingredients);
-    console.log(inventory);
+    //console.log(haveAllIngredients(ingredients, inventory));
+    //console.log(ingredients);
+    //console.log(inventory);
     if (haveAllIngredients(ingredients, inventory)){
       cookable.push(menu.rows[i]);
     }
   }
-  console.log(cookable);    
+  //console.log(cookable);    
   res.json(cookable);
 })
 
@@ -86,18 +71,6 @@ function haveAllIngredients(ingredients, inventory){
   }
   return true;
 }
-
-app.post("/api/menu/add", (req, res) => {
-  console.log(req.body);
-    const id = menu.length + 1;
-    menu.push({
-      id: id,
-      title: req.body.title,
-      category: req.body.category,
-      recipe: req.body.recipe,
-    });
-  res.send("SUCCESS");
-  });
 
 //Recipe API Endpoints////////////////////////////////////////////////////////////////////////////////////////////////
 app.get("/api/recipe/:id", async (req, res) => {
@@ -218,10 +191,23 @@ async function getList(listID){
 
 async function addToList(items, listID){
   let currentList = await getList(listID);
+  console.log(currentList);
+  let query = "INSERT INTO " + getListTableName(listID) + " (name) VALUES ";
+  let valuesList = ""
+  console.log(items);
   for (let i = 0; i<items.length; i++){
     if (!currentList.includes(items[i])){
-      let result = await db.query("INSERT INTO " + getListTableName(listID) + " (name) VALUES ('" + items[i] + "');");
+      //let result = await db.query("INSERT INTO " + getListTableName(listID) + " (name) VALUES ('" + items[i] + "');");
+      valuesList = valuesList + "('" + items[i] + "')"
+      if (i != items.length - 1){
+        valuesList = valuesList + ",";
+      }
     }
+  }
+  if (valuesList.length){
+    query = query + valuesList + ";";
+    console.log(query);
+    let result = await db.query(query);
   }
 }
 
@@ -233,13 +219,20 @@ async function addToGroceryListIfNotInInventory(items){
       pushList.push(items[i]);
     }
   }
-  addToList(pushList, "grocery");
+  if (pushList.length > 0){
+    console.log(pushList);
+    addToList(pushList, "grocery");
+  }
 }
 
 async function removeFromList(items, listID){
+  let query = "";
   for (let i = 0; i<items.length; i++){
-    let result = await db.query("DELETE FROM " + getListTableName(listID) + " WHERE name = '" + items[i] +"';");
-  } 
+    //let result = await db.query("DELETE FROM " + getListTableName(listID) + " WHERE name = '" + items[i] +"';");
+    query = query + "DELETE FROM " + getListTableName(listID) + " WHERE name = '" + items[i] +"'; "
+  }
+  console.log(query);
+  let result = await db.query(query);
 }
 
 function getListTableName(listID){

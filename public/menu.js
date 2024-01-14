@@ -49,7 +49,7 @@ function drawMenu(menu){
 
     let menuHTML = "";
     for (let i = 0; i<menu.length; i++){
-        menuHTML = menuHTML + "<div class=\"content\"><h2>" + menu[i].category + "</h2><ul>";
+        menuHTML = menuHTML + "<div class=\"content\"><h3>" + menu[i].category + "</h3><ul>";
         for (let j = 0; j<menu[i].items.length; j++){
             menuHTML = menuHTML + "<li class=\"menuItem\" menuid=\"" + menu[i].items[j].id + "\">" + menu[i].items[j].title + "</li>";
         }

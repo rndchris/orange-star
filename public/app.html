@@ -11,7 +11,14 @@
     <h1 class="banner">Orange Star</h1>
     <h2 class="banner">Where eating in is eating out</h2>
 
-    <div class="content">
+    <div class="menubar">
+        <button onclick="viewMenuAndRecipeViewer()">Whats on the Menu?</button>
+        <button onclick="viewGroceryList()">Grocery List</button>
+        <button onclick="viewInventory()">Inventory Manager</button>
+        <button onclick="viewEditor()">Menu Item & Recipe Creator</button>
+    </div>
+
+    <div class="content menuItemEditor hidden">
         <h2>Menu Item Editor</h2>
         <input id="categoryInput" placeholder="Category">
         <input id="itemInput" placeholder="Item">
@@ -33,7 +40,7 @@
         </div>
     </div>
 
-    <div class="content">
+    <div class="content groceryListViewer hidden">
         <h2>Grocery List</h2>
         <h2>Click Action</h2>
         <select id="groceryClickAction">
@@ -46,7 +53,7 @@
         <button onclick="goShoppingButton()">Add Grocery List to Inventory</button>
     </div>
     
-    <div class="content">
+    <div class="content inventoryViewer hidden">
         <h2>Inventory</h2>
         <h2>Click Action</h2>
         <select id="inventoryClickAction">
@@ -58,41 +65,34 @@
         <div class="content" id="inventoryList"></div>
     </div>
     
-    <div class="content">
-        <h2>Recipe Interface</h2>
-        <div class="content" id="recipe"></div>
-        <button onclick="addRecipeToGroceryListButton()">Add to Grocery List</button>
-        <button onclick="cookRecipeButton()">Cook Recipe (Remove Ingredients from Inventory)</button>
-    </div>
+    <div class="menuAndRecipeViewer">
 
-
-
-    <div class="content">
-        <h2>Menu Interface</h2>
-        <div class="container">
-
-            <div class="content">
-                <h2>Menu Click Action</h2>
+        <div class="content menuViewer">
+            <h2>Menu</h2>
+            <div>
                 <select id="clickAction">
                     <option value="recipe">View Recipe</option>
                     <option value="cook">Cook It!</option>
                     <option value="grocery">Add to grocery list</option>
                     <option value="remove">Remove From Menu</option>
                 </select>
+                <label for="clickAction">Click Action</label>
             </div>
-
-            <div class="content">
-                <input id="lunchTime" placeholder="Lunch Time">
-            </div>
+            <div class="container" id="menu"></div>
+            <button onclick="whatCanICook()">Show what I can Cook based on inventory</button>
+            <button onclick="getMenu()">Full Menu</button>
         </div>
 
-        <div class="container" id="menu"></div>
-        <button onclick="whatCanICook()">Show what I can Cook based on inventory</button>
-        <button onclick="getMenu()">Full Menu</button>
+        <div class="content recipeViewer">
+            <h2>Recipe Interface</h2>
+            <div class="content" id="recipe"></div>
+            <button onclick="addRecipeToGroceryListButton()">Add to Grocery List</button>
+            <button onclick="cookRecipeButton()">Cook Recipe (Remove Ingredients from Inventory)</button>
+        </div>
     </div>
     <script src="./menu.js"></script>
     <script src="./recipe.js"></script>
     <script src="./list.js"></script>
-    <script src="./inventory.js"></script>
+    <script src="./interface.js"></script>
 </body>
 </html>
