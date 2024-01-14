@@ -55,15 +55,36 @@ app.get("/api/menu", async (req, res) => {
   })
 
 app.get("/api/menu/inventory", async (req, res) => {
-  let menu = "stuff";
-  let recipes = await getRecipes();
+  const menu = await db.query("SELECT * FROM menu;");
   let inventory = await getList("inventory");
-  let cookable = [];
-  
+  var cookable = [];
+
+  for (let i=0; i<menu.rows.length; i++){
+    let ingredients = [];
+    let recipe = await getRecipe(menu.rows[i].recipe);
+    recipe.ingredients.forEach((ingredient) => {
+      if (ingredient.essential){
+        ingredients.push(ingredient.name);
+      }  
+    })
+    console.log(haveAllIngredients(ingredients, inventory));
+    console.log(ingredients);
+    console.log(inventory);
+    if (haveAllIngredients(ingredients, inventory)){
+      cookable.push(menu.rows[i]);
+    }
+  }
+  console.log(cookable);    
+  res.json(cookable);
 })
 
 function haveAllIngredients(ingredients, inventory){
-
+  for (let i=0;i<ingredients.length;i++){
+    if (!inventory.includes(ingredients[i])){
+      return false;
+    }
+  }
+  return true;
 }
 
 app.post("/api/menu/add", (req, res) => {
@@ -83,7 +104,6 @@ app.get("/api/recipe/:id", async (req, res) => {
   const recipeId = parseInt(req.params.id);
   
   const query = "SELECT * FROM recipes WHERE id = " + recipeId + ";";
-
   const result = await db.query(query);
 
   console.log(result);
@@ -117,11 +137,11 @@ app.put("/api/recipe/", async (req, res) => {
 })
 
 async function getRecipe(recipeID){
-  const query = "SELECT * FROM recipes WHERE id = " + recipeId + ";";
+  const query = "SELECT * FROM recipes WHERE id = " + recipeID + ";";
 
   const result = await db.query(query);
 
-  console.log(result);
+  //console.log(result);
 
   let ingredients = JSON.parse(result.rows[0].ingredients);
 

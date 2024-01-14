@@ -11,3 +11,8 @@ html{
 .menuItem{
     user-select: none;
 }
+
+#directionsInput{
+    width: 100%;
+    height: 30pt;
+}

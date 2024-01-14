@@ -51,7 +51,7 @@ function drawMenu(menu){
     for (let i = 0; i<menu.length; i++){
         menuHTML = menuHTML + "<div class=\"content\"><h2>" + menu[i].category + "</h2><ul>";
         for (let j = 0; j<menu[i].items.length; j++){
-            menuHTML = menuHTML + "<li class=\"menuItem\" menuid=\"" + i + "\">" + menu[i].items[j].title + "</li>";
+            menuHTML = menuHTML + "<li class=\"menuItem\" menuid=\"" + menu[i].items[j].id + "\">" + menu[i].items[j].title + "</li>";
         }
         menuHTML = menuHTML + "</ul></div>";
     }
@@ -102,25 +102,32 @@ async function removeMenuItem(itemID){
     return response;
 }
 
+function lookupMenuIndex(menuID){
+    for (let i=0; i<menu.length;i++){
+        if (menuID == menu[i].id){
+            return i;
+        }
+    }
+}
+
 async function clickMenuItem(menuID){
     switch(document.querySelector("#clickAction").value){
         case "remove":
-                console.log("Attempting Removal");
                 removeMenuItem(menuID);
                 getMenu();
             break;
         case "recipe":
-            console.log(menu[menuID].recipe);
-            activeRecipe = await getRecipe(menu[menuID].recipe);
+            console.log(menu[lookupMenuIndex(menuID)].recipe);
+            activeRecipe = await getRecipe(menu[lookupMenuIndex(menuID)].recipe);
             displayRecipe(activeRecipe);
             break;
         case "grocery":
-            console.log(menu[menuID].recipe);
-            addRecipeToGroceryList(await getRecipe(menu[menuID].recipe))
+            console.log(menu[lookupMenuIndex(menuID)].recipe);
+            addRecipeToGroceryList(await getRecipe(menu[lookupMenuIndex(menuID)].recipe))
             break;
         case "cook":
-            console.log(menu[menuID].recipe);
-            removeRecipeFromInventory(await getRecipe(menu[menuID].recipe))
+            console.log(menu[lookupMenuIndex(menuID)].recipe);
+            removeRecipeFromInventory(await getRecipe(menu[lookupMenuIndex(menuID)].recipe))
             break;
     }
     //switch statement to determine action based on current mode
@@ -130,4 +137,14 @@ async function clickMenuItem(menuID){
         //remove from current menu
 }
 
-//API for interacting with server (Get menu, etc)
+function whatCanICook(){
+    fetch("./api/menu/inventory")
+        .then((response) => {
+            return response.json();
+            }
+        )
+        .then((json) => {
+            menu = json;
+            drawMenu(menu);
+        })
+}

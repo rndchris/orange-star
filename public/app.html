@@ -17,12 +17,16 @@
         <input id="itemInput" placeholder="Item">
         <input id="cookTimeInput" placeholder="Total Recipe Cook Time">
         <div id="recipeIngredientManager">
+            <hr>
             <div id="recipeIngredients"></div>
             <input id="ingredientNameInput" placeholder="Ingredient">
             <input id="quantityInput" placeholder="Quantity">
-            <input id="essentialInput" type="checkbox">
+            <input id="essentialInput" type="checkbox" checked="true">
+            <label for="essentialInput">Use in Grocery List/Inventory Computations</label>
+            <br>
             <button onclick="addIngredientButton()">Add Ingredient</button>
-            <div><input id="directionsInput" placeholder="Directions"></div>
+            <hr>
+            <div><textarea id="directionsInput" placeholder="Directions"></textarea></div>
             <div class="controls">
                 <button onclick="addFullMenuItemButton()">Add Item to Menu</button>
             </div>    
@@ -37,7 +41,7 @@
             <option value="remove">Remove From Menu</option>
         </select>
         <input id="groceryInput" placeholder="Item">
-        <button onclick="addGroceryButton()"">Add Item</button>
+        <button onclick="addGroceryButton()">Add Item</button>
         <div class="content" id="groceryList"></div>
         <button onclick="goShoppingButton()">Add Grocery List to Inventory</button>
     </div>
@@ -70,11 +74,9 @@
             <div class="content">
                 <h2>Menu Click Action</h2>
                 <select id="clickAction">
-                    <option value="nothing">Nothing</option>
-                    <option value="cook">Cook It!</option>
                     <option value="recipe">View Recipe</option>
+                    <option value="cook">Cook It!</option>
                     <option value="grocery">Add to grocery list</option>
-                    <option value="mealPlan">Add to meal plan</option>
                     <option value="remove">Remove From Menu</option>
                 </select>
             </div>
@@ -86,6 +88,7 @@
 
         <div class="container" id="menu"></div>
         <button onclick="whatCanICook()">Show what I can Cook based on inventory</button>
+        <button onclick="getMenu()">Full Menu</button>
     </div>
     <script src="./menu.js"></script>
     <script src="./recipe.js"></script>

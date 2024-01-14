@@ -39,13 +39,15 @@ async function addToList(item, listSelector){
     }
 }
 
-function removeFromList(item, listSelector){
+async function removeFromList(item, listSelector){
     if (listSelector == "#groceryList"){
-        list = list.filter(list => list !== item);
-        displayList(list, "#groceryList");
+        await listAPI([item],"DELETE","grocery");
+        //list = list.filter(list => list !== item);
+        displayGroceryList();
     } else if (listSelector == "#inventoryList"){
-        inventory = inventory.filter(inventory => inventory !== item);
-        displayList(inventory, "#inventoryList");
+        await listAPI([item],"DELETE","inventory");
+        //inventory = inventory.filter(inventory => inventory !== item);
+        displayInventoryList();
     }
 }
 

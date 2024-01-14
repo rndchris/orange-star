@@ -12,7 +12,9 @@ testRecipe = {
     directions: "Preheat oven to 365 F. Mix the stuff. Put it in a pan and bake it."
 }
 
-var activeRecipe;
+var activeRecipe = {
+    ingredients: []
+};
 
 
 function addIngredientButton(){
@@ -141,7 +143,7 @@ async function addRecipeToGroceryList(recipe){
         }
     }
     await listAPI(ingredients,"PUT","grocery");
-    await displayGroceryList();
+    displayGroceryList();
 }
 
 async function removeRecipeFromInventory(recipe){

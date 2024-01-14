@@ -21,3 +21,12 @@ html{
     border-radius: 15px;
     padding: 30px
 }
+
+.hidden{
+    display: none !important;
+}
+
+.menubar{
+    display: flex;
+    flex-direction: row;
+}
