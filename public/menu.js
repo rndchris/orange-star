@@ -90,6 +90,7 @@ function makeMenuClickable(){
     for (var i = 0; i<renderedMenu.length; i++){
         renderedMenu[i].addEventListener("click", function(){
             clickMenuItem(this.getAttribute("menuid"));
+            clickAnimation(this);
         })
     }
 }

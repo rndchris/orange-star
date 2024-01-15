@@ -70,7 +70,8 @@ function makeListClickable(listSelector){
     let renderedMenu = document.querySelectorAll(listSelector + " li");
     for (var i = 0; i<renderedMenu.length; i++){
         renderedMenu[i].addEventListener("click", function(){
-            listClicked(this.innerHTML, listSelector);;
+            listClicked(this.innerHTML, listSelector);
+            clickAnimation(this);
         })
     }
 }

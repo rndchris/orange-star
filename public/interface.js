@@ -48,3 +48,13 @@ function viewJigsaw(){
     document.querySelector(".jigsaw").classList.remove("hidden");
 
 }
+
+function clickAnimation(element){
+    if (element.classList.contains("clicked")){
+        element.classList.remove("clicked");
+        //line below resets animation
+        void document.querySelector(".content").offsetWidth;
+
+    }
+    element.classList.add("clicked");
+}

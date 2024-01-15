@@ -27,6 +27,7 @@ function makeJigsawClickable(){
         renderedMenu[i].addEventListener("click", async function(){
             let recipe = await getRecipe(this.getAttribute("recipeid"));
             addRecipeToGroceryList(recipe);
+            clickAnimation(this);
         })
     }
 }
