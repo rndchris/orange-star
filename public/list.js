@@ -58,6 +58,11 @@ function listClicked(item, listSelector){
         case "remove":
             removeFromList(item, listSelector);
             break;
+        case "buy":
+            listAPI([item],"PUT", "inventory");
+            listAPI([item],"DELETE", "grocery");
+            displayGroceryList();
+            break;
     }
 }
 
