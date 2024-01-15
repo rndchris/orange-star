@@ -113,7 +113,7 @@ function lookupMenuIndex(menuID){
 async function clickMenuItem(menuID){
     switch(document.querySelector("#clickAction").value){
         case "remove":
-                removeMenuItem(menuID);
+                await removeMenuItem(menuID);
                 getMenu();
             break;
         case "recipe":

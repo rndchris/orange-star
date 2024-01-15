@@ -28,10 +28,15 @@ app.get("/", async (req, res) => {
 //MENU API Endpoints////////////////////////////////////////////////////////////////////////////////////////////////
 app.delete("/api/menu/:id", async (req, res) => {
   const deleteId = parseInt(req.params.id);
+  removeMenuItem(deleteId);
   //menu = menu.filter((menu) => menu.id != deleteId);
   res.send("Item Removed");
 
 })
+
+async function removeMenuItem(itemId){
+  const result = await db.query("DELETE FROM menu WHERE id = " + itemId);
+}
 
 app.get("/api/menu", async (req, res) => {
     const result = await db.query("SELECT * FROM menu;");
@@ -201,6 +206,7 @@ async function addToList(items, listID){
       valuesList = valuesList + "('" + items[i] + "')"
       //console.log(valuesList);
       //console.log(items.length);
+      //don't put comma's after final item
       if (i != items.length - 1){
         valuesList = valuesList + ",";
       }
