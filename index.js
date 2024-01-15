@@ -75,6 +75,71 @@ app.get("/api/menu/inventory", async (req, res) => {
   res.json(cookable);
 })
 
+//return ingredients that are not in any complete recipe
+app.get("/api/jigsaw", async (req, res) => {
+  const menu = await db.query("SELECT * FROM menu;");
+  let inventory = await getList("inventory");
+  var cookable = [];
+
+  for (let i=0; i<menu.rows.length; i++){
+    let ingredients = [];
+    let recipe = await getRecipe(menu.rows[i].recipe);
+    recipe.ingredients.forEach((ingredient) => {
+      if (ingredient.essential){
+        ingredients.push(ingredient.name);
+      }  
+    })
+    if (haveAllIngredients(ingredients, inventory)){
+      for (let w=0; w<ingredients.length; w++){
+        cookable.push(ingredients[w]);
+      }
+    }
+  }
+
+  console.log(cookable);
+  //subtract cookable ingredients from inventory
+  for (let k=0;k<cookable.length;k++){
+    inventory = inventory.filter(e => e != cookable[k]);
+  }
+
+  let jigsawReport = [];
+  let recipes = await getRecipes();
+
+  //parse ingredients;
+  recipes.forEach((recipe) => {
+    recipe.ingredients = JSON.parse(recipe.ingredients);
+  })
+  
+  for (let x=0; x<inventory.length; x++){
+    jigsawReport.push({
+      ingredient: inventory[x],
+      recipes: getRecipesUsingIngredient(inventory[x],recipes)
+      }
+    )
+  }
+  
+  res.json(jigsawReport);
+});
+
+function getRecipesUsingIngredient(ingredient, recipes){
+  let ingredientRecipes = [];
+  for (let i=0; i<recipes.length; i++){
+    if (isIngredientUsed(ingredient, recipes[i])){
+      ingredientRecipes.push(recipes[i]);
+    }
+  }
+  return ingredientRecipes;
+}
+
+function isIngredientUsed(ingredient, recipe){
+  for (let i=0; i<recipe.ingredients.length; i++){
+    if (recipe.ingredients[i].name == ingredient){
+      return true;
+    }
+  }
+  return false;
+}
+
 function haveAllIngredients(ingredients, inventory){
   for (let i=0;i<ingredients.length;i++){
     if (!inventory.includes(ingredients[i])){
