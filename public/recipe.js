@@ -146,8 +146,35 @@ function ingredientNeeded(isEssential){
 }
 
 function displayRecipe(recipe, elementID = "#recipe"){
+    //compute dinner time
+    let dinnerHour = document.querySelector("#hours").value;
+    let dinnerMin = document.querySelector("#minutes").value;
+    let dinnerMinString
+    if (dinnerMin < 10){
+        dinnerMinString = "0" + dinnerMin.toString();
+    } else {
+        dinnerMinString = dinnerMin.toString();
+    }
+    let dinnerTime = "" + dinnerHour + ":" + dinnerMinString;
+    let dinnerSum = dinnerHour*1 + dinnerMin/60;
+    if (dinnerSum < 0){dinnerSum+=12};
+    console.log(dinnerSum);
+    let startSum = dinnerSum - recipe.cookTime;
+    let startHour = Math.floor(startSum);
+    let startMin = Math.floor((startSum - Math.floor(startSum))*60);
+    let startMinString
+    if (startMin < 10){
+        startMinString = "0" + startMin.toString();
+    } else {
+        startMinString = startMin.toString();
+    }
+    let startTime = "" + startHour + ":" + startMinString;
+
+    //draw recipe
     let recipeElement = document.querySelector(elementID);
-    var recipeHTML = "<h3>"+ recipe.title + "</h3><p>Cook Time: "+ recipe.cookTime + "</p><h4>Ingredients</h4><ul>";
+    var recipeHTML = "<h3>"+ recipe.title + "</h3><p>Cook Time: "+ recipe.cookTime + "</p>";
+    recipeHTML+= "<p>Start Cooking by " + startTime + " in order to have dinner ready by " + dinnerTime + "</p>"
+    recipeHTML+= "<h4>Ingredients</h4><ul>";
     recipe.ingredients.forEach(element => {
         recipeHTML = recipeHTML + "<li ingredientName=\"" + element.name + "\">" + element.quantity + " " + element.name + " " + ingredientNeeded(element.essential) + "</li>";
     });
