@@ -26,12 +26,6 @@ app.get("/", async (req, res) => {
   })
 
 //MENU API Endpoints////////////////////////////////////////////////////////////////////////////////////////////////
-app.get("/api/menu/:id", async (req, res) => {
-  const menuId = parseInt(req.params.id);
-  const menuItem = await getMenuItem(menuId);
-  res.json(menuItem);
-})
-
 async function getMenuItem(menuID){
   const result = await db.query("SELECT * FROM menu WHERE id = " + menuID + ";");
   return result.rows[0];
@@ -90,6 +84,14 @@ function haveAllIngredients(ingredients, inventory){
   return true;
 }
 
+app.get("/api/menu/:id", async (req, res) => {
+  const menuId = parseInt(req.params.id);
+  const menuItem = await getMenuItem(menuId);
+  res.json(menuItem);
+})
+
+
+
 //Recipe API Endpoints////////////////////////////////////////////////////////////////////////////////////////////////
 app.get("/api/recipe/:id", async (req, res) => {
   const recipeId = parseInt(req.params.id);
@@ -121,6 +123,19 @@ app.put("/api/recipe/", async (req, res) => {
   const menuValueString = "'" + req.body.title + "','" + req.body.category + "'," + result.rows[0].id;
   const menuQuery = "INSERT INTO menu (title, category, recipe) VALUES (" + menuValueString + ")";
   const menuResult = await db.query(menuQuery);
+
+  //console.log(result);
+
+  res.json(result.rows[0]); 
+})
+
+app.put("/api/recipe/:id", async (req, res) => {
+  const recipeId = parseInt(req.params.id);
+  const valueString = "title = '" + req.body.title + "', cookTime = '" + req.body.cookTime + "', ingredients = '" + JSON.stringify(req.body.ingredients) + "', directions = '" + req.body.directions + "'";
+  const query = "UPDATE recipes SET " + valueString + " WHERE id = " + recipeId + ";";
+  
+  console.log(query);
+  const result = await db.query(query);
 
   //console.log(result);
 

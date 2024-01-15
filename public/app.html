@@ -46,7 +46,7 @@
         <br>
         <select id="groceryClickAction">
             <option value="nothing">Nothing</option>
-            <option value="remove">Remove From Menu</option>
+            <option value="remove">Remove From List</option>
         </select>
         <input id="groceryInput" placeholder="Item">
         <button onclick="addGroceryButton()">Add Item</button>
@@ -60,7 +60,7 @@
         <br>
         <select id="inventoryClickAction">
             <option value="nothing">Nothing</option>
-            <option value="remove">Remove From Menu</option>
+            <option value="remove">Remove From List</option>
         </select>
         <input id="inventoryInput" placeholder="Item">
         <button onclick="addInventoryButton()">Add Item</button>
@@ -71,6 +71,8 @@
 
         <div class="content menuViewer">
             <h2>Menu</h2>
+            <button onclick="whatCanICook()">Show what I can Cook based on inventory</button>
+            <button onclick="getMenu()">Full Menu</button>
             <div>
                 <label for="clickAction">Click Action</label>
                 <br>
@@ -82,8 +84,6 @@
                 </select>
             </div>
             <div class="container" id="menu"></div>
-            <button onclick="whatCanICook()">Show what I can Cook based on inventory</button>
-            <button onclick="getMenu()">Full Menu</button>
         </div>
 
         <div class="content recipeViewer">
@@ -91,12 +91,32 @@
             <div class="content" id="recipe"></div>
             <button onclick="addRecipeToGroceryListButton()">Add to Grocery List</button>
             <button onclick="cookRecipeButton()">Cook Recipe (Remove Ingredients from Inventory)</button>
+            <button onclick="editRecipeButton()">Edit Recipe</button>
             <p>Cooking Instructions: Click on items that you do not want to remove from inventory to remove them from the ingredients list. Don't worry, this doesn't remove them from recipe.</p>
         </div>
     </div>
+
+        
+    <div class="content recipeEditor">
+        <h2>Recipe Editor</h2>
+        <input id="editMenuId" type="hidden" placeholder="Category">
+        <input id="editRecipeId" type="hidden" placeholder="Category">
+        <input id="editItem" placeholder="Item">
+        <input id="editCookTime" placeholder="Total Recipe Cook Time">
+        <div class="ingredientWorkingArea"></div>
+        <div><button onclick="addEditorIngredient()">Add Ingredient</button></div>
+        <textarea placeholder="Directions" id="editDirections"></textarea>
+        <div>
+            <button onclick="updateRecipeButton()">Update</button>
+            <button onclick="viewMenuAndRecipeViewer()">Cancel</button>
+        </div>
+    </div>
+
+
     <script src="./menu.js"></script>
     <script src="./recipe.js"></script>
     <script src="./list.js"></script>
     <script src="./interface.js"></script>
+    <script src="./recipe-editor.js"></script>
 </body>
 </html>
