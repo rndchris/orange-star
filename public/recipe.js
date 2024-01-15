@@ -149,10 +149,22 @@ function displayRecipe(recipe, elementID = "#recipe"){
     let recipeElement = document.querySelector(elementID);
     var recipeHTML = "<h3>"+ recipe.title + "</h3><p>Cook Time: "+ recipe.cookTime + "</p><h4>Ingredients</h4><ul>";
     recipe.ingredients.forEach(element => {
-        recipeHTML = recipeHTML + "<li>" + element.quantity + " " + element.name + " " + ingredientNeeded(element.essential) + "</li>";
+        recipeHTML = recipeHTML + "<li ingredientName=\"" + element.name + "\">" + element.quantity + " " + element.name + " " + ingredientNeeded(element.essential) + "</li>";
     });
     recipeHTML = recipeHTML + "</ul><h4>Directions</h4><p>" + recipe.directions + "</p>";
     recipeElement.innerHTML = recipeHTML;
+    makeRecipeClickable()
+}
+
+function makeRecipeClickable(){
+    let ingredientBullets = document.querySelectorAll("#recipe li");
+    for (let i=0; i<ingredientBullets.length; i++){
+        ingredientBullets[i].addEventListener("click", function(){
+            activeRecipe.ingredients = activeRecipe.ingredients.filter(e => e.name != this.getAttribute("ingredientName"));
+            displayRecipe(activeRecipe, "#recipe");
+            console.log(this.getAttribute("ingredientName"));
+        })
+    }
 }
 
 async function getRecipe(recipeID){
