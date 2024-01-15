@@ -252,6 +252,12 @@ app.put("/api/grocery", async (req, res) => {
   res.send("SUCESSFUL");
 });
 
+app.put("/api/grocery/force", async (req, res) => {
+  console.log(req.body);
+  addToList(req.body, "grocery");
+  res.send("SUCESSFUL");
+});
+
 app.put("/api/grocery/buy", async (req, res) => {
   console.log(req.body);
   const groceryList = await getList("grocery");

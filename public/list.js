@@ -76,8 +76,11 @@ function makeListClickable(listSelector){
     }
 }
 
-function addGroceryButton(){
-    addToList(document.querySelector("#groceryInput").value, "#groceryList");
+async function addGroceryButton(){
+    //addToList(document.querySelector("#groceryInput").value, "#groceryList");
+    await listAPI([document.querySelector("#groceryInput").value],"PUT","grocery/force");
+    displayGroceryList();
+    
 }
 
 function addInventoryButton(){
