@@ -26,6 +26,17 @@ app.get("/", async (req, res) => {
   })
 
 //MENU API Endpoints////////////////////////////////////////////////////////////////////////////////////////////////
+app.get("/api/menu/:id", async (req, res) => {
+  const menuId = parseInt(req.params.id);
+  const menuItem = await getMenuItem(menuId);
+  res.json(menuItem);
+})
+
+async function getMenuItem(menuID){
+  const result = await db.query("SELECT * FROM menu WHERE id = " + menuID + ";");
+  return result.rows[0];
+}
+
 app.delete("/api/menu/:id", async (req, res) => {
   const deleteId = parseInt(req.params.id);
   removeMenuItem(deleteId);
@@ -35,7 +46,9 @@ app.delete("/api/menu/:id", async (req, res) => {
 })
 
 async function removeMenuItem(itemId){
-  const result = await db.query("DELETE FROM menu WHERE id = " + itemId);
+  const deleteItem = await getMenuItem(itemId);
+  const recipeDelete = await db.query("DELETE FROM recipes WHERE id = " + deleteItem.recipe + ";");
+  const menuDelete = await db.query("DELETE FROM menu WHERE id = " + itemId + ";");
 }
 
 app.get("/api/menu", async (req, res) => {
