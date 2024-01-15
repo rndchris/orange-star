@@ -3,7 +3,8 @@ const screens = [
     ".menuAndRecipeViewer",
     ".inventoryViewer",
     ".groceryListViewer",
-    ".recipeEditor"
+    ".recipeEditor",
+    ".jigsaw"
 ]
 
 viewMenuAndRecipeViewer();
@@ -40,4 +41,10 @@ function viewEditor(){
 function viewRecipeEditor(){
     hideAll();
     document.querySelector(".recipeEditor").classList.remove("hidden");
+}
+
+function viewJigsaw(){
+    hideAll();
+    document.querySelector(".jigsaw").classList.remove("hidden");
+
 }

@@ -16,6 +16,7 @@
         <button onclick="viewGroceryList()">Grocery List</button>
         <button onclick="viewInventory()">Inventory Manager</button>
         <button onclick="viewEditor()">Menu Item & Recipe Creator</button>
+        <button onclick="viewJigsaw()">Jigsaw</button>
     </div>
 
     <div class="content menuItemEditor hidden">
@@ -113,11 +114,20 @@
         </div>
     </div>
 
+    <div class="content jigsaw hidden">
+        <h2>Jigsaw</h2>
+        <p>Jigsaw can help with use what you have efficiently. Jigsaw identifies items in your cupboard that you can't currently use because the ingredient needs other ingredients in order to cook a full recipe, or the ingredient does not belong to any recipe. Jigsaw finds those ingredients and will help suggest recipes to add to your grocery list so that you can use those ingredients up. Press the button below to run Jigsaw. Jigsaw may take some time to run.</p> 
+        <button onclick="jigsawMagicButton()">Work that Jigsaw Magic</button>
+        <p>Click on recipes in the jigsaw report to add them to your grocery list.</p>
+        <div id="jigsawReport"></div>
+    </div>
+
 
     <script src="./menu.js"></script>
     <script src="./recipe.js"></script>
     <script src="./list.js"></script>
     <script src="./interface.js"></script>
     <script src="./recipe-editor.js"></script>
+    <script src="./jigsaw.js"></script>
 </body>
 </html>
