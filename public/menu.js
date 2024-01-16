@@ -100,6 +100,14 @@ async function removeMenuItem(itemID){
         method: "Delete",
     })
     getMenu();
+    return response;    
+}
+
+async function unlinkMenuItem(itemID){
+    const response = await fetch("./api/unlinkMenuItem/" + itemID, {
+        method: "Delete",
+    })
+    getMenu();
     return response;
 }
 
@@ -114,7 +122,7 @@ function lookupMenuIndex(menuID){
 async function clickMenuItem(menuID){
     switch(document.querySelector("#clickAction").value){
         case "remove":
-                await removeMenuItem(menuID);
+                await unlinkMenuItem(menuID);
                 getMenu();
             break;
         case "recipe":
