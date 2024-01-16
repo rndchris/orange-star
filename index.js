@@ -44,6 +44,7 @@ async function unlinkMenuItem(itemId){
   const menuDelete = await db.query("DELETE FROM menu WHERE id = " + itemId + ";");
 }
 
+
 app.delete("/api/menu/:id", async (req, res) => {
   const deleteId = parseInt(req.params.id);
   removeMenuItem(deleteId);
@@ -171,6 +172,21 @@ app.get("/api/menu/:id", async (req, res) => {
 
 
 //Recipe API Endpoints////////////////////////////////////////////////////////////////////////////////////////////////
+
+app.delete("/api/recipe/:id", async (req, res) => {
+  const deleteId = parseInt(req.params.id);
+  removeRecipe(deleteId);
+  //menu = menu.filter((menu) => menu.id != deleteId);
+  res.send("Item Removed");
+
+})
+
+async function removeRecipe(itemId){
+  const deleteItem = await getMenuItem(itemId);
+  const menuDelete = await db.query("DELETE FROM menu WHERE recipe = " + itemId + ";");
+  const recipeDelete = await db.query("DELETE FROM recipes WHERE id = " + deleteItem.recipe + ";");
+}
+
 app.get("/api/recipe/:id", async (req, res) => {
   const recipeId = parseInt(req.params.id);
   
