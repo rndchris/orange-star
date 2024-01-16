@@ -31,6 +31,19 @@ async function getMenuItem(menuID){
   return result.rows[0];
 }
 
+app.delete("/api/unlinkMenuItem/:id", async (req, res) => {
+  const deleteId = parseInt(req.params.id);
+  unlinkMenuItem(deleteId);
+  //menu = menu.filter((menu) => menu.id != deleteId);
+  res.send("Item Removed");
+
+})
+
+async function unlinkMenuItem(itemId){
+  const deleteItem = await getMenuItem(itemId);
+  const menuDelete = await db.query("DELETE FROM menu WHERE id = " + itemId + ";");
+}
+
 app.delete("/api/menu/:id", async (req, res) => {
   const deleteId = parseInt(req.params.id);
   removeMenuItem(deleteId);
