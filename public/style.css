@@ -12,6 +12,11 @@ html{
     border: 1pt solid rgba(255,255,255,.8);
 }
 
+.recipeViewer input{
+    width: 20px;
+    text-align: center;
+}
+
 .bannerlogo{
     display: flex;
     align-items: center;

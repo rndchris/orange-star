@@ -83,7 +83,8 @@
             <button onclick="editRecipeButton()">Edit Recipe</button>
             <p>Cooking Instructions: Click on items that you do not want to remove from inventory to remove them from the ingredients list. Don't worry, this doesn't remove them from recipe.</p>
             <p>What time is dinner?</p>
-            <input id="hours" placeholder="Hours" value="6"><input id="minutes" placeholder="Min" value="0">
+            <label for="hours">h</label><input id="hours" placeholder="Hours" value="6">
+            <label for="hours">min</label><input id="minutes" placeholder="Min" value="0">
         </div>
     </div>
 
@@ -94,6 +95,7 @@
         <input id="editRecipeId" type="hidden" placeholder="Category">
         <input id="editItem" placeholder="Item">
         <input id="editCookTime" placeholder="Total Recipe Cook Time">
+        <p><u>Ingredients</u></p>
         <div class="ingredientWorkingArea"></div>
         <div><button onclick="addEditorIngredient()">Add Ingredient</button></div>
         <textarea placeholder="Directions" id="editDirections"></textarea>
