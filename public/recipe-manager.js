@@ -23,8 +23,8 @@ function makeRecipeListClickable(){
     for (let i=0; i<ingredientBullets.length; i++){
         ingredientBullets[i].addEventListener("click", function(){
             console.log(this.getAttribute("recipeid"));
-            //displayRecipeFromLibrary(this.getAttribute("recipeid"), "#recipe");
-            editRecipeClick(this.getAttribute("recipeid"))
+            editRecipeClick(this.getAttribute("recipeid"));
+            clickAnimation(this);
         })
     }
 }
