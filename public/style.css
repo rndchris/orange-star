@@ -12,6 +12,24 @@ html{
     border: 1pt solid rgba(255,255,255,.8);
 }
 
+.bannerlogo{
+    display: flex;
+    align-items: center;
+}
+
+.title img{
+    height: 50px;
+    padding: 0;
+}
+
+h1{
+    font-size: 40px;
+}
+
+.title h2{
+    margin-bottom: 1px;
+}
+
 h3{
     margin: 0;
     padding: 0;
