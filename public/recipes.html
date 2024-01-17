@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orange Star</title>
+    <link rel="stylesheet" href="./glass.css">
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+<h1 class="banner">Orange Star Recipe Manager</h1>
+
+<div class="menubar">
+    <a href="/"><button>Return to Menu, Planning, and Inventory</button></a>
+</div>
+
+<div class="menuAndRecipeViewer">
+
+    <div class="content recipeEditor">
+        <h2>Recipe Editor</h2>
+        <input id="editMenuId" type="hidden" placeholder="Category">
+        <input id="editRecipeId" type="hidden" placeholder="Category">
+        <input id="editItem" placeholder="Item">
+        <input id="editCookTime" placeholder="Total Recipe Cook Time">
+        <div class="ingredientWorkingArea"></div>
+        <div><button onclick="addEditorIngredient()">Add Ingredient</button></div>
+        <textarea placeholder="Directions" id="editDirections"></textarea>
+        <div>
+            <button onclick="saveRecipeManagerButton()">Update Recipe</button>
+            <button onclick="newRecipeManagerButton()">Save As New Recipe</button>
+            <button onclick="deleteRecipeButton()">Delete Recipe</button>
+            <button onclick="linkRecipeButton()">Link Recipe to New Menu Item</button>
+            <button onclick="clearRecipeEditor()">Start a New Recipe</button>
+        </div>
+        <p>Warning: Deleting a recipe also deletes all related menu items</p>
+    </div>
+    
+    <div class="content recipeLibrary">
+        <h2>Recipe Library</h2>
+        <div id="recipeList"></div>
+        <p>Click on a recipe to inspect</p>
+    </div>
+</div>
+
+<script src="./menu.js"></script>
+<script src="./recipe.js"></script>
+<script src="./list.js"></script>
+<script src="./interface.js"></script>
+<script src="./recipe-editor.js"></script>
+<script src="./recipe-manager.js"></script>    
+</body>
+</html>

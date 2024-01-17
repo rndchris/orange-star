@@ -81,9 +81,10 @@ async function addRecipe(recipe){
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(recipe),
     })
-    getMenu();
-    console.log(response);
-    return response;
+    data = response.json()
+    //getMenu();
+    //console.log(response);
+    return data;
 }
 
 function updateActiveRecipe(){
@@ -202,6 +203,14 @@ async function getRecipe(recipeID){
     return response.json();
 }
 
+async function getRecipes(){
+    const response = await fetch("./api/recipe", {
+        method: "GET",
+    })
+
+    return response.json();
+}
+
 function addRecipeToGroceryListButton(){
     addRecipeToGroceryList(activeRecipe);
 };
@@ -230,4 +239,12 @@ async function removeRecipeFromInventory(recipe){
     }
     await listAPI(ingredients,"DELETE","inventory");
     displayInventoryList();
+}
+
+async function deleteRecipe(itemID){
+    const response = await fetch("./api/recipe/" + itemID, {
+        method: "DELETE",
+    })
+    console.log(response)
+    return response;
 }

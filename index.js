@@ -25,6 +25,10 @@ app.get("/", async (req, res) => {
     res.sendFile(__dirname + "/public/app.html");
   })
 
+app.get("/recipes", async (req, res) => {
+  res.sendFile(__dirname + "/public/recipes.html");
+})
+
 //MENU API Endpoints////////////////////////////////////////////////////////////////////////////////////////////////
 async function getMenuItem(menuID){
   const result = await db.query("SELECT * FROM menu WHERE id = " + menuID + ";");
@@ -182,10 +186,34 @@ app.delete("/api/recipe/:id", async (req, res) => {
 })
 
 async function removeRecipe(itemId){
-  const deleteItem = await getMenuItem(itemId);
-  const menuDelete = await db.query("DELETE FROM menu WHERE recipe = " + itemId + ";");
-  const recipeDelete = await db.query("DELETE FROM recipes WHERE id = " + deleteItem.recipe + ";");
+  const deleteItem = await getRecipe(itemId);
+  //make sure to remove all linked menu items
+  if (deleteItem.id){
+    const menuDelete = await db.query("DELETE FROM menu WHERE recipe = " + deleteItem.id + ";");
+    const recipeDelete = await db.query("DELETE FROM recipes WHERE id = " + deleteItem.id + ";");
+  }
 }
+
+app.get("/api/recipe", async (req, res) => {
+  const query = "SELECT * FROM recipes ORDER BY title;";
+  const result = await db.query(query);
+
+  //console.log(result);
+  let response = [];
+    for (let i = 0; i< result.rows.length; i++){
+      let ingredients = JSON.parse(result.rows[i].ingredients);
+      response.push({
+        id: result.rows[i].id,
+        title: result.rows[i].title,
+        cookTime: result.rows[i].cooktime,
+        ingredients: ingredients,
+        directions: result.rows[i].directions
+      });
+    }
+
+  res.json(response);
+})
+
 
 app.get("/api/recipe/:id", async (req, res) => {
   const recipeId = parseInt(req.params.id);
@@ -193,7 +221,7 @@ app.get("/api/recipe/:id", async (req, res) => {
   const query = "SELECT * FROM recipes WHERE id = " + recipeId + ";";
   const result = await db.query(query);
 
-  console.log(result);
+  //console.log(result);
 
   let ingredients = JSON.parse(result.rows[0].ingredients);
 
@@ -214,13 +242,33 @@ app.put("/api/recipe/", async (req, res) => {
   const query = "INSERT INTO recipes (title,cooktime,ingredients,directions) VALUES (" + valueString + ") RETURNING *;";
   const result = await db.query(query);
 
-  const menuValueString = "'" + req.body.title + "','" + req.body.category + "'," + result.rows[0].id;
+  if (req.body.category){
+    const menuValueString = "'" + req.body.title + "','" + req.body.category + "'," + result.rows[0].id;
+    const menuQuery = "INSERT INTO menu (title, category, recipe) VALUES (" + menuValueString + ")";
+    const menuResult = await db.query(menuQuery);
+  }
+  console.log(result.rows[0]);
+
+  let ingredients = JSON.parse(result.rows[0].ingredients);
+
+  
+  const response = {
+    id: result.rows[0].id,
+    title: result.rows[0].title,
+    cookTime: result.rows[0].cooktime,
+    ingredients: ingredients,
+    directions: result.rows[0].directions
+  }
+
+  res.json(response); 
+})
+
+app.post("/api/menu/add", async (req, res) => {
+  const menuValueString = "'" + req.body.title + "','" + req.body.category + "'," + req.body.recipe;
   const menuQuery = "INSERT INTO menu (title, category, recipe) VALUES (" + menuValueString + ")";
+  console.log(menuQuery);
   const menuResult = await db.query(menuQuery);
-
-  //console.log(result);
-
-  res.json(result.rows[0]); 
+  res.json(menuResult);
 })
 
 app.put("/api/recipe/:id", async (req, res) => {
@@ -314,7 +362,7 @@ app.delete("/api/inventory", async (req, res) => {
 });
 
 async function getList(listID){
-  const result = await db.query("SELECT * FROM " + getListTableName(listID));
+  const result = await db.query("SELECT * FROM " + getListTableName(listID) + " ORDER BY name;");
   let theList = [];
   for (let i=0; i<result.rows.length; i++){
     theList.push(result.rows[i].name);

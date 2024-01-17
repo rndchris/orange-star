@@ -22,6 +22,14 @@ h3{
     height: 30pt;
 }
 
+#recipeList ul{
+    column-count: 2;
+}
+
+#inventoryList ul{
+    column-count: 2;
+}
+
 @media (min-aspect-ratio: 4/3){
     .menuAndRecipeViewer{
         display: flex;
@@ -40,6 +48,14 @@ h3{
 
     .recipeViewer{
         width: 50%;
+    }
+
+    #recipeList ul{
+        column-count: 3;
+    }
+
+    #inventoryList ul{
+        column-count: 4;
     }
 }
 

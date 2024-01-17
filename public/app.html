@@ -16,7 +16,8 @@
         <button onclick="viewGroceryList()">Grocery List</button>
         <button onclick="viewJigsaw()">Jigsaw</button>
         <button onclick="viewInventory()">Inventory Manager</button>
-        <button onclick="viewEditor()">Menu Item & Recipe Creator</button>
+        <!--<button onclick="viewEditor()">Menu Item & Recipe Creator</button>-->
+        <a href="/recipes"><button>Recipe Manager</button></a>
     </div>
 
     <div class="content menuItemEditor hidden">
@@ -74,7 +75,7 @@
         <div class="content menuViewer">
             <h2>Menu</h2>
             <button onclick="whatCanICook()">Show what I can Cook based on inventory</button>
-            <button onclick="getMenu()">Full Menu</button>
+            <button onclick="drawMenu()">Full Menu</button>
             <div>
                 <label for="clickAction">Click Action</label>
                 <br>
@@ -131,5 +132,11 @@
     <script src="./interface.js"></script>
     <script src="./recipe-editor.js"></script>
     <script src="./jigsaw.js"></script>
+    <script>
+        drawMenu();
+        viewMenuAndRecipeViewer();
+        displayGroceryList();
+        displayInventoryList();
+    </script>
 </body>
 </html>

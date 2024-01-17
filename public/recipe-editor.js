@@ -126,3 +126,13 @@ function updateRecipeButton(){
     viewMenuAndRecipeViewer();
     displayRecipe(recipe, "#recipe");
 }
+
+function clearRecipeEditor(){
+    //var editMenuId = document.querySelector("#editMenuId");
+    document.querySelector("#editRecipeId").value = null;
+    //var editCategory = document.querySelector("#editCategory");
+    document.querySelector("#editItem").value = null;
+    document.querySelector("#editCookTime").value = null;
+    document.querySelector("#editDirections").value = null;
+    document.querySelector(".ingredientWorkingArea").innerHTML = "<ul></ul>";
+}

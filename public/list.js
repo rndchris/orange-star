@@ -1,9 +1,6 @@
 list = ["butter", "sugar", "eggs", "flour"];
 inventory = ["eggs", "paprika"];
 
-displayGroceryList();
-displayInventoryList();
-
 async function displayGroceryList(){
     const groceryList = await listGET("grocery");
     displayList(groceryList, "#groceryList");

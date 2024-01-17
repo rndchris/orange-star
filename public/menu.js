@@ -2,7 +2,6 @@
 var menu = [];
 
 //Main
-getMenu();
 
 function addMenuItemButton(){
     addMenuItem(document.querySelector("#categoryText").value, document.querySelector("#menuItemText").value, document.querySelector("#recipeNumberText").value) ;
@@ -19,13 +18,13 @@ async function addMenuItem(categoryText, titleText, recipeNumber){
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(content),
     })
-    getMenu();
+    //drawMenu();
     console.log(response);
     return response;
 }
 
 //Functionland
-function getMenu(){
+/*function getMenu(){
     fetch("./api/menu")
         .then((response) => {
             return response.json();
@@ -33,16 +32,25 @@ function getMenu(){
         )
         .then((json) => {
             menu = json;
-            drawMenu(menu);
+            //drawMenu(menu);
         })
-    }
+    }*/
+
+async function getMenu(){
+    const menu = await fetch("/api/menu");
+    return menu.json();
+}
 
 //Menu Drawing Functions
-function drawMenu(menu){
+async function drawMenu(menu){
     /*
     Creates HTML to display Menu Object
     What happens if multiple event listeners are added?
     */
+    if (!menu){
+        menu = await getMenu();
+    }
+
     menu = createDisplayableMenu(menu);
 
     //convert to displayable object
@@ -99,7 +107,7 @@ async function removeMenuItem(itemID){
     const response = await fetch("./api/menu/" + itemID, {
         method: "Delete",
     })
-    getMenu();
+    drawMenu();
     return response;    
 }
 
@@ -107,11 +115,11 @@ async function unlinkMenuItem(itemID){
     const response = await fetch("./api/unlinkMenuItem/" + itemID, {
         method: "Delete",
     })
-    getMenu();
+    drawMenu();
     return response;
 }
 
-function lookupMenuIndex(menuID){
+function lookupMenuIndex(menuID,menu){
     for (let i=0; i<menu.length;i++){
         if (menuID == menu[i].id){
             return i;
@@ -120,23 +128,25 @@ function lookupMenuIndex(menuID){
 }
 
 async function clickMenuItem(menuID){
+    let menu = await getMenu();
     switch(document.querySelector("#clickAction").value){
         case "remove":
                 await unlinkMenuItem(menuID);
-                getMenu();
+                drawMenu();
             break;
         case "recipe":
-            console.log(menu[lookupMenuIndex(menuID)].recipe);
-            activeRecipe = await getRecipe(menu[lookupMenuIndex(menuID)].recipe);
+            console.log(lookupMenuIndex(menuID,menu));
+            console.log(menu[lookupMenuIndex(menuID,menu)].recipe);
+            activeRecipe = await getRecipe(menu[lookupMenuIndex(menuID,menu)].recipe);
             displayRecipe(activeRecipe);
             break;
         case "grocery":
-            console.log(menu[lookupMenuIndex(menuID)].recipe);
-            addRecipeToGroceryList(await getRecipe(menu[lookupMenuIndex(menuID)].recipe))
+            console.log(menu[lookupMenuIndex(menuID,menu)].recipe);
+            addRecipeToGroceryList(await getRecipe(menu[lookupMenuIndex(menuID,menu)].recipe))
             break;
         case "cook":
-            console.log(menu[lookupMenuIndex(menuID)].recipe);
-            removeRecipeFromInventory(await getRecipe(menu[lookupMenuIndex(menuID)].recipe))
+            console.log(menu[lookupMenuIndex(menuID,menu)].recipe);
+            removeRecipeFromInventory(await getRecipe(menu[lookupMenuIndex(menuID,menu)].recipe))
             break;
     }
     //switch statement to determine action based on current mode
@@ -154,6 +164,6 @@ function whatCanICook(){
         )
         .then((json) => {
             menu = json;
-            drawMenu(menu);
+            drawMenu(json);
         })
 }

@@ -5,9 +5,7 @@ const screens = [
     ".groceryListViewer",
     ".recipeEditor",
     ".jigsaw"
-]
-
-viewMenuAndRecipeViewer();
+];
 
 function hideAll(){
     screens.forEach((screen) => {
@@ -17,7 +15,7 @@ function hideAll(){
 
 function viewMenuAndRecipeViewer(){
     hideAll();
-    getMenu();
+    drawMenu();
     document.querySelector(".menuAndRecipeViewer").classList.remove("hidden");
 }
 
