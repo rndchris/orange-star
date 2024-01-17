@@ -25,18 +25,23 @@ Orange Star keeps your organized. No standing in front of the fridge at 6pm, sta
 ### The Main Menu
 
 Meal planning is just like ordering from a menu. Choose recipes from the menu and directly add the needed ingredients directly to your grocery list, then when it comes time to cook, figure out what you can cook from what you have on hand with the click of a button. You can even see what time you need to start cooking to have dinner on time.
+
 <img height="400px" src="./screenshots/main-menu.jpg">
 
 Edit your grocery list anywhere. Getting items into inventory is also a breeze. No scanning, entering endless quantities, or entering items one-by-one. Just click "add to inventory to move your entire grocery list to your inventory, and easily track what food you have on hand.
+
 <img height="400px" src="./screenshots/grocery-list.jpg">
 
 The inventory manager enables to to add and remove individual ingredients to your inventory as needed.
+
 <img height="400px" src="./screenshots/inventory.jpg">
 
 Jigsaw is a handy feature that allows you to make use of ingredients that don't add up to a coherent recipe. Jigsaw finds ingredients in inventory that can't currently be used to cook a recipe from your menu and suggests recipes, which allows you to pick up the needed ingredients at the grocery store so you can finally cook through everything in your pantry.
+
 <img height="400px" src="./screenshots/jigsaw.jpg>
 
 The recipe manager tracks all of your recipes and allows you to add new recipes. The recipe manager also allows you to create new menu items too. Sick of an eating something? You can remove an item from the menu (done on the menu screen), and when you want to add it back to the menu, use the recipe manager to add it back to the menu, without ever deleting the recipe.
+
 <img height="400px" src="./screenshots/recipe-manager.jpg">
 
 ### How is Orange Star different from other nutrition and meal planning apps? Why choose Orange Star?
