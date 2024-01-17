@@ -81,9 +81,11 @@
         <div class="content recipeViewer">
             <h2>Recipe Interface</h2>
             <div class="content" id="recipe"></div>
-            <button onclick="addRecipeToGroceryListButton()">Add to Grocery List</button>
-            <button onclick="cookRecipeButton()">Cook Recipe (Remove Ingredients from Inventory)</button>
-            <button onclick="editRecipeButton()">Edit Recipe</button>
+            <div class="editorbar">
+                <button onclick="addRecipeToGroceryListButton()">Add to Grocery List</button>
+                <button onclick="cookRecipeButton()">Cook Recipe (Remove Ingredients from Inventory)</button>
+                <button onclick="editRecipeButton()">Edit Recipe</button>
+            </div>
             <p>Cooking Instructions: Click on items that you do not want to remove from inventory to remove them from the ingredients list. Don't worry, this doesn't remove them from recipe.</p>
             <p>What time is dinner?</p>
             <label for="hours">h</label><input id="hours" placeholder="Hours" value="6">
@@ -101,7 +103,7 @@
         <p><u>Ingredients</u></p>
         <div class="ingredientWorkingArea"></div>
         <p>Check the checkbox next to ingredients to include in inventory/grocery list calculations.</p>
-        <div><button onclick="addEditorIngredient()">Add Ingredient</button></div>
+        <div><button id="addEditorIngredientButton" onclick="addEditorIngredient()">Add Ingredient</button></div>
         <textarea placeholder="Directions" id="editDirections"></textarea>
         <div>
             <button onclick="updateRecipeButton()">Update</button>

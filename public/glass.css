@@ -6,6 +6,27 @@ html{
     font-family: sans-serif;
 }
 
+::placeholder{
+    color: rgba(50,50,50);
+}
+
+textarea,input,select,button{
+    background-color: rgba(255,255,255,.4);
+    border-radius: 4px;
+}
+
+select:focus{
+    background-color: lightslategray;
+}
+
+button{
+    border-color: rgba(255,255,255,.8);
+}
+
+button:hover{
+    background-color: rgba(255,255,255,.5);
+}
+
 .container{
     margin-top: 15px;
     display: flex;
@@ -21,6 +42,10 @@ html{
     border: 1pt solid rgba(255,255,255,.8);
     border-radius: 15px;
     padding: 30px
+}
+
+.content:hover{
+    border-width: 2pt;
 }
 
 .hidden{
@@ -39,4 +64,9 @@ html{
     background-color: rgba(255,255,255,.2);
     border: 1pt solid rgba(255,255,255,.8);
     height: 65px;
+    border-radius: 2px;
+}
+
+.menubar button:hover{
+    background-color: rgba(255,255,255,.4);
 }

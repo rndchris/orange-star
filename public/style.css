@@ -3,9 +3,29 @@ html{
     background-size: cover;
 }
 
+li:hover{
+    background-color: rgba(0,128,128,.2);
+}
+
+li{
+    border-radius: 5px;
+}
+
 .menumenu{
     display: flex;
     justify-content: space-between;
+}
+
+.editorbar{
+    margin-top: 10px;
+}
+
+#addEditorIngredientButton{
+    margin-bottom: 20px;
+}
+
+.recipeEditor p{
+    margin-bottom: 3px;
 }
 
 .title{
