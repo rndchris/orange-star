@@ -38,7 +38,7 @@ The inventory manager enables to to add and remove individual ingredients to you
 
 Jigsaw is a handy feature that allows you to make use of ingredients that don't add up to a coherent recipe. Jigsaw finds ingredients in inventory that can't currently be used to cook a recipe from your menu and suggests recipes, which allows you to pick up the needed ingredients at the grocery store so you can finally cook through everything in your pantry. 
 
-<img height="400px" src="./screenshots/jigsaw.jpg>
+<img height="400px" src="./screenshots/jigsaw.jpg">
 
 The recipe manager tracks all of your recipes and allows you to add new recipes. The recipe manager also allows you to create new menu items too. Sick of an eating something? You can remove an item from the menu (done on the menu screen), and when you want to add it back to the menu, use the recipe manager to add it back to the menu, without ever deleting the recipe. 
 
