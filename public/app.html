@@ -8,15 +8,17 @@
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-    <h1 class="banner">Orange Star</h1>
-    <h2 class="banner">Where eating in is eating out</h2>
-
-    <div class="menubar">
-        <button onclick="viewMenuAndRecipeViewer()">Whats on the Menu?</button>
-        <button onclick="viewGroceryList()">Grocery List</button>
-        <button onclick="viewJigsaw()">Jigsaw</button>
-        <button onclick="viewInventory()">Inventory Manager</button>
-        <a href="/recipes"><button>Recipe Manager</button></a>
+    
+    <div class="title">
+        <div class="menubar">
+            <button onclick="viewMenuAndRecipeViewer()">Whats on the Menu?</button>
+            <button onclick="viewGroceryList()">Grocery List</button>
+            <button onclick="viewJigsaw()">Jigsaw</button>
+            <button onclick="viewInventory()">Inventory Manager</button>
+            <a href="/recipes"><button>Recipe Manager</button></a>
+        </div>
+            <h1 class="banner" style="padding: 10px;">Orange Star</h1>
+            <h2 class="banner">Where 'eating in' is 'eating out'.</h2>
     </div>
 
     <div class="content groceryListViewer hidden">
@@ -47,7 +49,7 @@
         <div class="content" id="inventoryList"></div>
     </div>
     
-    <div class="menuAndRecipeViewer">
+    <div class="menuContainer menuAndRecipeViewer">
 
         <div class="content menuViewer">
             <h2>Menu</h2>

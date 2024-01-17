@@ -30,4 +30,13 @@ html{
 .menubar{
     display: flex;
     flex-direction: row;
+    height: 100%;
+}
+
+.menubar button{
+    opacity: .7;
+    padding: 10px;
+    background-color: rgba(255,255,255,.2);
+    border: 1pt solid rgba(255,255,255,.8);
+    height: 55px;
 }
