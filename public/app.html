@@ -60,17 +60,20 @@
 
         <div class="content menuViewer">
             <h2>Menu</h2>
-            <button onclick="whatCanICook()">Show what I can Cook based on inventory</button>
-            <button onclick="drawMenu()">Full Menu</button>
-            <div>
-                <label for="clickAction">Click Action</label>
-                <br>
-                <select id="clickAction">
-                    <option value="recipe">View Recipe</option>
-                    <option value="cook">Cook It!</option>
-                    <option value="grocery">Add to grocery list</option>
-                    <option value="remove">Remove From Menu</option>
-                </select>
+            <div class="menumenu">
+                <div>
+                    <button onclick="whatCanICook()">Show what I can Cook based on inventory</button>
+                    <button onclick="drawMenu()">Full Menu</button>
+                </div>
+                <div>
+                    <label for="clickAction">Click Action</label>
+                    <select id="clickAction">
+                        <option value="recipe">View Recipe</option>
+                        <option value="cook">Cook It!</option>
+                        <option value="grocery">Add to grocery list</option>
+                        <option value="remove">Remove From Menu</option>
+                    </select>
+                </div>
             </div>
             <div class="container" id="menu"></div>
         </div>

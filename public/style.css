@@ -3,6 +3,11 @@ html{
     background-size: cover;
 }
 
+.menumenu{
+    display: flex;
+    justify-content: space-between;
+}
+
 .title{
     display: flex;
     justify-content: space-between;
