@@ -3,12 +3,33 @@ html{
     background-size: cover;
 }
 
+#menu div{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#groceryList li{
+    list-style:disc;
+}
+
+#menu div h3{
+    text-align: center;
+}
+
 li:hover{
     background-color: rgba(0,128,128,.2);
 }
 
 li{
     border-radius: 5px;
+    list-style: none;
+    margin-left: 0;
+    padding-left: 0;
+}
+
+ul{
+    padding-left: 0;
 }
 
 .menumenu{
