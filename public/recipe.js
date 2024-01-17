@@ -69,12 +69,6 @@ function clearRecipeEditor(){
     recipeDirections.value = "";
 }
 
-function addFullMenuItemButton(){
-    updateNewRecipe()
-    addRecipe(newRecipe);
-    clearRecipeEditor();
-}
-
 async function addRecipe(recipe){
     const response = await fetch("./api/recipe", {
         method: "PUT",
@@ -99,43 +93,6 @@ function updateActiveRecipe(){
     activeRecipe.directions = recipeDirections.value;
 
     displayRecipe(activeRecipe, "#recipe");
-}
-
-function updateNewRecipe(){
-    let recipeCategory = document.querySelector("#categoryInput");
-    let recipeTitle = document.querySelector("#itemInput");
-    let recipeCookTime = document.querySelector("#cookTimeInput");
-    let recipeDirections = document.querySelector("#directionsInput");
-
-    newRecipe.title = recipeTitle.value;
-    newRecipe.category = recipeCategory.value;
-    newRecipe.cookTime = recipeCookTime.value;
-    newRecipe.directions = recipeDirections.value;
-
-    displayRecipe(newRecipe, "#recipe");
-}
-
-function drawIngredientsinEditor(recipe){
-    let recipeIngredients = document.querySelector("#recipeIngredients");
-    let ingredientsHTML = "<ul>"
-    for (let i=0; i<recipe.ingredients.length; i++){
-        ingredientsHTML = ingredientsHTML + "<li ingredientIndex=\"" + i + "\">" + recipe.ingredients[i].quantity + " " + recipe.ingredients[i].name + " " + ingredientNeeded(recipe.ingredients[i].essential) + "</li>";
-    }
-    ingredientsHTML = ingredientsHTML + "</ul>"
-    recipeIngredients.innerHTML = ingredientsHTML;
-
-    makeIngredientsClickable();
-}
-
-function makeIngredientsClickable(){
-    let renderedMenu = document.querySelectorAll("#recipeIngredients li");
-    for (var i = 0; i<renderedMenu.length; i++){
-        renderedMenu[i].addEventListener("click", function(){
-            let removeIndex = this.getAttribute("ingredientIndex");
-            newRecipe.ingredients.splice(removeIndex, 1);
-            this.remove();
-        })
-    }
 }
 
 function ingredientNeeded(isEssential){
