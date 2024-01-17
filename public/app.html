@@ -21,32 +21,35 @@
             <h2 class="banner">Where 'eating in' is 'eating out'.</h2>
     </div>
 
-    <div class="content groceryListViewer hidden">
-        <h2>Grocery List</h2>
-        <label for="groceryClickAction">Click Action</label>
-        <br>
-        <select id="groceryClickAction">
-            <option value="nothing">Nothing</option>
-            <option value="remove">Remove From List</option>
-            <option value="buy">Move to Inventory</option>
-        </select>
-        <input id="groceryInput" placeholder="Item">
-        <button onclick="addGroceryButton()">Add Item</button>
-        <div class="content" id="groceryList"></div>
-        <button onclick="goShoppingButton()">Add Grocery List to Inventory</button>
-    </div>
+    <div class="container">
+        <div class="content groceryListViewer hidden">
+            <h2>Grocery List</h2>
+            <label for="groceryClickAction">Click Action</label>
+            <br>
+            <select id="groceryClickAction">
+                <option value="nothing">Nothing</option>
+                <option value="remove">Remove From List</option>
+                <option value="buy">Move to Inventory</option>
+            </select>
+            <input id="groceryInput" placeholder="Item">
+            <button onclick="addGroceryButton()">Add Item</button>
+            <div class="content" id="groceryList"></div>
+            <button onclick="goShoppingButton()">Add Grocery List to Inventory</button>
+        </div>
     
-    <div class="content inventoryViewer hidden">
-        <h2>Inventory</h2>
-        <label for="inventoryClickAction">Click Action</label>
-        <br>
-        <select id="inventoryClickAction">
-            <option value="nothing">Nothing</option>
-            <option value="remove">Remove From List</option>
-        </select>
-        <input id="inventoryInput" placeholder="Item">
-        <button onclick="addInventoryButton()">Add Item</button>
-        <div class="content" id="inventoryList"></div>
+        <div class="content inventoryViewer hidden">
+            <h2>Inventory</h2>
+            <label for="inventoryClickAction">Click Action</label>
+            <br>
+            <select id="inventoryClickAction">
+                <option value="nothing">Nothing</option>
+                <option value="remove">Remove From List</option>
+            </select>
+            <input id="inventoryInput" placeholder="Item">
+            <button onclick="addInventoryButton()">Add Item</button>
+            <div class="content" id="inventoryList"></div>
+        </div>
+    
     </div>
     
     <div class="menuContainer menuAndRecipeViewer">
