@@ -16,30 +16,7 @@
         <button onclick="viewGroceryList()">Grocery List</button>
         <button onclick="viewJigsaw()">Jigsaw</button>
         <button onclick="viewInventory()">Inventory Manager</button>
-        <!--<button onclick="viewEditor()">Menu Item & Recipe Creator</button>-->
         <a href="/recipes"><button>Recipe Manager</button></a>
-    </div>
-
-    <div class="content menuItemEditor hidden">
-        <h2>Menu Item Creator</h2>
-        <input id="categoryInput" placeholder="Category">
-        <input id="itemInput" placeholder="Item">
-        <input id="cookTimeInput" placeholder="Total Recipe Cook Time">
-        <div id="recipeIngredientManager">
-            <hr>
-            <div id="recipeIngredients"></div>
-            <input id="ingredientNameInput" placeholder="Ingredient">
-            <input id="quantityInput" placeholder="Quantity">
-            <input id="essentialInput" type="checkbox" checked="true">
-            <label for="essentialInput">Use in Grocery List/Inventory Computations</label>
-            <br>
-            <button onclick="addIngredientButton()">Add Ingredient</button>
-            <hr>
-            <div><textarea id="directionsInput" placeholder="Directions"></textarea></div>
-            <div class="controls">
-                <button onclick="addFullMenuItemButton()">Add Item to Menu</button>
-            </div>    
-        </div>
     </div>
 
     <div class="content groceryListViewer hidden">

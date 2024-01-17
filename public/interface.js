@@ -1,5 +1,4 @@
 const screens = [
-    ".menuItemEditor",
     ".menuAndRecipeViewer",
     ".inventoryViewer",
     ".groceryListViewer",
@@ -29,11 +28,6 @@ function viewInventory(){
     hideAll();
     displayInventoryList();
     document.querySelector(".inventoryViewer").classList.remove("hidden");
-}
-
-function viewEditor(){
-    hideAll();
-    document.querySelector(".menuItemEditor").classList.remove("hidden");
 }
 
 function viewRecipeEditor(){
