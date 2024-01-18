@@ -70,7 +70,7 @@ app.get("/api/menu", async (req, res) => {
   })
 
 app.get("/api/menu/inventory", async (req, res) => {
-  const menu = await db.query("SELECT * FROM menu;");
+  const menu = await db.query("SELECT * FROM menu ORDER BY category,title;");
   let inventory = await getList("inventory");
   var cookable = [];
 
