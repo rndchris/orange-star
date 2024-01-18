@@ -1,9 +1,9 @@
 const screens = [
     ".menuAndRecipeViewer",
     ".inventoryViewer",
-    ".groceryListViewer",
     ".recipeEditor",
-    ".jigsaw"
+    ".jigsaw",
+    ".soloGrocery"
 ];
 
 function hideAll(){
@@ -15,13 +15,20 @@ function hideAll(){
 function viewMenuAndRecipeViewer(){
     hideAll();
     drawMenu();
+    displayGroceryList();
+    let groceryViewer = document.querySelector(".groceryListViewer");
+    let recipeBlock = document.querySelector(".recipesAndGrocery");
+    recipeBlock.appendChild(groceryViewer);
     document.querySelector(".menuAndRecipeViewer").classList.remove("hidden");
 }
 
 function viewGroceryList(){
     hideAll();
     displayGroceryList();
-    document.querySelector(".groceryListViewer").classList.remove("hidden");
+    document.querySelector(".soloGrocery").classList.remove("hidden");
+    let groceryViewer = document.querySelector(".groceryListViewer");
+    let grocerySolo = document.querySelector(".soloGrocery");
+    grocerySolo.appendChild(groceryViewer);
 }
 
 function viewInventory(){

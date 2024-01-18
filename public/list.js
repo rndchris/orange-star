@@ -25,7 +25,7 @@ async function addToList(item, listSelector){
             await listAPI([item],"PUT","grocery");
             //list.push(item);
             displayGroceryList();
-        } else if (listSelector == "#inventoryList" && inventory.filter(e => e == item).length == 0){
+        } else if (listSelector == "#inventoryList"){
             await listAPI([item],"PUT","inventory");
             //inventory.push(item);
             displayInventoryList();
@@ -104,6 +104,7 @@ async function listGET(list){
     return response.json();
 }
 
-function goShoppingButton(){
-    goShopping();
+async function goShoppingButton(){
+    await goShopping();
+    displayGroceryList();
 }

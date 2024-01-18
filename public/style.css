@@ -3,6 +3,12 @@ html{
     background-size: cover;
 }
 
+#menu{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
 #menu div{
     display: flex;
     flex-direction: column;
@@ -136,7 +142,7 @@ h3{
         flex-wrap: wrap;
     }
 
-    .recipeViewer{
+    .recipesAndGrocery{
         width: 50%;
     }
 
