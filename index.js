@@ -64,7 +64,7 @@ async function removeMenuItem(itemId){
 }
 
 app.get("/api/menu", async (req, res) => {
-    const result = await db.query("SELECT * FROM menu;");
+    const result = await db.query("SELECT * FROM menu ORDER BY category,title;");
     //console.log(result.rows);
     res.json(result.rows);
   })
