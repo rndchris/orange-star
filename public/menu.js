@@ -23,19 +23,6 @@ async function addMenuItem(categoryText, titleText, recipeNumber){
     return response;
 }
 
-//Functionland
-/*function getMenu(){
-    fetch("./api/menu")
-        .then((response) => {
-            return response.json();
-            }
-        )
-        .then((json) => {
-            menu = json;
-            //drawMenu(menu);
-        })
-    }*/
-
 async function getMenu(){
     const menu = await fetch("/api/menu");
     return menu.json();
@@ -43,10 +30,6 @@ async function getMenu(){
 
 //Menu Drawing Functions
 async function drawMenu(menu){
-    /*
-    Creates HTML to display Menu Object
-    What happens if multiple event listeners are added?
-    */
     if (!menu){
         menu = await getMenu();
     }
@@ -149,14 +132,11 @@ async function clickMenuItem(menuID){
             removeRecipeFromInventory(await getRecipe(menu[lookupMenuIndex(menuID,menu)].recipe))
             break;
     }
-    //switch statement to determine action based on current mode
-        //add to grocery list
-        //determine when I need to start cooking
-        //add to master menu
-        //remove from current menu
 }
 
 function whatCanICook(){
+    document.querySelector("#menuBasedOnInventoryButton").classList.add("hidden");
+    if (document.querySelector("#fullMenuButton").classList.contains("hidden")){document.querySelector("#fullMenuButton").classList.remove("hidden")}
     fetch("./api/menu/inventory")
         .then((response) => {
             return response.json();
@@ -166,4 +146,10 @@ function whatCanICook(){
             menu = json;
             drawMenu(json);
         })
+}
+
+function fullMenuButton(){
+    document.querySelector("#fullMenuButton").classList.add("hidden");
+    if (document.querySelector("#menuBasedOnInventoryButton").classList.contains("hidden")){document.querySelector("#menuBasedOnInventoryButton").classList.remove("hidden")}
+    drawMenu();
 }

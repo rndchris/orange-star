@@ -3,6 +3,10 @@ html{
     background-size: cover;
 }
 
+.activeButton{
+    background-color: rgba(0,128,128,.2);
+}
+
 #menu{
     display: flex;
     flex-direction: row;
