@@ -44,8 +44,7 @@ app.delete("/api/unlinkMenuItem/:id", async (req, res) => {
 })
 
 async function unlinkMenuItem(itemId){
-  const deleteItem = await getMenuItem(itemId);
-  const menuDelete = await db.query("DELETE FROM menu WHERE id = " + itemId + ";");
+  const menuDelete = await db.query("DELETE FROM menu WHERE id = $1;",[itemId]);
 }
 
 
@@ -59,13 +58,12 @@ app.delete("/api/menu/:id", async (req, res) => {
 
 async function removeMenuItem(itemId){
   const deleteItem = await getMenuItem(itemId);
-  const recipeDelete = await db.query("DELETE FROM recipes WHERE id = " + deleteItem.recipe + ";");
-  const menuDelete = await db.query("DELETE FROM menu WHERE id = " + itemId + ";");
+  const recipeDelete = await db.query("DELETE FROM recipes WHERE id = $1;",[deleteItem.recipe]);
+  const menuDelete = await db.query("DELETE FROM menu WHERE id = $1;", [itemId]);
 }
 
 app.get("/api/menu", async (req, res) => {
     const result = await db.query("SELECT * FROM menu ORDER BY category,title;");
-    //console.log(result.rows);
     res.json(result.rows);
   })
 
@@ -189,8 +187,8 @@ async function removeRecipe(itemId){
   const deleteItem = await getRecipe(itemId);
   //make sure to remove all linked menu items
   if (deleteItem.id){
-    const menuDelete = await db.query("DELETE FROM menu WHERE recipe = " + deleteItem.id + ";");
-    const recipeDelete = await db.query("DELETE FROM recipes WHERE id = " + deleteItem.id + ";");
+    const menuDelete = await db.query("DELETE FROM menu WHERE recipe = $1;", [deleteItem.id]);
+    const recipeDelete = await db.query("DELETE FROM recipes WHERE id = $1;", [deleteItem.id]);
   }
 }
 
@@ -218,8 +216,8 @@ app.get("/api/recipe", async (req, res) => {
 app.get("/api/recipe/:id", async (req, res) => {
   const recipeId = parseInt(req.params.id);
   
-  const query = "SELECT * FROM recipes WHERE id = " + recipeId + ";";
-  const result = await db.query(query);
+  const query = "SELECT * FROM recipes WHERE id = $1;";
+  const result = await db.query(query, [recipeId]);
 
   //console.log(result);
 
@@ -238,14 +236,12 @@ app.get("/api/recipe/:id", async (req, res) => {
 app.put("/api/recipe/", async (req, res) => {
 
   console.log("PUT REQUEST RECIEVED");
-  const valueString = "'" + req.body.title + "','" + req.body.cookTime + "','" + JSON.stringify(req.body.ingredients) + "','" + req.body.directions + "'";
-  const query = "INSERT INTO recipes (title,cooktime,ingredients,directions) VALUES (" + valueString + ") RETURNING *;";
-  const result = await db.query(query);
+  const query = "INSERT INTO recipes (title,cooktime,ingredients,directions) VALUES ($1, $2, $3, $4) RETURNING *;";
+  const result = await db.query(query, [req.body.title, req.body.cookTime, JSON.stringify(req.body.ingredients), req.body.directions]);
 
   if (req.body.category){
-    const menuValueString = "'" + req.body.title + "','" + req.body.category + "'," + result.rows[0].id;
-    const menuQuery = "INSERT INTO menu (title, category, recipe) VALUES (" + menuValueString + ")";
-    const menuResult = await db.query(menuQuery);
+    const menuQuery = "INSERT INTO menu (title, category, recipe) VALUES ($1, $2, $3)";
+    const menuResult = await db.query(menuQuery, [req.body. title,req.body.category, result.rows[0].id]);
   }
   console.log(result.rows[0]);
 
@@ -264,20 +260,23 @@ app.put("/api/recipe/", async (req, res) => {
 })
 
 app.post("/api/menu/add", async (req, res) => {
-  const menuValueString = "'" + req.body.title + "','" + req.body.category + "'," + req.body.recipe;
-  const menuQuery = "INSERT INTO menu (title, category, recipe) VALUES (" + menuValueString + ")";
+  const menuQuery = "INSERT INTO menu (title, category, recipe) VALUES ($1, $2, $3)";
   console.log(menuQuery);
-  const menuResult = await db.query(menuQuery);
+  const menuResult = await db.query(menuQuery,[req.body.title, req.body.category, req.body.recipe]);
   res.json(menuResult);
 })
 
 app.put("/api/recipe/:id", async (req, res) => {
   const recipeId = parseInt(req.params.id);
-  const valueString = "title = '" + req.body.title + "', cookTime = '" + req.body.cookTime + "', ingredients = '" + JSON.stringify(req.body.ingredients) + "', directions = '" + req.body.directions + "'";
-  const query = "UPDATE recipes SET " + valueString + " WHERE id = " + recipeId + ";";
+  const query = "UPDATE recipes SET \
+      title = $1, \
+      cookTime = $2, \
+      ingredients = $3, \
+      directions = $4 \
+    WHERE id = $5;";
   
   console.log(query);
-  const result = await db.query(query);
+  const result = await db.query(query, [req.body.title, req.body.cookTime, JSON.stringify(req.body.ingredients), req.body.directions, recipeId]);
 
   //console.log(result);
 
@@ -285,9 +284,9 @@ app.put("/api/recipe/:id", async (req, res) => {
 })
 
 async function getRecipe(recipeID){
-  const query = "SELECT * FROM recipes WHERE id = " + recipeID + ";";
+  const query = "SELECT * FROM recipes WHERE id = $1;";
 
-  const result = await db.query(query);
+  const result = await db.query(query, [recipeID]);
 
   //console.log(result);
 
@@ -325,13 +324,13 @@ app.get("/api/inventory", async (req, res) => {
 
 app.put("/api/grocery", async (req, res) => {
   console.log(req.body);
-  addToGroceryListIfNotInInventory(req.body);
+  await addToGroceryListIfNotInInventory(req.body);
   res.send("SUCESSFUL");
 });
 
 app.put("/api/grocery/force", async (req, res) => {
   console.log(req.body);
-  addToList(req.body, "grocery");
+  await addToList(req.body, "grocery");
   res.send("SUCESSFUL");
 });
 
@@ -339,13 +338,13 @@ app.put("/api/grocery/buy", async (req, res) => {
   console.log(req.body);
   const groceryList = await getList("grocery");
   addToList(groceryList, "inventory");
-  removeFromList(groceryList, "grocery");
+  await removeFromList(groceryList, "grocery");
   res.send("SUCESSFUL");
 });
 
 app.put("/api/inventory", async (req, res) => {
   console.log(req.body);
-  addToList(req.body, "inventory");
+  await addToList(req.body, "inventory");
   res.send("SUCESSFUL");
 });
 
@@ -373,29 +372,9 @@ async function getList(listID){
 async function addToList(items, listID){
   let currentList = await getList(listID);
   console.log(currentList);
-  let query = "INSERT INTO " + getListTableName(listID) + " (name) VALUES ";
-  let valuesList = ""
-  console.log(items);
-  for (let i = 0; i<items.length; i++){
-    if (!currentList.includes(items[i])){
-      //let result = await db.query("INSERT INTO " + getListTableName(listID) + " (name) VALUES ('" + items[i] + "');");
-      valuesList = valuesList + "('" + items[i] + "')"
-      //console.log(valuesList);
-      //console.log(items.length);
-      //don't put comma's after final item
-      if (i != items.length - 1){
-        valuesList = valuesList + ",";
-      }
-    }
-  }
-  //if final character is , in values list, pull it off
-  if (valuesList.slice(valuesList.length - 1) == ","){
-    valuesList = valuesList.slice(0, valuesList.length -1);
-  }
-  if (valuesList.length){
-    query = query + valuesList + ";";
-    console.log(query);
-    let result = await db.query(query);
+  let query = "INSERT INTO " + getListTableName(listID) + " (name) VALUES ($1)";
+  for (let i=0; i<items.length;i++){
+    let result = await db.query(query, [items[i]]);
   }
 }
 
@@ -409,18 +388,15 @@ async function addToGroceryListIfNotInInventory(items){
   }
   if (pushList.length > 0){
     console.log(pushList);
-    addToList(pushList, "grocery");
+    await addToList(pushList, "grocery");
   }
 }
 
 async function removeFromList(items, listID){
-  let query = "";
-  for (let i = 0; i<items.length; i++){
-    //let result = await db.query("DELETE FROM " + getListTableName(listID) + " WHERE name = '" + items[i] +"';");
-    query = query + "DELETE FROM " + getListTableName(listID) + " WHERE name = '" + items[i] +"'; "
+  for (let i=0;i<items.length;i++){
+    let query = "DELETE FROM " + getListTableName(listID) + " WHERE name = $1";
+    let result = await db.query(query,[items[i]]);
   }
-  console.log(query);
-  let result = await db.query(query);
 }
 
 function getListTableName(listID){
