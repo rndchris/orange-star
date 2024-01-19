@@ -70,10 +70,11 @@
                     <button onclick="cookRecipeButton()">Cook Recipe (Remove Ingredients from Inventory)</button>
                     <button onclick="editRecipeButton()">Edit Recipe</button>
                 </div>
-                <p>Cooking Instructions: Click on items that you do not want to remove from inventory to remove them from the ingredients list. Don't worry, this doesn't remove them from recipe.</p>
                 <p>What time is dinner?</p>
                 <label for="hours">h</label><input id="hours" placeholder="Hours" value="6">
                 <label for="hours">min</label><input id="minutes" placeholder="Min" value="0">
+                <p>You can click on ingredients to remove them from the viewer and exclude them from being added to the grocery list/inventory. Don't worry, this doesn't remove them from recipe. Click on the recipe to get them back.</p>
+                <p>The eye icon indicates that an ingredient is included in grocery/inventory calculations.</p>
             </div>
             
             <div class="content groceryListViewer">
@@ -114,7 +115,7 @@
 
     <div class="content jigsaw hidden">
         <h2>Jigsaw</h2>
-        <p>Jigsaw can help with use what you have efficiently. Jigsaw identifies items in your cupboard that you can't currently use because the ingredient needs other ingredients in order to cook a full recipe, or the ingredient does not belong to any recipe. Jigsaw finds those ingredients and will help suggest recipes to add to your grocery list so that you can use those ingredients up. Press the button below to run Jigsaw. Jigsaw may take some time to run.</p> 
+        <p>Jigsaw can help with use what you have efficiently. Jigsaw identifies items in your cupboard that can't be cooked due to missing ingredients and recipes, and the suggests recipes to add to your grocery list so that you can make use of your entire pantry. Press the button below to run Jigsaw. Jigsaw may take some time to run.</p> 
         <button onclick="jigsawMagicButton()">Work that Jigsaw Magic</button>
         <p>Click on recipes in the jigsaw report to add them to your grocery list.</p>
         <div id="jigsawReport"></div>
