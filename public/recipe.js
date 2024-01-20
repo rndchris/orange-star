@@ -22,8 +22,8 @@ var newRecipe = {
 
 
 function addIngredientButton(){
-    let ingredientName = document.querySelector("#ingredientNameInput").value;
-    let ingredientQuantity = document.querySelector("#quantityInput").value;
+    let ingredientName = escapeHTML(document.querySelector("#ingredientNameInput").value);
+    let ingredientQuantity = escapeHTML(document.querySelector("#quantityInput").value);
     let ingredientEssential = document.querySelector("#essentialInput").checked;
 
     const newIngredient = {
@@ -109,8 +109,8 @@ function ingredientNeeded(isEssential){
 
 function displayRecipe(recipe, elementID = "#recipe"){
     //compute dinner time
-    let dinnerHour = document.querySelector("#hours").value;
-    let dinnerMin = document.querySelector("#minutes").value;
+    let dinnerHour = escapeHTML(document.querySelector("#hours").value);
+    let dinnerMin = escapeHTML(document.querySelector("#minutes").value);
     let dinnerMinString
     if (dinnerMin < 10){
         dinnerMinString = "0" + dinnerMin.toString();
