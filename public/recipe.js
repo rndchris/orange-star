@@ -87,12 +87,16 @@ function updateActiveRecipe(){
     let recipeCookTime = document.querySelector("#cookTimeInput");
     let recipeDirections = document.querySelector("#directionsInput");
 
-    activeRecipe.title = recipeTitle.value;
-    activeRecipe.category = recipeCategory.value;
-    activeRecipe.cookTime = recipeCookTime.value;
-    activeRecipe.directions = recipeDirections.value;
+    activeRecipe.title = escapeHTML(recipeTitle.value);
+    activeRecipe.category = escapeHTML(recipeCategory.value);
+    activeRecipe.cookTime = escapeHTML(recipeCookTime.value);
+    activeRecipe.directions = escapeHTML(recipeDirections.value);
 
     displayRecipe(activeRecipe, "#recipe");
+}
+
+function escapeHTML(str){
+    return new Option(str).innerHTML;
 }
 
 function ingredientNeeded(isEssential){
