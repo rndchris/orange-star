@@ -353,7 +353,7 @@ app.put("/api/grocery/buy", async (req, res) => {
 
 app.put("/api/inventory", async (req, res) => {
   console.log(req.body);
-  await addToList(req.body, "inventory");
+  await addToList(cleanArray(req.body), "inventory");
   res.send("SUCESSFUL");
 });
 
@@ -383,29 +383,35 @@ async function addToList(items, listID){
   let currentList = await getList(listID);
   console.log(currentList);
   let query = "INSERT INTO " + getListTableName(listID) + " (name) VALUES ($1)";
-  for (let i=0; i<items.length;i++){
-    let result = await db.query(query, [items[i]]);
+  if (typeof(items) !== "string"){
+    for (let i=0; i<items.length;i++){
+      let result = await db.query(query, [items[i]]);
+    }
   }
 }
 
 async function addToGroceryListIfNotInInventory(items){
   let inventoryList = await getList("inventory");
   let pushList = []
-  for (let i = 0; i<items.length; i++){
-    if (!inventoryList.includes(items[i])){
-      pushList.push(items[i]);
+  if (typeof(items) !== "string"){
+    for (let i = 0; i<items.length; i++){
+      if (!inventoryList.includes(items[i])){
+        pushList.push(items[i]);
+      }
     }
-  }
-  if (pushList.length > 0){
-    console.log(pushList);
-    await addToList(pushList, "grocery");
+    if (pushList.length > 0){
+      console.log(pushList);
+      await addToList(pushList, "grocery");
+    }
   }
 }
 
 async function removeFromList(items, listID){
-  for (let i=0;i<items.length;i++){
-    let query = "DELETE FROM " + getListTableName(listID) + " WHERE name = $1";
-    let result = await db.query(query,[items[i]]);
+  if (typeof(items) !== "string"){
+    for (let i=0;i<items.length;i++){
+      let query = "DELETE FROM " + getListTableName(listID) + " WHERE name = $1";
+      let result = await db.query(query,[items[i]]);
+    }
   }
 }
 
