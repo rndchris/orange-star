@@ -1,4 +1,5 @@
 package-lock.json
-node_modules
-database.js
+web/node_modules/
+private_database.js
 github.key
+database

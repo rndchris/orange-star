@@ -1,14 +1,36 @@
-version: "2"
+version: "3.8"
 services:
+  db:
+    image: postgres
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=orange-star
+    #Uncomment if you need to manually access the database from outside the container
+    #ports:
+    #  - '5432:5432'
+    volumes: 
+      - ./database:/var/lib/postgresql/data
+      - ./db/create_tables.sql:/docker-entrypoint-initdb.d/init.sql
   node:
     image: "node:20"
+    depends_on:
+      - db
     user: "node"
     restart: unless-stopped
     working_dir: /home/node/app
     environment:
       - NODE_ENV=production
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=orange-star
+      - POSTGRES_PORT=5432
+      - DB_HOST=db
+    links:
+      - db
     volumes:
-      - ./:/home/node/app
+      - ./web:/home/node/app
     ports:
       - 5023:3500
     command: "node index.js"

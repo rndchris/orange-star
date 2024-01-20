@@ -55,3 +55,45 @@ On your recipes, you only mark ingredients you want to compare to inventory. You
 #### Stupid Inventory (TM)
 
 You don't need an accurate account of every last gram of flour in your cupboard, and you certainly don't want to enter the exact quantity of every morsel of food in your kitchen into a web app. You just need to know whether or not you have an ingredient to cook with. Orange Star keeps track of what you have in your kitchen with Stupid Inventory. You simply track whether or not an ingredient is present, which makes manually adding individual items to inventory a breeze.
+
+## Installation
+
+Installation is easy with docker compose. Installing npm, docker, and docker compose are pre-requisites.
+
+1. Clone this repository
+
+    >git clone https://www.github.com/rndchris/orange-star.git
+
+2. Install npm dependencies in the web directory
+
+    >cd orange-star/web
+    >npm i
+
+3. Run docker compose from the root directory of the repository.
+
+    >cd orange-star (or if you were in the web directory "cd ../")
+    >sudo docker compose up -d
+
+4. Open Orange Star in a web browser by going to http://localhost:[PORT]/
+
+## Suggestions for Getting Started
+
+### 1. Start by creating a small set of recipes.
+
+Start by creating 5-10 recipes in the recipe manager of things that you plan to cook in the next week or two. Trying do inventory or grocery lists without recipes is unecessarily cumbersome, and trying to enter every recipe you have at once would not be fun.
+
+A few tricks:
+
+- Orange star is designed to be useful even when you only put half-effort into it. The only required recipe fields are title and cook time. If you make rice and beans every week, don't bother listing out all of the amounts needed and and putting in detailed directions. Just put in a title, cooktime, and list the ingredients.
+
+- Only ingredients marked with the checkbox marked are used in inventory calculations and the grocery list, so only mark ingredients that you actually need to buy at the grocery store. Using the beans and rice as an example, If you kept rice in bulk and almost always had ample supply of your regular favorite seasoning, you might only mark the beans to be included in grocery/inventory calcuations. When you use the recipe in the future, the app will only add those marked ingredients to your grocery list, and only check your inventory for those ingredients when cooking.
+
+### 2. Start your inital inventory by using the recipes you just created
+
+Fill you initial inventory by using the recipes and grocery list function. Using the menu browser, set the click function to add to grocery list, and then just go through and click recipes that you already have all of the ingredients to cook. Once you're done, you can remove any ingredients you don't actually have on the grocery list editor, add any manual items you want, and then click "add to inventory" to move everything to your inventory rapidly. You can use this same method to quickly remove items from inventory if you don't feel like opening the app after every meal.
+
+## Tricks
+
+- You don't have to remove every ingredient on a recipe when you press the "cook" button in the recipe viewer. Clicking ingredients on a recipe displayed in the viewer will hide the ingredient from the viewer, and then you can "cook" or "add to list" and the rhidden ingredients will be skipped. This does not make any changes to the recipe, and you can see all the ingredients again by reselecting it from the menu.
+
+- You can link a recipe to multiple menu categories from the recipe manager. So you can have your chips & guac both in a Snack category and a Taco Night category.
