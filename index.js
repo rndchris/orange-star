@@ -339,7 +339,7 @@ app.put("/api/grocery", async (req, res) => {
 
 app.put("/api/grocery/force", async (req, res) => {
   console.log(req.body);
-  await addToList(req.body, "grocery");
+  await addToList(cleanArray(req.body), "grocery");
   res.send("SUCESSFUL");
 });
 
@@ -366,7 +366,7 @@ app.delete("/api/grocery", async (req, res) => {
 
 app.delete("/api/inventory", async (req, res) => {
   console.log(req.body);
-  removeFromList(req.body, "inventory");
+  removeFromList(cleanArray(req.body), "inventory");
   res.send("SUCESSFUL");
 });
 
