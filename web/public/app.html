@@ -44,7 +44,7 @@
         <div class="content menuViewer">
             <h2>Menu</h2>
             <div class="menumenu">
-                <div class="container">
+                <div>
                     <button id="menuBasedOnInventoryButton" onclick="whatCanICook()">Show what I can Cook based on inventory</button>
                     <button id="fullMenuButton" class="hidden" onclick="fullMenuButton()">See the Full Menu</button>
                 </div>
@@ -65,7 +65,7 @@
             <div class="content recipeViewer">
                 <h2>Recipe Interface</h2>
                 <div class="content" id="recipe"></div>
-                <div class="editorbar">
+                <div class="editorbar hidden">
                     <button onclick="addRecipeToGroceryListButton()">Add to Grocery List</button>
                     <button onclick="cookRecipeButton()">Cook Recipe (Remove Ingredients from Inventory)</button>
                     <button onclick="editRecipeButton()">Edit Recipe</button>

@@ -57,3 +57,9 @@ function clickAnimation(element){
     }
     element.classList.add("clicked");
 }
+
+function unhideRecipeButons(){
+    if (document.querySelector(".editorbar").classList.contains("hidden")){
+        document.querySelector(".editorbar").classList.remove("hidden")
+    }
+}

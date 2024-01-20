@@ -82,6 +82,7 @@ function makeMenuClickable(){
         renderedMenu[i].addEventListener("click", function(){
             clickMenuItem(this.getAttribute("menuid"));
             clickAnimation(this);
+            unhideRecipeButons();
         })
     }
 }
