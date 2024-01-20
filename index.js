@@ -333,7 +333,7 @@ app.get("/api/inventory", async (req, res) => {
 
 app.put("/api/grocery", async (req, res) => {
   console.log(req.body);
-  await addToGroceryListIfNotInInventory(req.body);
+  await addToGroceryListIfNotInInventory(cleanArray(req.body));
   res.send("SUCESSFUL");
 });
 
@@ -358,8 +358,9 @@ app.put("/api/inventory", async (req, res) => {
 });
 
 app.delete("/api/grocery", async (req, res) => {
-  console.log(req.body);
-  removeFromList(req.body, "grocery");
+  let items = cleanArray(req.body);
+  console.log(items);
+  removeFromList(items, "grocery");
   res.send("SUCESSFUL");
 });
 
@@ -424,12 +425,9 @@ app.listen(port, () => {
 
   //Menu Library Functions*********************************************************************
 
-function getMenuCategoryIndex(itemCategory){
-  /*Returns -1 if category not found */
-  for (let categoryIndex = 0; categoryIndex < menu.length; categoryIndex++){
-    if (itemCategory == menu[categoryIndex].category){
-      return categoryIndex;
-    }
+function cleanArray(variable){
+  if (!(variable instanceof Array)) { // Prevents DoS.
+    return [];
   }
-  return -1;
+  return variable;
 }
