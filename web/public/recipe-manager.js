@@ -24,6 +24,7 @@ function makeRecipeListClickable(){
         ingredientBullets[i].addEventListener("click", function(){
             console.log(this.getAttribute("recipeid"));
             editRecipeClick(this.getAttribute("recipeid"));
+            unhideSaved();
             clickAnimation(this);
         })
     }
@@ -76,8 +77,40 @@ async function newRecipeManagerButton(){
         console.log(createdRecipe);
         drawRecipeForEditing(createdRecipe);
         linkRecipeButton();
+        unhideSaved();
         drawRecipes();
     } else {
         alert("Enter at least a title and a cook time");
     }
+}
+
+function unhideSaved(){
+    let buttons = [
+        "#saveRecipeManagerButton",
+        "#deleteRecipeButton",
+        "#linkRecipeButton"
+    ]
+    buttons.forEach((button) => {
+        if (document.querySelector(button).classList.contains("hidden")){
+            document.querySelector(button).classList.remove("hidden");
+        }
+    })
+}
+
+function hideSaved(){
+    let buttons = [
+        "#saveRecipeManagerButton",
+        "#deleteRecipeButton",
+        "#linkRecipeButton"
+    ]
+    buttons.forEach((button) => {
+        if (!document.querySelector(button).classList.contains("hidden")){
+            document.querySelector(button).classList.add("hidden");
+        }
+    })
+}
+
+function clearRecipeEditorButton(){
+    clearRecipeEditor();
+    hideSaved();
 }

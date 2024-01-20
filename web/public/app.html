@@ -44,7 +44,7 @@
         <div class="content menuViewer">
             <h2>Menu</h2>
             <div class="menumenu">
-                <div>
+                <div class="container">
                     <button id="menuBasedOnInventoryButton" onclick="whatCanICook()">Show what I can Cook based on inventory</button>
                     <button id="fullMenuButton" class="hidden" onclick="fullMenuButton()">See the Full Menu</button>
                 </div>
@@ -100,8 +100,9 @@
         <h2>Recipe Editor</h2>
         <input id="editMenuId" type="hidden" placeholder="Category">
         <input id="editRecipeId" type="hidden" placeholder="Category">
-        <input id="editItem" placeholder="Item">
-        <input id="editCookTime" placeholder="Total Recipe Cook Time">
+        <input id="editItem" placeholder="Recipe Title">
+        <input id="editCookTime">
+        <label for="editCookTime">Cook Time (hours)</label>
         <p><u>Ingredients</u></p>
         <div class="ingredientWorkingArea"></div>
         <p>Check the checkbox next to ingredients to include in inventory/grocery list calculations.</p>

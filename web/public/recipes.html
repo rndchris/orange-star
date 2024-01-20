@@ -26,19 +26,20 @@
         <h2>Recipe Editor</h2>
         <input id="editMenuId" type="hidden" placeholder="Category">
         <input id="editRecipeId" type="hidden" placeholder="Category">
-        <input id="editItem" placeholder="Item">
-        <input id="editCookTime" placeholder="Total Recipe Cook Time">
+        <input id="editItem" placeholder="Recipe Title">
+        <input id="editCookTime">
+        <label for="editCookTime">Cook Time (hours)</label>
         <p><u>Ingredients</u></p>
         <div class="ingredientWorkingArea"></div>
         <p>Check the checkbox next to ingredients to include in inventory/grocery list calculations.</p>
         <div><button id="addEditorIngredientButton" onclick="addEditorIngredient()">Add Ingredient</button></div>
         <textarea placeholder="Directions" id="editDirections"></textarea>
         <div>
-            <button onclick="saveRecipeManagerButton()">Update Recipe</button>
+            <button id="saveRecipeManagerButton" class="hidden" onclick="saveRecipeManagerButton()">Update Recipe</button>
             <button onclick="newRecipeManagerButton()">Save As New Recipe</button>
-            <button onclick="deleteRecipeButton()">Delete Recipe</button>
-            <button onclick="linkRecipeButton()">Link Recipe to New Menu Item</button>
-            <button onclick="clearRecipeEditor()">Clear Editor and Start a New Recipe</button>
+            <button id="deleteRecipeButton" class="hidden" onclick="deleteRecipeButton()">Delete Recipe</button>
+            <button id="linkRecipeButton" class="hidden" onclick="linkRecipeButton()">Link Recipe to New Menu Item</button>
+            <button id="clearRecipeEditor" onclick="clearRecipeEditorButton()">Clear Editor and Start a New Recipe</button>
         </div>
         <p>Note: Deleting a recipe also deletes all related menu items</p>
     </div>
