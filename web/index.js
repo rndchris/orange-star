@@ -385,7 +385,9 @@ async function addToList(items, listID){
   let query = "INSERT INTO " + getListTableName(listID) + " (name) VALUES ($1)";
   if (typeof(items) !== "string"){
     for (let i=0; i<items.length;i++){
-      let result = await db.query(query, [items[i]]);
+      if (currentList.filter(e => e == items[i]).length == 0){
+        let result = await db.query(query, [items[i]]);
+      }
     }
   }
 }
