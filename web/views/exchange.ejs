@@ -1,0 +1,78 @@
+<%- include("partials/head.ejs") %>
+<link rel="stylesheet" href="./exchange.css">
+
+<div class="title">
+    <div class="menubar">
+        <a href="/"><button>Return to Menu, Planning, and Inventory</button></a>
+        <a href="/recipes"><button>Recipe Manager</button></a>
+    </div>
+    <div id="userDisplay">
+        <h3>Hello, <%= user.userName %></h3>
+        <% if (user.logOut){ %>
+            <button>Log Out</button>
+        <% } %>
+    </div>
+    <div class="bannerlogo">
+        <h1 class="banner" style="padding: 10px;">Orange Star Recipe Exchange</h1>
+        <img src="./assets/images/logo.png" alt="Orange Star Logo">
+    </div>
+</div>
+
+<div class="container exchangePanel">
+    <div class="content exchangeViewer flyin">
+        <h2>Exchange Recipes</h2>
+        <div class="editorbar hidden">
+            <input id="searchInput" placeholder="keyword">
+            <button>Search</button>
+        </div>
+        <div id="exchangeList" class="content">
+            <% if (recipes.length){ %>
+                <table>
+                    <tr><th>Title</th><th>Cook Time</th><th>Shared by</th></tr>
+                    <% for (let i=0;i<recipes.length;i++){ %>
+                        <tr exchangeid="<%= recipes[i].id %>" 
+                             author="<% if (recipes[i].username === user.userName){ %>true<% } else { %>false<% } %>"
+                             class="exchangeData">
+                            <td><%= recipes[i].title %></td>
+                            <td><%= recipes[i].cooktime %></td>
+                            <td><%= recipes[i].username %></td>
+                            <% if (recipes[i].username === user.userName){ %>
+                                <td>✍️</td>
+                            <% } %>
+                        </tr>
+                    <% } %>
+                </table>
+            <% } %>
+        </div>
+    </div>
+    
+    <div class="content recipeViewer hidden flyin">
+        <h2>Recipe Interface</h2>
+        <div class="content" id="recipe"></div>
+        <div class="editorbar">
+            <button onclick="addExchangeRecipeButton()">Add to my Recipe Library</button>
+            <button id="unshareButton" onclick="unshareRecipeButton()">Unshare</button>
+            <button onclick="exchangeHideRecipeViewer()">Close</button>
+        </div>
+    
+        <div id="recipeHelpText" class="fade hidden">
+            <p>You can click on ingredients to remove them from the viewer and exclude them from being added to the grocery list/inventory. Don't worry, this doesn't remove them from recipe. Click on the recipe to get them back.</p>
+            <p>The eye icon indicates that an ingredient is included in grocery/inventory calculations.</p>
+        </div>
+    </div>
+</div>
+<script src="./menu.js"></script>
+<script src="./recipe.js"></script>
+<!--<script src="./list.js"></script>-->
+<script src="./interface.js"></script>
+<script src="./recipe-editor.js"></script>
+
+<!--May eventually create a version of jigsaw that scans exchange for recipes-->
+<!--<script src="./jigsaw.js"></script>-->
+<!--<script src="./recipe-manager.js"></script>-->
+
+<script src="./exchange.js"></script>
+<script>
+    makeExchangeTableClickable();
+</script>
+</body>

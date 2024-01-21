@@ -1,6 +1,3 @@
-drawRecipes()
-clearRecipeEditorButton();
-
 document.querySelector("#editCookTime").addEventListener("keyup", function cookTimePressed(event){
     if (event.key === "Tab"){
         addEditorIngredientButton();
@@ -126,7 +123,8 @@ function unhideSaved(){
     let buttons = [
         "#saveRecipeManagerButton",
         "#deleteRecipeButton",
-        "#linkRecipeButton"
+        "#linkRecipeButton",
+        "#shareRecipeManagerButton"
     ]
     buttons.forEach((button) => {
         if (document.querySelector(button).classList.contains("hidden")){
@@ -139,7 +137,8 @@ function hideSaved(){
     let buttons = [
         "#saveRecipeManagerButton",
         "#deleteRecipeButton",
-        "#linkRecipeButton"
+        "#linkRecipeButton",
+        "#shareRecipeManagerButton"
     ]
     buttons.forEach((button) => {
         if (!document.querySelector(button).classList.contains("hidden")){
@@ -153,4 +152,10 @@ function clearRecipeEditorButton(){
     hideSaved();
     document.querySelector("#editCookTime").value = 0;
     document.querySelector("#editItem").focus();
+}
+
+function recipeManagerShare(){
+    const recipe = editorRecipe();
+    shareRecipe(recipe);
+    alert("Recipe Shared to Exchange");
 }

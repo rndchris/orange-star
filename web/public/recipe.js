@@ -97,7 +97,7 @@ function ingredientNeeded(isEssential){
     }
 }
 
-function displayRecipe(recipe, elementID = "#recipe"){
+function computeDinnerTime(){
     //compute dinner time
     let dinnerHour = escapeHTML(document.querySelector("#hours").value);
     let dinnerMin = escapeHTML(document.querySelector("#minutes").value);
@@ -121,11 +121,20 @@ function displayRecipe(recipe, elementID = "#recipe"){
         startMinString = startMin.toString();
     }
     let startTime = "" + startHour + ":" + startMinString;
+    let dinnerString = "<p>Start Cooking by " + startTime + " in order to have dinner ready by " + dinnerTime + "</p>"
+    return dinnerString;
+}
 
+function displayRecipe(recipe, elementID = "#recipe"){
+    
+    let dinnerString = "";
+    if (document.querySelector("#hours")){
+        dinnerString = computeDinnerTime();
+    }
     //draw recipe
     let recipeElement = document.querySelector(elementID);
     var recipeHTML = "<h3>"+ recipe.title + "</h3><p>Cook Time: "+ recipe.cookTime + "</p>";
-    recipeHTML+= "<p>Start Cooking by " + startTime + " in order to have dinner ready by " + dinnerTime + "</p>"
+    recipeHTML+= dinnerString
     recipeHTML+= "<h4>Ingredients</h4><ul>";
     recipe.ingredients.forEach(element => {
         recipeHTML = recipeHTML + "<li ingredientName=\"" + element.name + "\">" + element.quantity + " " + element.name + " " + ingredientNeeded(element.essential) + "</li>";
@@ -218,11 +227,50 @@ async function deleteRecipe(itemID){
 function showRecipeHelp(){
     let helpText = document.querySelector("#recipeHelpText");
     let helpButton = document.querySelector("#recipeHelpButton");
+    let hideList = [
+        "#forceGroceryButton",
+        "#recipeHelpText",
+        "#shareRecipeButton"
+    ];
     if (helpText.classList.contains("hidden")){
-        helpText.classList.remove("hidden");
-        helpButton.innerHTML = "See Less"
+        hideList.forEach((e) => {
+            document.querySelector(e).classList.remove("hidden")
+        })
+        helpButton.innerHTML = "Less"
     } else {
         helpText.classList.add("hidden");
-        helpButton.innerHTML = "See More"
+        hideList.forEach((e) => {
+            document.querySelector(e).classList.add("hidden")
+        })
+        helpButton.innerHTML = "More"
     }
+}
+
+async function addRecipe(recipe){
+    const response = await fetch("./api/recipe", {
+        method: "PUT",
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(recipe),
+    })
+    data = response.json()
+    //getMenu();
+    //console.log(response);
+    return data;
+}
+
+async function shareRecipeButton(){
+    await shareRecipe(activeRecipe);
+    alert("Recipe Shared to Exchange!");
+}
+
+async function shareRecipe(recipe){
+    const response = await fetch("./api/exchange", {
+        method: "POST",
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(recipe),
+    })
+    data = response.json()
+    //getMenu();
+    //console.log(response);
+    return data;
 }

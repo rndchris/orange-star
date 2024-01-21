@@ -49,9 +49,10 @@
                 <div class="editorbar hidden">
                     <button onclick="cookRecipeButton()">Use Inventory Ingredients</button>
                     <button onclick="addRecipeToGroceryListButton()">Add to Grocery List</button>
-                    <button onclick="forceRecipeToGroceryListButton()">Force to Grocery List</button>
+                    <button class="hidden" id="forceGroceryButton" onclick="forceRecipeToGroceryListButton()">Force to Grocery List</button>
                     <button onclick="editRecipeButton()">Edit Recipe</button>
-                    <button id="recipeHelpButton" onclick="showRecipeHelp()">See More</button>
+                    <button class="hidden" id="shareRecipeButton" onclick="shareRecipeButton()">Share to Exchange</button>
+                    <button id="recipeHelpButton" onclick="showRecipeHelp()">More</button>
                     <button onclick="hideRecipeViewer()">Close</button>
                 </div>
                 
@@ -62,6 +63,7 @@
                     <button onclick="displayActiveRecipe()">Update</button>
                     <p>You can click on ingredients to remove them from the viewer and exclude them from being added to the grocery list/inventory. Don't worry, this doesn't remove them from recipe. Click on the recipe to get them back.</p>
                     <p>The eye icon indicates that an ingredient is included in grocery/inventory calculations.</p>
+                    <p>The share button copies the recipe to the Recipe Exchange, where others will be able copy and use your recipe.</p>
                 </div>
             </div>
             

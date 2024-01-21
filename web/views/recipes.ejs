@@ -3,6 +3,7 @@
 <div class="title">
     <div class="menubar">
         <a href="/"><button>Return to Menu, Planning, and Inventory</button></a>
+        <a href="/exchange"><button>🥰 Recipe Exchange 🌎</button></a>
     </div>
     <div id="userDisplay">
         <h3>Hello, <%= user.userName %></h3>
@@ -35,6 +36,7 @@
             <button onclick="newRecipeManagerButton()">Save As New Recipe</button>
             <button id="deleteRecipeButton" class="hidden" onclick="deleteRecipeButton()">Delete Recipe</button>
             <button id="linkRecipeButton" class="hidden" onclick="linkRecipeButton()">Link Recipe to New Menu Item</button>
+            <button id="shareRecipeManagerButton" class="hidden" onclick="recipeManagerShare()">Share Recipe to Exchange</button>
             <button id="clearRecipeEditor" onclick="clearRecipeEditorButton()">Clear Editor and Start a New Recipe</button>
         </div>
         <p>Note: Deleting a recipe also deletes all related menu items</p>
@@ -52,6 +54,10 @@
 <!--<script src="./list.js"></script>-->
 <script src="./interface.js"></script>
 <script src="./recipe-editor.js"></script>
-<script src="./recipe-manager.js"></script>    
+<script src="./recipe-manager.js"></script>
+<script>
+    drawRecipes()
+    clearRecipeEditorButton();
+</script>    
 </body>
 </html>

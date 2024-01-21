@@ -66,7 +66,7 @@ async function authorize(req, res, next){
   }
 
   //If no other authentication method completes, send unauthorized
-  res.sendFile(res.render("login.ejs"))
+  res.redirect("/login")
 }
 
 async function getOrCreateUser(username){
@@ -109,6 +109,19 @@ app.get("/recipes", async (req, res) => {
   res.render("recipes.ejs",{
     user: req.userInfo,
   });
+})
+
+app.get("/exchange", async (req, res) => {
+  const recipes = await getExchangeRecipes();
+  console.log(recipes);
+  res.render("exchange.ejs",{
+    user: req.userInfo,
+    recipes: recipes,
+  });
+})
+
+app.get("/login", async (req, res) => {
+  res.render("login.ejs");
 })
 
 //MENU API Endpoints////////////////////////////////////////////////////////////////////////////////////////////////
@@ -497,6 +510,71 @@ function getListTableName(listID){
   } else if (listID == "inventory"){
     return "inventory"; 
   }
+}
+
+//Exchange Endpoints/////////////////////////////////////////////////////////////////////////
+
+app.get("/api/exchange", async (req, res) => {
+  //const result = await getExchangeRecipes();
+  const result = "Incomplete Endpoint"
+  res.json(result);
+});
+
+async function getExchangeRecipes(){
+  const query = "SELECT exchange.*, users.username FROM exchange LEFT JOIN users ON exchange.userid=users.id";
+  const result = await db.query(query);
+  console.log(result)
+  return result.rows;
+}
+
+app.get("/api/exchange/:id", async (req, res) => {
+  const recipeId = parseInt(req.params.id);
+  
+  const query = "SELECT * FROM exchange WHERE id = $1;";
+  const result = await db.query(query, [recipeId]);
+
+  //console.log(result);
+
+  let ingredients = JSON.parse(result.rows[0].ingredients);
+
+  const response = {
+    id: result.rows[0].id,
+    title: result.rows[0].title,
+    cookTime: result.rows[0].cooktime,
+    ingredients: ingredients,
+    directions: result.rows[0].directions
+  }
+  res.json(response);
+});
+
+app.post("/api/exchange", async (req, res) => {
+  
+  console.log("PUT REQUEST RECIEVED");
+  const query = "INSERT INTO exchange (title,cooktime,ingredients,directions,userid,downloads) VALUES ($1, $2, $3, $4, $5,0) RETURNING *;";
+  const result = await db.query(query, [req.body.title, req.body.cookTime, JSON.stringify(req.body.ingredients), req.body.directions, req.userId]);
+  console.log(result.rows[0]);
+
+  let ingredients = JSON.stringify(result.rows[0].ingredients);
+
+  const response = {
+    id: result.rows[0].id,
+    title: result.rows[0].title,
+    cookTime: result.rows[0].cooktime,
+    ingredients: ingredients,
+    directions: result.rows[0].directions
+  }
+
+  res.json(response);
+});
+
+app.delete("/api/exchange/:id", async (req, res) => {
+  removeRecipeFromExchange(req.params.id, req.userId);
+  
+  res.send("REMOVED");
+});
+
+async function removeRecipeFromExchange(itemId, userId){
+    const recipeDelete = await db.query("DELETE FROM exchange WHERE id = $1 AND userid = $2;", [itemId, userId]);
 }
 
 //listener///////////////////////////////////////////////////////////////////////////////////

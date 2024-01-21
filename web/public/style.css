@@ -197,6 +197,7 @@ h3{
     .editorbar{
         display: flex;
         flex-direction: row;
+        flex-wrap: wrap;
         justify-content: left;
         gap: 5px;
     }

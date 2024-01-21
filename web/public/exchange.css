@@ -1,0 +1,23 @@
+tr:hover{
+    background-color: rgba(0,128,128,.2);
+}
+
+table{
+    width: 100%;
+    text-align: left;
+}
+
+@media (min-aspect-ratio: 4/3){
+    .exchangePanel{
+        display: flex;
+        flex-direction: row;
+    }
+
+    .exchangeViewer{
+        min-width: 45%;
+    }
+
+    .recipeViewer{
+        max-width: 50%;
+    }
+}

@@ -29,3 +29,13 @@ CREATE TABLE users (
 	id SERIAL PRIMARY KEY,
 	username TEXT UNIQUE
 );
+
+CREATE TABLE exchange (
+	id SERIAL PRIMARY KEY,
+	title TEXT,
+	cookTime FLOAT,
+	ingredients TEXT,
+	directions TEXT,
+	downloads INTEGER,
+	userid INTEGER REFERENCES users(id)
+);

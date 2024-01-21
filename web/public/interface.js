@@ -90,3 +90,19 @@ function hideRecipeViewer(){
         }, 500);
     }
 }
+
+function exchangeUnhideRecipeViewer(){
+    if (document.querySelector(".recipeViewer").classList.contains("hidden")){
+        document.querySelector(".recipeViewer").classList.remove("hidden");
+    }
+}
+
+function exchangeHideRecipeViewer(){
+    if (!document.querySelector(".recipeViewer").classList.contains("hidden")){
+        document.querySelector(".recipeViewer").classList.add("flyout");
+        setTimeout(() => {
+            document.querySelector(".recipeViewer").classList.add("hidden");
+            document.querySelector(".recipeViewer").classList.remove("flyout");
+        }, 500);
+    }
+}
