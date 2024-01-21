@@ -28,10 +28,10 @@ db.connect();
 
 //middleware
 app.use(limiter);
-app.use(authorize);
-app.use(express.static("public"))
+app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(authorize);
 
 
 //Authenticator Middleware
@@ -58,7 +58,7 @@ async function authorize(req, res, next){
   }
 
   //If no other authentication method completes, send unauthorized
-  res.sendFile(__dirname + "/public/login.html")
+  res.sendFile(__dirname + "/views/login.html")
 }
 
 async function getOrCreateUser(username){
@@ -92,11 +92,11 @@ async function createUser(username){
 
 //GET for main pages
 app.get("/", async (req, res) => {
-    res.sendFile(__dirname + "/public/app.html");
+    res.sendFile(__dirname + "/views/app.html");
   })
 
 app.get("/recipes", async (req, res) => {
-  res.sendFile(__dirname + "/public/recipes.html");
+  res.sendFile(__dirname + "/views/recipes.html");
 })
 
 //MENU API Endpoints////////////////////////////////////////////////////////////////////////////////////////////////
