@@ -32,6 +32,10 @@ Edit your grocery list anywhere. Getting items into inventory is also a breeze. 
 
 <img height="400px" src="./screenshots/grocery-list.jpg">
 
+The entire app looks good a mobile web browser, which is especially handy at the grocery store.
+
+<img height="600px" src="./screenshots/mobile-grocery-list.jpeg">
+
 The inventory manager enables to to add and remove individual ingredients to your inventory as needed. 
 
 <img height="400px" src="./screenshots/inventory.jpg">
