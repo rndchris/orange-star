@@ -46,10 +46,30 @@ ul{
     display: flex;
     flex-direction: column;
     justify-content: left;
+    align-items: center;
+    gap: 15px;
 }
+
+.listmenu{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
 
 .editorbar{
     margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 15px;
+}
+
+.editorbar button{
+    height: 40px;
 }
 
 #addEditorIngredientButton{
@@ -133,7 +153,46 @@ h3{
     gap: 1vh;
 }
 
+.ingredientWorkingArea ul{
+    display: flex;
+    flex-direction: column;
+}
+
+.ingredientWorkingArea li{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 3px;
+    padding: 15px;
+}
+
 @media (min-aspect-ratio: 4/3){
+    .ingredientWorkingArea ul{
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .ingredientWorkingArea li{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 10px;
+        padding: 2px;
+        border-bottom: none;
+    }
+
+    .editorbar{
+        display: flex;
+        flex-direction: row;
+        justify-content: left;
+        gap: 5px;
+    }
+
+    .editorbar button{
+        height: auto;
+        padding: 3px;
+    }
+
     .menuAndRecipeViewer{
         display: flex;
         flex-direction: row;
