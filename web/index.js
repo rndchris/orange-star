@@ -2,6 +2,8 @@ import express from "express";
 import bodyParser from "body-parser";
 import pg from "pg";
 import dbInfo from "./database.js";
+import authInfo from "./auth.js";
+console.log(authInfo);
 
 import { dirname } from "path";
 import { fileURLToPath } from "url";
@@ -25,11 +27,70 @@ db.connect();
 
 
 //middleware
-app.use(limiter)
+app.use(limiter);
+app.use(authorize);
 app.use(express.static("public"))
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+
+//Authenticator Middleware
+async function authorize(req, res, next){
+  if (authInfo.reverseProxy === true){
+    try {
+      let username = req.headers[authInfo.userHeader];
+      if (username !== undefined){
+        req.userId = await getOrCreateUser(username);
+        next();
+        return;
+      }
+    } catch {
+      res.status(500).send("Authentication Error");
+      return;
+    }
+  }
+
+  //forced/disabled auth
+  if (authInfo.user){
+    req.userId = await getOrCreateUser(authInfo.user);
+    next();
+    return;
+  }
+
+  //If no other authentication method completes, send unauthorized
+  res.sendFile(__dirname + "/public/login.html")
+}
+
+async function getOrCreateUser(username){
+    let userId = await getUserID(username);
+    if (userId === ""){
+      userId = await createUser(username);
+    }
+    return userId
+}
+
+async function getUserID(username){
+  let query = "SELECT * FROM users WHERE username = $1";
+  let result = await db.query(query,[username]);
+  if (!result.rows.length){
+    return "";
+  } else {
+    return result.rows[0].id;
+  }
+}
+
+async function createUser(username){
+  let query = "INSERT INTO users (username) VALUES ($1) RETURNING *";
+  let result = await db.query(query,[username]);
+  if (!result.rows.length){
+    console.log("USER CREATION FAILED");
+    return null;
+  } else {
+    return result.rows[0].id;
+  }
+}
+
+//GET for main pages
 app.get("/", async (req, res) => {
     res.sendFile(__dirname + "/public/app.html");
   })
@@ -39,51 +100,51 @@ app.get("/recipes", async (req, res) => {
 })
 
 //MENU API Endpoints////////////////////////////////////////////////////////////////////////////////////////////////
-async function getMenuItem(menuID){
-  const result = await db.query("SELECT * FROM menu WHERE id = " + menuID + ";");
+async function getMenuItem(menuID, userId){
+  const result = await db.query("SELECT * FROM menu WHERE id = " + menuID + " AND userid = $1;", [userId]);
   return result.rows[0];
 }
 
 app.delete("/api/unlinkMenuItem/:id", async (req, res) => {
   const deleteId = parseInt(req.params.id);
-  unlinkMenuItem(deleteId);
+  unlinkMenuItem(deleteId, req.userId);
   //menu = menu.filter((menu) => menu.id != deleteId);
   res.send("Item Removed");
 
 })
 
-async function unlinkMenuItem(itemId){
-  const menuDelete = await db.query("DELETE FROM menu WHERE id = $1;",[itemId]);
+async function unlinkMenuItem(itemId, userId){
+  const menuDelete = await db.query("DELETE FROM menu WHERE id = $1 AND userid = ;",[itemId, userId]);
 }
 
 
 app.delete("/api/menu/:id", async (req, res) => {
   const deleteId = parseInt(req.params.id);
-  removeMenuItem(deleteId);
+  removeMenuItem(deleteId, req.userId);
   //menu = menu.filter((menu) => menu.id != deleteId);
   res.send("Item Removed");
 
 })
 
-async function removeMenuItem(itemId){
-  const deleteItem = await getMenuItem(itemId);
-  const recipeDelete = await db.query("DELETE FROM recipes WHERE id = $1;",[deleteItem.recipe]);
-  const menuDelete = await db.query("DELETE FROM menu WHERE id = $1;", [itemId]);
+async function removeMenuItem(itemId, userId){
+  const deleteItem = await getMenuItem(itemId, userId);
+  const recipeDelete = await db.query("DELETE FROM recipes WHERE id = $1 AND userid = $2;",[deleteItem.recipe, userId]);
+  const menuDelete = await db.query("DELETE FROM menu WHERE id = $1 AND userid = $2;", [itemId, userId]);
 }
 
 app.get("/api/menu", async (req, res) => {
-    const result = await db.query("SELECT * FROM menu ORDER BY category,title;");
+    const result = await db.query("SELECT * FROM menu WHERE userid = $1 ORDER BY category,title;", [req.userId]);
     res.json(result.rows);
   })
 
 app.get("/api/menu/inventory", async (req, res) => {
-  const menu = await db.query("SELECT * FROM menu ORDER BY category,title;");
-  let inventory = await getList("inventory");
+  const menu = await db.query("SELECT * FROM menu WHERE userid = $1 ORDER BY category,title;", [req.userId]);
+  let inventory = await getList("inventory", req.userId);
   var cookable = [];
 
   for (let i=0; i<menu.rows.length; i++){
     let ingredients = [];
-    let recipe = await getRecipe(menu.rows[i].recipe);
+    let recipe = await getRecipe(menu.rows[i].recipe, req.userId);
     recipe.ingredients.forEach((ingredient) => {
       if (ingredient.essential){
         ingredients.push(ingredient.name);
@@ -102,13 +163,13 @@ app.get("/api/menu/inventory", async (req, res) => {
 
 //return ingredients that are not in any complete recipe
 app.get("/api/jigsaw", async (req, res) => {
-  const menu = await db.query("SELECT * FROM menu;");
-  let inventory = await getList("inventory");
+  const menu = await db.query("SELECT * FROM menu WHERE userid = $1;", [req.userId]);
+  let inventory = await getList("inventory", req.userId);
   var cookable = [];
 
   for (let i=0; i<menu.rows.length; i++){
     let ingredients = [];
-    let recipe = await getRecipe(menu.rows[i].recipe);
+    let recipe = await getRecipe(menu.rows[i].recipe, req.userId);
     recipe.ingredients.forEach((ingredient) => {
       if (ingredient.essential){
         ingredients.push(ingredient.name);
@@ -121,14 +182,14 @@ app.get("/api/jigsaw", async (req, res) => {
     }
   }
 
-  console.log(cookable);
+  //console.log(cookable);
   //subtract cookable ingredients from inventory
   for (let k=0;k<cookable.length;k++){
     inventory = inventory.filter(e => e != cookable[k]);
   }
 
   let jigsawReport = [];
-  let recipes = await getRecipes();
+  let recipes = await getRecipes(req.userId);
 
   //parse ingredients;
   recipes.forEach((recipe) => {
@@ -176,7 +237,7 @@ function haveAllIngredients(ingredients, inventory){
 
 app.get("/api/menu/:id", async (req, res) => {
   const menuId = parseInt(req.params.id);
-  const menuItem = await getMenuItem(menuId);
+  const menuItem = await getMenuItem(menuId, req.userId);
   res.json(menuItem);
 })
 
@@ -186,24 +247,24 @@ app.get("/api/menu/:id", async (req, res) => {
 
 app.delete("/api/recipe/:id", async (req, res) => {
   const deleteId = parseInt(req.params.id);
-  removeRecipe(deleteId);
+  removeRecipe(deleteId, req.userId);
   //menu = menu.filter((menu) => menu.id != deleteId);
   res.send("Item Removed");
 
 })
 
-async function removeRecipe(itemId){
-  const deleteItem = await getRecipe(itemId);
+async function removeRecipe(itemId, userId){
+  const deleteItem = await getRecipe(itemId, userId);
   //make sure to remove all linked menu items
   if (deleteItem.id){
-    const menuDelete = await db.query("DELETE FROM menu WHERE recipe = $1;", [deleteItem.id]);
-    const recipeDelete = await db.query("DELETE FROM recipes WHERE id = $1;", [deleteItem.id]);
+    const menuDelete = await db.query("DELETE FROM menu WHERE recipe = $1 AND userId = $2;", [deleteItem.id, userId]);
+    const recipeDelete = await db.query("DELETE FROM recipes WHERE id = $1 AND userId = $2;", [deleteItem.id, userId]);
   }
 }
 
 app.get("/api/recipe", async (req, res) => {
-  const query = "SELECT * FROM recipes ORDER BY title;";
-  const result = await db.query(query);
+  const query = "SELECT * FROM recipes WHERE userid = $1 ORDER BY title;";
+  const result = await db.query(query, [req.userId]);
 
   //console.log(result);
   let response = [];
@@ -225,8 +286,8 @@ app.get("/api/recipe", async (req, res) => {
 app.get("/api/recipe/:id", async (req, res) => {
   const recipeId = parseInt(req.params.id);
   
-  const query = "SELECT * FROM recipes WHERE id = $1;";
-  const result = await db.query(query, [recipeId]);
+  const query = "SELECT * FROM recipes WHERE id = $1 AND userid = $2;";
+  const result = await db.query(query, [recipeId, req.userId]);
 
   //console.log(result);
 
@@ -245,12 +306,12 @@ app.get("/api/recipe/:id", async (req, res) => {
 app.put("/api/recipe/", async (req, res) => {
 
   console.log("PUT REQUEST RECIEVED");
-  const query = "INSERT INTO recipes (title,cooktime,ingredients,directions) VALUES ($1, $2, $3, $4) RETURNING *;";
-  const result = await db.query(query, [req.body.title, req.body.cookTime, JSON.stringify(req.body.ingredients), req.body.directions]);
+  const query = "INSERT INTO recipes (title,cooktime,ingredients,directions,userid) VALUES ($1, $2, $3, $4, $5) RETURNING *;";
+  const result = await db.query(query, [req.body.title, req.body.cookTime, JSON.stringify(req.body.ingredients), req.body.directions, req.userId]);
 
   if (req.body.category){
-    const menuQuery = "INSERT INTO menu (title, category, recipe) VALUES ($1, $2, $3)";
-    const menuResult = await db.query(menuQuery, [req.body. title,req.body.category, result.rows[0].id]);
+    const menuQuery = "INSERT INTO menu (title, category, recipe, userid) VALUES ($1, $2, $3, $4)";
+    const menuResult = await db.query(menuQuery, [req.body. title,req.body.category, result.rows[0].id, req.userId]);
   }
   console.log(result.rows[0]);
 
@@ -269,9 +330,9 @@ app.put("/api/recipe/", async (req, res) => {
 })
 
 app.post("/api/menu/add", async (req, res) => {
-  const menuQuery = "INSERT INTO menu (title, category, recipe) VALUES ($1, $2, $3)";
+  const menuQuery = "INSERT INTO menu (title, category, recipe, userid) VALUES ($1, $2, $3, $4)";
   console.log(menuQuery);
-  const menuResult = await db.query(menuQuery,[req.body.title, req.body.category, req.body.recipe]);
+  const menuResult = await db.query(menuQuery,[req.body.title, req.body.category, req.body.recipe, req.userId]);
   res.json(menuResult);
 })
 
@@ -282,20 +343,21 @@ app.put("/api/recipe/:id", async (req, res) => {
       cookTime = $2, \
       ingredients = $3, \
       directions = $4 \
-    WHERE id = $5;";
+    WHERE id = $5 \
+    AND userid = $6;";
   
   console.log(query);
-  const result = await db.query(query, [req.body.title, req.body.cookTime, JSON.stringify(req.body.ingredients), req.body.directions, recipeId]);
+  const result = await db.query(query, [req.body.title, req.body.cookTime, JSON.stringify(req.body.ingredients), req.body.directions, recipeId, req.userId]);
 
   //console.log(result);
 
   res.json(result.rows[0]); 
 })
 
-async function getRecipe(recipeID){
-  const query = "SELECT * FROM recipes WHERE id = $1;";
+async function getRecipe(recipeID, userId){
+  const query = "SELECT * FROM recipes WHERE id = $1 AND userid = $2;";
 
-  const result = await db.query(query, [recipeID]);
+  const result = await db.query(query, [recipeID, userId]);
 
   //console.log(result);
 
@@ -313,65 +375,65 @@ async function getRecipe(recipeID){
 }
 
 //note: returns ingredients as json string;
-async function getRecipes(){
-  const query = "SELECT * FROM recipes;";
-  const result = await db.query(query);
+async function getRecipes(userId){
+  const query = "SELECT * FROM recipes WHERE userid = $1;";
+  const result = await db.query(query, [userId]);
   return result.rows;
 }
 
 //Grocery/Inventory API Endpoints////////////////////////////////////////////////////////////////////////////////////////////////
 
 app.get("/api/grocery", async (req, res) => {
-  const result = await getList("grocery");
+  const result = await getList("grocery", req.userId);
   res.json(result);
 });
 
 app.get("/api/inventory", async (req, res) => {
-  const result = await getList("inventory");
+  const result = await getList("inventory", req.userId);
   res.json(result);
 });
 
 app.put("/api/grocery", async (req, res) => {
   console.log(req.body);
-  await addToGroceryListIfNotInInventory(cleanArray(req.body));
+  await addToGroceryListIfNotInInventory(cleanArray(req.body), req.userId);
   res.send("SUCESSFUL");
 });
 
 app.put("/api/grocery/force", async (req, res) => {
   console.log(req.body);
-  await addToList(cleanArray(req.body), "grocery");
+  await addToList(cleanArray(req.body), "grocery", req.userId);
   res.send("SUCESSFUL");
 });
 
 app.put("/api/grocery/buy", async (req, res) => {
   console.log(req.body);
-  const groceryList = await getList("grocery");
-  addToList(groceryList, "inventory");
-  await removeFromList(groceryList, "grocery");
+  const groceryList = await getList("grocery", req.userId);
+  addToList(groceryList, "inventory", req.userId);
+  await removeFromList(groceryList, "grocery", req.userId);
   res.send("SUCESSFUL");
 });
 
 app.put("/api/inventory", async (req, res) => {
   console.log(req.body);
-  await addToList(cleanArray(req.body), "inventory");
+  await addToList(cleanArray(req.body), "inventory", req.userId);
   res.send("SUCESSFUL");
 });
 
 app.delete("/api/grocery", async (req, res) => {
   let items = cleanArray(req.body);
   console.log(items);
-  removeFromList(items, "grocery");
+  removeFromList(items, "grocery", req.userId);
   res.send("SUCESSFUL");
 });
 
 app.delete("/api/inventory", async (req, res) => {
   console.log(req.body);
-  removeFromList(cleanArray(req.body), "inventory");
+  removeFromList(cleanArray(req.body), "inventory", req.userId);
   res.send("SUCESSFUL");
 });
 
-async function getList(listID){
-  const result = await db.query("SELECT * FROM " + getListTableName(listID) + " ORDER BY name;");
+async function getList(listID, userId){
+  const result = await db.query("SELECT * FROM " + getListTableName(listID) + " WHERE userid = $1 ORDER BY name;",[userId]);
   let theList = [];
   for (let i=0; i<result.rows.length; i++){
     theList.push(result.rows[i].name);
@@ -379,21 +441,21 @@ async function getList(listID){
   return theList;
 }
 
-async function addToList(items, listID){
-  let currentList = await getList(listID);
+async function addToList(items, listID, userId){
+  let currentList = await getList(listID, userId);
   console.log(currentList);
-  let query = "INSERT INTO " + getListTableName(listID) + " (name) VALUES ($1)";
+  let query = "INSERT INTO " + getListTableName(listID) + " (name, userid) VALUES ($1,$2)";
   if (typeof(items) !== "string"){
     for (let i=0; i<items.length;i++){
       if (currentList.filter(e => e == items[i]).length == 0){
-        let result = await db.query(query, [items[i]]);
+        let result = await db.query(query, [items[i], userId]);
       }
     }
   }
 }
 
-async function addToGroceryListIfNotInInventory(items){
-  let inventoryList = await getList("inventory");
+async function addToGroceryListIfNotInInventory(items, userId){
+  let inventoryList = await getList("inventory", userId);
   let pushList = []
   if (typeof(items) !== "string"){
     for (let i = 0; i<items.length; i++){
@@ -403,16 +465,16 @@ async function addToGroceryListIfNotInInventory(items){
     }
     if (pushList.length > 0){
       console.log(pushList);
-      await addToList(pushList, "grocery");
+      await addToList(pushList, "grocery", userId);
     }
   }
 }
 
-async function removeFromList(items, listID){
+async function removeFromList(items, listID, userId){
   if (typeof(items) !== "string"){
     for (let i=0;i<items.length;i++){
-      let query = "DELETE FROM " + getListTableName(listID) + " WHERE name = $1";
-      let result = await db.query(query,[items[i]]);
+      let query = "DELETE FROM " + getListTableName(listID) + " WHERE name = $1 AND userid = $2";
+      let result = await db.query(query,[items[i], userId]);
     }
   }
 }

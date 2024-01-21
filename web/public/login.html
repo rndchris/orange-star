@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orange Star</title>
+    <link rel="stylesheet" href="./glass.css">
+    <link rel="stylesheet" href="./style.css">
+    <link rel="icon" type="image/x-icon" href="/assets/images/logo.png">
+</head>
+<body>
+    <div class="title">
+        <div class="menubar">
+            
+        </div>
+            <div class="bannerlogo">
+                <h1 class="banner" style="padding: 10px;">Orange Star</h1>
+                <img src="./assets/images/logo.png" alt="Orange Star Logo">
+            </div>
+    </div>
+    <div class="container">
+        <div class="content">
+            <h2>Log into Orange Star</h2>
+            <form action="/login" method="POST">
+                <input name="username" placeholder="User Name">
+                <input name="password" placeholder="Password">
+                <input type="submit" value="Log In">
+            </form>
+            <p style="background-color: yellow;">Native authentication has not been fully built yet. Please configure a reverse proxy to provide authentication OR add a forced user the NO_AUTHENTICATION_FORCED_USER environment variable.</p>
+        </div>
+    </div>
+</body>

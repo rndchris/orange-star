@@ -8,8 +8,8 @@ services:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=orange-star
     #Uncomment if you need to manually access the database from outside the container
-    #ports:
-    #  - '5432:5432'
+    ports:
+      - '5432:5432'
     volumes: 
       - ./database:/var/lib/postgresql/data
       - ./db/create_tables.sql:/docker-entrypoint-initdb.d/init.sql
@@ -27,6 +27,15 @@ services:
       - POSTGRES_DB=orange-star
       - POSTGRES_PORT=5432
       - DB_HOST=db
+
+      #If an unauthenticated user connects, they will be logged in as this user. If this user does not exist, they will be created. 
+      #It is STRONGLY reccomended that you use this on internal trusted networks only.
+      #I'm not done building native auth yet, so forced auth is the only option you don't have a reverse proxy like authentik/authelia that can handle authentication for you.
+      - NO_AUTHENTICATION_FORCED_USER=guest
+
+      #User a reverse proxy for to authenticate users. WARNING: If your reverse proxy is not carefully set up, anyone forward a user header and log in.
+      #- REVERSE_PROXY_AUTH=true
+      #- REVERSE_PROXY_USER_HEADER=x-authentik-username
     links:
       - db
     volumes:

@@ -69,12 +69,16 @@ Installation is easy with docker compose. Installing npm, docker, and docker com
     >cd orange-star/web
     >npm i
 
-3. Run docker compose from the root directory of the repository.
+3. Edit docker-compose.yml to your preferences.
 
-    >cd orange-star (or if you were in the web directory "cd ../")
+    >cd ../  
+    >nano docker-compose.yml
+
+4. Run docker compose from the root directory of the repository.
+
     >sudo docker compose up -d
 
-4. Open Orange Star in a web browser by going to http://localhost:[PORT]/
+5. Open Orange Star in a web browser by going to http://localhost:[PORT]/
 
 ## Suggestions for Getting Started
 
