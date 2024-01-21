@@ -167,6 +167,18 @@ h3{
     padding: 15px;
 }
 
+.recipesAndGrocery{
+    justify-content: center;
+    flex-direction: column;
+    /*width: 100%;*/
+}
+
+.menuAndRecipeViewer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 @media (min-aspect-ratio: 4/3){
     .ingredientWorkingArea ul{
         display: flex;
@@ -197,11 +209,16 @@ h3{
     .menuAndRecipeViewer{
         display: flex;
         flex-direction: row;
+        align-items: flex-start;
         justify-content: space-evenly;
     }
 
-    .menuViewer{
+    .recipeViewerVisible{
         width: 45%;
+    }
+
+    .menuViewer{
+        max-width: 60%
     }
 
     #menu{
@@ -210,7 +227,7 @@ h3{
     }
 
     .recipesAndGrocery{
-        width: 50%;
+        max-width: 45%;
     }
 
     #recipeList ul{

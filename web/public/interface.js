@@ -6,45 +6,54 @@ const screens = [
     ".soloGrocery"
 ];
 
-function hideAll(){
-    screens.forEach((screen) => {
-        document.querySelector(screen).classList.add("hidden");
+function startAnimation(){
+    let showScreen = ".menuAndRecipeViewer";
+    document.querySelector(showScreen).classList.add("flyin");
+    document.querySelector(showScreen).classList.remove("hidden");
+}
+
+function hideAll(showScreen){
+    screens.filter(e => e !== showScreen).forEach((screen) => {
+        document.querySelector(screen).classList.add("flyout");
+        setTimeout(() => {
+            document.querySelector(screen).classList.add("hidden");
+            document.querySelector(screen).classList.remove("flyout");
+            document.querySelector(showScreen).classList.add("flyin");
+            document.querySelector(showScreen).classList.remove("hidden");
+        }, 300)
     })
 }
 
 function viewMenuAndRecipeViewer(){
-    hideAll();
+    hideAll(".menuAndRecipeViewer");
     drawMenu();
     displayGroceryList();
     let groceryViewer = document.querySelector(".groceryListViewer");
     let recipeBlock = document.querySelector(".recipesAndGrocery");
-    recipeBlock.appendChild(groceryViewer);
-    document.querySelector(".menuAndRecipeViewer").classList.remove("hidden");
+    setTimeout(() => {
+        recipeBlock.appendChild(groceryViewer);
+    }, 300)       
 }
 
 function viewGroceryList(){
-    hideAll();
     displayGroceryList();
-    document.querySelector(".soloGrocery").classList.remove("hidden");
     let groceryViewer = document.querySelector(".groceryListViewer");
     let grocerySolo = document.querySelector(".soloGrocery");
     grocerySolo.appendChild(groceryViewer);
+    hideAll(".soloGrocery");
 }
 
 function viewInventory(){
-    hideAll();
+    hideAll(".inventoryViewer");
     displayInventoryList();
-    document.querySelector(".inventoryViewer").classList.remove("hidden");
 }
 
 function viewRecipeEditor(){
-    hideAll();
-    document.querySelector(".recipeEditor").classList.remove("hidden");
+    hideAll(".recipeEditor");
 }
 
 function viewJigsaw(){
-    hideAll();
-    document.querySelector(".jigsaw").classList.remove("hidden");
+    hideAll(".jigsaw");
 
 }
 
@@ -61,5 +70,23 @@ function clickAnimation(element){
 function unhideRecipeButons(){
     if (document.querySelector(".editorbar").classList.contains("hidden")){
         document.querySelector(".editorbar").classList.remove("hidden")
+    }
+}
+
+function unhideRecipeViewer(){
+    if (document.querySelector(".recipeViewer").classList.contains("hidden")){
+        document.querySelector(".recipeViewer").classList.remove("hidden");
+        document.querySelector(".menuViewer").classList.add("recipeViewerVisible");
+    }
+}
+
+function hideRecipeViewer(){
+    if (!document.querySelector(".recipeViewer").classList.contains("hidden")){
+        document.querySelector(".recipeViewer").classList.add("flyout");
+        setTimeout(() => {
+            document.querySelector(".recipeViewer").classList.add("hidden");
+            document.querySelector(".recipeViewer").classList.remove("flyout");
+            document.querySelector(".menuViewer").classList.remove("recipeViewerVisible");
+        }, 500);
     }
 }

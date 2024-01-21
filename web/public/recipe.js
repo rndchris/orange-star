@@ -1,17 +1,3 @@
-testRecipe = {
-    id: 1,
-    category: "Sweets",
-    title: "Pound Cake",
-    cookTime: 2,
-    ingredients: [
-        {name: "flour", quantity: "1 cup"},
-        {name: "butter", quantity: "1 cup"},
-        {name: "sugar", quantity: "1 cup"},
-        {name: "eggs", quantity: "1 cup"},
-    ],
-    directions: "Preheat oven to 365 F. Mix the stuff. Put it in a pan and bake it."
-}
-
 var activeRecipe = {
     ingredients: []
 };
@@ -37,6 +23,10 @@ function addIngredientButton(){
         drawIngredientsinEditor(newRecipe);
     }
     
+}
+
+function displayActiveRecipe(){
+    displayRecipe(activeRecipe);
 }
 
 function displayRecipeInEditor(recipe){
@@ -191,6 +181,21 @@ async function addRecipeToGroceryList(recipe){
     displayGroceryList();
 }
 
+function forceRecipeToGroceryListButton(){
+    forceRecipeToGroceryList(activeRecipe);
+};
+
+async function forceRecipeToGroceryList(recipe){
+    const ingredients = []
+    for (let i=0; i<recipe.ingredients.length; i++){
+        if (recipe.ingredients[i].essential){
+            ingredients.push(recipe.ingredients[i].name);
+        }
+    }
+    await listAPI(ingredients,"PUT","grocery/force");
+    displayGroceryList();
+}
+
 async function removeRecipeFromInventory(recipe){
     const ingredients = []
     for (let i=0; i<recipe.ingredients.length; i++){
@@ -206,6 +211,18 @@ async function deleteRecipe(itemID){
     const response = await fetch("./api/recipe/" + itemID, {
         method: "DELETE",
     })
-    console.log(response)
+    console.log(response);
     return response;
+}
+
+function showRecipeHelp(){
+    let helpText = document.querySelector("#recipeHelpText");
+    let helpButton = document.querySelector("#recipeHelpButton");
+    if (helpText.classList.contains("hidden")){
+        helpText.classList.remove("hidden");
+        helpButton.innerHTML = "See Less"
+    } else {
+        helpText.classList.add("hidden");
+        helpButton.innerHTML = "See More"
+    }
 }

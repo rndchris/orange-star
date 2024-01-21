@@ -47,7 +47,7 @@ button:hover{
 
 .flyin{
     animation-name: fly-in;
-    animation-duration: .5s;
+    animation-duration: .3s;
     animation-iteration-count: 1;
     animation-direction: forwards;
 }
@@ -55,10 +55,6 @@ button:hover{
 .content:hover{
     border-width: 2pt;
     margin: 1pt;
-}
-
-.hidden{
-    display: none !important;
 }
 
 .menubar{
@@ -81,6 +77,10 @@ button:hover{
     background-color: rgba(255,255,255,.4);
 }
 
+.hidden{
+    display: none !important;
+}
+
 @keyframes flash {
     0% {background-color: rgb(0,0,0,0);}
     50% {background-color: teal;}
@@ -97,6 +97,22 @@ button:hover{
     }
 }
 
+.flyout{
+    opacity: 0;
+    animation: fly-out .3s;
+}
+
+@keyframes fly-out {
+    0%{
+       margin-top: 0vh;
+       opacity: 1;
+    }
+    100%{
+        margin-top: -70vh;
+        opacity: 0;
+    }
+}
+
 @keyframes fly-navigator {
     0%{
         opacity: 0;
@@ -105,6 +121,10 @@ button:hover{
     100%{
         opacity: 1;
     }
+}
+
+.fade{
+    animation: fade-in .5s;
 }
 
 @keyframes fade-in {

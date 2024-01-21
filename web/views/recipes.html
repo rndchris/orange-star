@@ -32,7 +32,7 @@
         <p><u>Ingredients</u></p>
         <div class="ingredientWorkingArea"></div>
         <p>Check the checkbox next to ingredients to include in inventory/grocery list calculations. Leave an ingredient name blank to delete the ingredient.</p>
-        <div><button id="addEditorIngredientButton" onclick="addEditorIngredient()">Add Ingredient</button></div>
+        <div><button id="addEditorIngredientButton" onclick="addEditorIngredientButton()">Add Ingredient</button></div>
         <textarea placeholder="Directions" id="editDirections"></textarea>
         <div class="editorbar">
             <button id="saveRecipeManagerButton" class="hidden" onclick="saveRecipeManagerButton()">Update Recipe</button>
@@ -47,13 +47,13 @@
     <div class="content recipeLibrary">
         <h2>Recipe Library</h2>
         <div id="recipeList"></div>
-        <p>Click on a recipe to inspect</p>
+        <p><i>Click on a recipe to inspect in recipe editor.</i></p>
     </div>
 </div>
 
 <script src="./menu.js"></script>
 <script src="./recipe.js"></script>
-<script src="./list.js"></script>
+<!--<script src="./list.js"></script>-->
 <script src="./interface.js"></script>
 <script src="./recipe-editor.js"></script>
 <script src="./recipe-manager.js"></script>    

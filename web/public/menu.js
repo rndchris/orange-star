@@ -82,7 +82,6 @@ function makeMenuClickable(){
         renderedMenu[i].addEventListener("click", function(){
             clickMenuItem(this.getAttribute("menuid"));
             clickAnimation(this);
-            unhideRecipeButons();
         })
     }
 }
@@ -122,6 +121,8 @@ async function clickMenuItem(menuID){
             console.log(lookupMenuIndex(menuID,menu));
             console.log(menu[lookupMenuIndex(menuID,menu)].recipe);
             activeRecipe = await getRecipe(menu[lookupMenuIndex(menuID,menu)].recipe);
+            unhideRecipeViewer();
+            unhideRecipeButons();
             displayRecipe(activeRecipe);
             break;
         case "grocery":

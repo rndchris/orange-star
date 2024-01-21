@@ -1,3 +1,15 @@
+document.querySelector("#groceryInput").addEventListener("keyup", function(event){
+    if (event.key === "Enter"){
+        addGroceryButton();
+    }
+})
+
+document.querySelector("#inventoryInput").addEventListener("keyup", function(event){
+    if (event.key === "Enter"){
+        addInventoryButton();
+    }
+})
+
 async function displayGroceryList(){
     const groceryList = await listGET("grocery");
     displayList(groceryList, "#groceryList");

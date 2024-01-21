@@ -24,7 +24,7 @@
             </div>
     </div>
     
-    <div class="menuContainer menuAndRecipeViewer flyin">
+    <div class="menuContainer menuAndRecipeViewer hidden">
 
         <div class="content menuViewer">
             <h2>Menu</h2>
@@ -38,7 +38,7 @@
                     <select id="clickAction">
                         <option value="recipe">View Recipe</option>
                         <option value="cook">Cook It!</option>
-                        <option value="grocery">Add to grocery list</option>
+                        <option value="grocery">Add to Grocery List</option>
                         <option value="remove">Remove From Menu</option>
                     </select>
                 </div>
@@ -47,19 +47,26 @@
         </div>
 
         <div class="container recipesAndGrocery">
-            <div class="content recipeViewer">
+            <div class="content recipeViewer hidden flyin">
                 <h2>Recipe Interface</h2>
                 <div class="content" id="recipe"></div>
                 <div class="editorbar hidden">
+                    <button onclick="cookRecipeButton()">Use Inventory Ingredients</button>
                     <button onclick="addRecipeToGroceryListButton()">Add to Grocery List</button>
-                    <button onclick="cookRecipeButton()">Cook Recipe (Remove Ingredients from Inventory)</button>
+                    <button onclick="forceRecipeToGroceryListButton()">Force to Grocery List</button>
                     <button onclick="editRecipeButton()">Edit Recipe</button>
+                    <button id="recipeHelpButton" onclick="showRecipeHelp()">See More</button>
+                    <button onclick="hideRecipeViewer()">Close</button>
                 </div>
-                <p>What time is dinner?</p>
-                <label for="hours">h</label><input id="hours" placeholder="Hours" value="6">
-                <label for="hours">min</label><input id="minutes" placeholder="Min" value="0">
-                <p>You can click on ingredients to remove them from the viewer and exclude them from being added to the grocery list/inventory. Don't worry, this doesn't remove them from recipe. Click on the recipe to get them back.</p>
-                <p>The eye icon indicates that an ingredient is included in grocery/inventory calculations.</p>
+                
+                <div id="recipeHelpText" class="fade hidden">
+                    <p>What time is dinner?</p>
+                    <label for="hours">h</label><input id="hours" placeholder="Hours" value="6">
+                    <label for="hours">min</label><input id="minutes" placeholder="Min" value="0">
+                    <button onclick="displayActiveRecipe()">Update</button>
+                    <p>You can click on ingredients to remove them from the viewer and exclude them from being added to the grocery list/inventory. Don't worry, this doesn't remove them from recipe. Click on the recipe to get them back.</p>
+                    <p>The eye icon indicates that an ingredient is included in grocery/inventory calculations.</p>
+                </div>
             </div>
             
             <div class="content groceryListViewer">
@@ -87,7 +94,7 @@
 
     <div class="container">
        
-        <div class="content inventoryViewer hidden flyin">
+        <div class="content inventoryViewer hidden">
             <h2>Inventory</h2>
             <div class="listmenu">
                 <div>
@@ -106,10 +113,10 @@
             <div class="content" id="inventoryList"></div>
         </div>
        
-        <div class="container soloGrocery flyin"></div>
+        <div class="container soloGrocery hidden"></div>
     
         
-        <div class="content recipeEditor flyin">
+        <div class="content recipeEditor hidden">
             <h2>Recipe Editor</h2>
             <input id="editMenuId" type="hidden" placeholder="Category">
             <input id="editRecipeId" type="hidden" placeholder="Category">
@@ -127,7 +134,7 @@
             </div>
         </div>
 
-        <div class="content jigsaw hidden flyin">
+        <div class="content jigsaw hidden">
             <h2>Jigsaw</h2>
             <p>Jigsaw can help with use what you have efficiently. Jigsaw identifies items in your cupboard that can't be cooked due to missing ingredients and recipes, and the suggests recipes to add to your grocery list so that you can make use of your entire pantry. Press the button below to run Jigsaw. Jigsaw may take some time to run.</p> 
             <div class="editorbar"><button onclick="jigsawMagicButton()">Work that Jigsaw Magic</button></div>
@@ -145,7 +152,7 @@
     <script src="./jigsaw.js"></script>
     <script>
         drawMenu();
-        viewMenuAndRecipeViewer();
+        startAnimation();
         displayGroceryList();
         displayInventoryList();
     </script>

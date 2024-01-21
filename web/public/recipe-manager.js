@@ -1,5 +1,43 @@
 drawRecipes()
-clearRecipeEditor();
+clearRecipeEditorButton();
+
+document.querySelector("#editCookTime").addEventListener("keyup", function cookTimePressed(event){
+    if (event.key === "Tab"){
+        addEditorIngredientButton();
+        this.removeEventListener("keyup", cookTimePressed)
+    }
+})
+
+function makeIngredientsKeyable(){
+    let ingredientInputs = document.querySelectorAll(".ingredientWorkingArea input")
+    for (var i = 0; i<ingredientInputs.length; i++){
+        if (i === ingredientInputs.length - 1){
+            ingredientInputs[i].addEventListener("keyup", function pressed(event){
+                if (event.key  === "Tab"){
+                    addEditorIngredientButton();
+                    this.removeEventListener("keyup", pressed);
+                }
+            })
+        }
+    }
+    for (var i = 0; i<ingredientInputs.length; i++){
+        if (i === ingredientInputs.length - 1){
+            ingredientInputs[i].addEventListener("keyup", function(event){
+                if (event.key  === "Enter"){
+                    this.checked = !this.checked;
+                }
+                if (event.key === "ArrowDown"){
+                    document.querySelector("#editDirections").focus();
+                }
+            })
+        }
+    }
+}
+
+function addEditorIngredientButton(){
+    addEditorIngredient();
+    makeIngredientsKeyable();
+}
 
 async function drawRecipes(){
     let recipeList = document.querySelector("#recipeList");
@@ -50,7 +88,7 @@ async function deleteRecipeButton(){
     if (recipe.id){
         await deleteRecipe(recipe.id);
         await drawRecipes();
-        clearRecipeEditor();
+        clearRecipeEditorButton();
     } else {
         alert("Can't Delete. Recipe does not currently exit");
     }
@@ -113,4 +151,6 @@ function hideSaved(){
 function clearRecipeEditorButton(){
     clearRecipeEditor();
     hideSaved();
+    document.querySelector("#editCookTime").value = 0;
+    document.querySelector("#editItem").focus();
 }
