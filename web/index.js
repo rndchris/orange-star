@@ -66,7 +66,7 @@ async function authorize(req, res, next){
   }
 
   //If no other authentication method completes, send unauthorized
-  res.sendFile(__dirname + "/views/login.html")
+  res.sendFile(res.render("login.ejs"))
 }
 
 async function getOrCreateUser(username){
