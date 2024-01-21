@@ -3,17 +3,16 @@ import bodyParser from "body-parser";
 import pg from "pg";
 import dbInfo from "./database.js";
 import authInfo from "./auth.js";
-console.log(authInfo);
+//console.log(authInfo);
 
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 const __dirname = dirname(fileURLToPath(import.meta.url));
-//import fs from "fs";
 import { rateLimit } from 'express-rate-limit'
 
 const limiter = rateLimit({
 	windowMs: 15 * 60 * 1000, // 15 minutes
-	limit: 500,
+	limit: 1000,
 	standardHeaders: 'draft-7',
 	legacyHeaders: false,
  })
@@ -39,12 +38,13 @@ async function authorize(req, res, next){
   if (authInfo.reverseProxy === true){
     try {
       let username = req.headers[authInfo.userHeader];
-      if (username !== undefined){
+      if (username){
         req.userId = await getOrCreateUser(username);
         next();
         return;
       }
-    } catch {
+    } catch (error) {
+      console.log(error);
       res.status(500).send("Authentication Error");
       return;
     }
