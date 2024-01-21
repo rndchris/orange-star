@@ -18,10 +18,16 @@
             <button onclick="viewInventory()">Inventory Manager</button>
             <a href="/recipes"><button>Recipe Manager</button></a>
         </div>
-            <div class="bannerlogo">
-                <h1 class="banner" style="padding: 10px;">Orange Star</h1>
-                <img src="./assets/images/logo.png" alt="Orange Star Logo">
-            </div>
+        <div id="userDisplay">
+            <h3>Hello, <%= user.userName %></h3>
+            <% if (user.logOut){ %>
+                <button>Log Out</button>
+            <% } %>
+        </div>
+        <div class="bannerlogo">
+            <h1 class="banner" style="padding: 10px;">Orange Star</h1>
+            <img src="./assets/images/logo.png" alt="Orange Star Logo">
+        </div>
     </div>
     
     <div class="menuContainer menuAndRecipeViewer hidden">

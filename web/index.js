@@ -40,6 +40,10 @@ async function authorize(req, res, next){
       let username = req.headers[authInfo.userHeader];
       if (username){
         req.userId = await getOrCreateUser(username);
+        req.userInfo = {
+          userName: username,
+          logOut: false,
+        }
         next();
         return;
       }
@@ -53,6 +57,10 @@ async function authorize(req, res, next){
   //forced/disabled auth
   if (authInfo.user){
     req.userId = await getOrCreateUser(authInfo.user);
+    req.userInfo = {
+      userName: authInfo.user,
+      logOut: false,
+    }
     next();
     return;
   }
@@ -92,11 +100,15 @@ async function createUser(username){
 
 //GET for main pages
 app.get("/", async (req, res) => {
-    res.sendFile(__dirname + "/views/app.html");
+    res.render("app.ejs", {
+      user: req.userInfo,
+    });
   })
 
 app.get("/recipes", async (req, res) => {
-  res.sendFile(__dirname + "/views/recipes.html");
+  res.render("recipes.ejs",{
+    user: req.userInfo,
+  });
 })
 
 //MENU API Endpoints////////////////////////////////////////////////////////////////////////////////////////////////

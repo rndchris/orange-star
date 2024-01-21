@@ -276,3 +276,9 @@ button{
     animation: fly-button;
     animation-duration: .5s;
 }
+
+#userDisplay{
+    display: flex;
+    flex-direction: row;
+    gap: 15px
+}
