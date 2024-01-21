@@ -45,6 +45,13 @@ button:hover{
     margin: 2pt;
 }
 
+.flyin{
+    animation-name: fly-in;
+    animation-duration: .5s;
+    animation-iteration-count: 1;
+    animation-direction: forwards;
+}
+
 .content:hover{
     border-width: 2pt;
     margin: 1pt;
@@ -71,4 +78,20 @@ button:hover{
 
 .menubar button:hover{
     background-color: rgba(255,255,255,.4);
+}
+
+@keyframes flash {
+    0% {background-color: rgb(0,0,0,0);}
+    50% {background-color: teal;}
+    100% {background-color: rgb(0,0,0,0);}
+}
+
+@keyframes fly-in {
+    0%{
+       margin-top: -100vh;
+       opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
 }
