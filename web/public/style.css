@@ -70,6 +70,7 @@ ul{
 
 .editorbar button{
     height: 40px;
+    animation: fade-in .5s
 }
 
 #addEditorIngredientButton{
@@ -245,10 +246,16 @@ textarea{
 
 @keyframes fly-side {
     0%{
-       margin-right: 50vh;
-       opacity: 0;
+        margin-right: 50vh;
+        opacity: 0;
     }
     100%{
         opacity: 1;
     }
+}
+
+
+button{
+    animation: fly-button;
+    animation-duration: .5s;
 }

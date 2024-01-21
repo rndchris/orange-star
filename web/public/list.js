@@ -74,11 +74,13 @@ async function addGroceryButton(){
     //addToList(document.querySelector("#groceryInput").value, "#groceryList");
     await listAPI([document.querySelector("#groceryInput").value],"PUT","grocery/force");
     displayGroceryList();
+    document.querySelector("#groceryInput").value = "";
     
 }
 
-function addInventoryButton(){
-    addToList(document.querySelector("#inventoryInput").value, "#inventoryList");
+async function addInventoryButton(){
+    await addToList(document.querySelector("#inventoryInput").value, "#inventoryList");
+    document.querySelector("#inventoryInput").value = "";
 }
 
 async function listAPI(items, method, list){
