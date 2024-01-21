@@ -23,21 +23,6 @@
                 <img src="./assets/images/logo.png" alt="Orange Star Logo">
             </div>
     </div>
-
-    
-    
-        <div class="content inventoryViewer hidden">
-            <h2>Inventory</h2>
-            <label for="inventoryClickAction">Click Action</label>
-            <br>
-            <select id="inventoryClickAction">
-                <option value="nothing">Nothing</option>
-                <option value="remove">Remove From List</option>
-            </select>
-            <input id="inventoryInput" placeholder="Item">
-            <button onclick="addInventoryButton()">Add Item</button>
-            <div class="content" id="inventoryList"></div>
-        </div>
     
     <div class="menuContainer menuAndRecipeViewer">
 
@@ -94,34 +79,51 @@
         </div>
     </div>
 
-    <div class="container soloGrocery"></div>
-        
-    <div class="content recipeEditor">
-        <h2>Recipe Editor</h2>
-        <input id="editMenuId" type="hidden" placeholder="Category">
-        <input id="editRecipeId" type="hidden" placeholder="Category">
-        <input id="editItem" placeholder="Recipe Title">
-        <input id="editCookTime">
-        <label for="editCookTime">Cook Time (hours)</label>
-        <p><u>Ingredients</u></p>
-        <div class="ingredientWorkingArea"></div>
-        <p>Check the checkbox next to ingredients to include in inventory/grocery list calculations.</p>
-        <div><button id="addEditorIngredientButton" onclick="addEditorIngredient()">Add Ingredient</button></div>
-        <textarea placeholder="Directions" id="editDirections"></textarea>
-        <div>
-            <button onclick="updateRecipeButton()">Update</button>
-            <button onclick="viewMenuAndRecipeViewer()">Cancel</button>
+    <div class="container">
+       
+        <div class="content inventoryViewer hidden">
+            <h2>Inventory</h2>
+            <label for="inventoryClickAction">Click Action</label>
+            <br>
+            <select id="inventoryClickAction">
+                <option value="nothing">Nothing</option>
+                <option value="remove">Remove From List</option>
+            </select>
+            <input id="inventoryInput" placeholder="Item">
+            <button onclick="addInventoryButton()">Add Item</button>
+            <div class="content" id="inventoryList"></div>
         </div>
-    </div>
+       
+        <div class="container soloGrocery"></div>
+    
+        
+        <div class="content recipeEditor">
+            <h2>Recipe Editor</h2>
+            <input id="editMenuId" type="hidden" placeholder="Category">
+            <input id="editRecipeId" type="hidden" placeholder="Category">
+            <input id="editItem" placeholder="Recipe Title">
+            <input id="editCookTime">
+            <label for="editCookTime">Cook Time (hours)</label>
+            <p><u>Ingredients</u></p>
+            <div class="ingredientWorkingArea"></div>
+            <p>Check the checkbox next to ingredients to include in inventory/grocery list calculations.</p>
+            <div><button id="addEditorIngredientButton" onclick="addEditorIngredient()">Add Ingredient</button></div>
+            <textarea placeholder="Directions" id="editDirections"></textarea>
+            <div>
+                <button onclick="updateRecipeButton()">Update</button>
+                <button onclick="viewMenuAndRecipeViewer()">Cancel</button>
+            </div>
+        </div>
 
-    <div class="content jigsaw hidden">
-        <h2>Jigsaw</h2>
-        <p>Jigsaw can help with use what you have efficiently. Jigsaw identifies items in your cupboard that can't be cooked due to missing ingredients and recipes, and the suggests recipes to add to your grocery list so that you can make use of your entire pantry. Press the button below to run Jigsaw. Jigsaw may take some time to run.</p> 
-        <button onclick="jigsawMagicButton()">Work that Jigsaw Magic</button>
-        <p>Click on recipes in the jigsaw report to add them to your grocery list.</p>
-        <div id="jigsawReport"></div>
+        <div class="content jigsaw hidden">
+            <h2>Jigsaw</h2>
+            <p>Jigsaw can help with use what you have efficiently. Jigsaw identifies items in your cupboard that can't be cooked due to missing ingredients and recipes, and the suggests recipes to add to your grocery list so that you can make use of your entire pantry. Press the button below to run Jigsaw. Jigsaw may take some time to run.</p> 
+            <button onclick="jigsawMagicButton()">Work that Jigsaw Magic</button>
+            <p>Click on recipes in the jigsaw report to add them to your grocery list.</p>
+            <div id="jigsawReport"></div>
+        </div>
+    
     </div>
-
 
     <script src="./menu.js"></script>
     <script src="./recipe.js"></script>
