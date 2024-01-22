@@ -137,7 +137,28 @@ async function clickMenuItem(menuID){
             console.log(menu[lookupMenuIndex(menuID,menu)].recipe);
             removeRecipeFromInventory(await getRecipe(menu[lookupMenuIndex(menuID,menu)].recipe))
             break;
+        case "category":
+            const newCategory = prompt("What should the new menu category be?");
+            await updateMenuItem(menu[lookupMenuIndex(menuID,menu)].id, menu[lookupMenuIndex(menuID,menu)].title, newCategory);
+            drawMenu();
+            break;
     }
+}
+
+async function updateMenuItem(menuId, title, category){
+    const request = {
+        title: title,
+        category: category,
+        id: menuId
+    }
+    console.log(request);
+    const response = await fetch("./api/menu/" + menuId, {
+        method: "PUT",
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(request),
+    })
+    data = response.json()
+    return data;
 }
 
 function whatCanICook(){

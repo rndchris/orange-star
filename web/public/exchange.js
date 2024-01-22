@@ -28,6 +28,7 @@ async function getExchangeRecipe(exchangeId){
 }
 
 async function addExchangeRecipeButton(){
+    activeRecipe.category = prompt("What menu category would you like to add this recipe to?");
     addRecipe(activeRecipe);
     alert("Recipe saved to your library.");
 }

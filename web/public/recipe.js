@@ -97,7 +97,7 @@ function ingredientNeeded(isEssential){
     }
 }
 
-function computeDinnerTime(){
+function computeDinnerTime(cookTime){
     //compute dinner time
     let dinnerHour = escapeHTML(document.querySelector("#hours").value);
     let dinnerMin = escapeHTML(document.querySelector("#minutes").value);
@@ -110,8 +110,8 @@ function computeDinnerTime(){
     let dinnerTime = "" + dinnerHour + ":" + dinnerMinString;
     let dinnerSum = dinnerHour*1 + dinnerMin/60;
     if (dinnerSum < 0){dinnerSum+=12};
-    console.log(dinnerSum);
-    let startSum = dinnerSum - recipe.cookTime;
+    //console.log(dinnerSum);
+    let startSum = dinnerSum - cookTime;
     let startHour = Math.floor(startSum);
     let startMin = Math.floor((startSum - Math.floor(startSum))*60);
     let startMinString
@@ -129,7 +129,7 @@ function displayRecipe(recipe, elementID = "#recipe"){
     
     let dinnerString = "";
     if (document.querySelector("#hours")){
-        dinnerString = computeDinnerTime();
+        dinnerString = computeDinnerTime(recipe.cookTime);
     }
     //draw recipe
     let recipeElement = document.querySelector(elementID);
