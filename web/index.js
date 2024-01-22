@@ -5,6 +5,15 @@ import dbInfo from "./database.js";
 import authInfo from "./auth.js";
 //console.log(authInfo);
 
+import fs from "fs";
+var starterRecipes;
+const filejson = fs.readFile("./starter-recipes.json", "utf8", (err, data) => {
+    if (err) throw err;
+    //console.log(JSON.parse(data));
+    starterRecipes = JSON.parse(data);
+})
+
+
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -94,7 +103,24 @@ async function createUser(username){
     console.log("USER CREATION FAILED");
     return null;
   } else {
+    await newUserRecipes(result.rows[0].id);
     return result.rows[0].id;
+  }
+}
+
+async function newUserRecipes(userId){
+  for (let i=0; i<starterRecipes.length; i++){
+    createRecipe(starterRecipes[i].title, starterRecipes[i].cookTime, starterRecipes[i].ingredients, starterRecipes[i].directions, userId, starterRecipes[i].category);
+  }
+}
+
+async function createRecipe(title, cookTime, ingredients, directions, userId, category){
+  const query = "INSERT INTO recipes (title,cooktime,ingredients,directions,userid) VALUES ($1, $2, $3, $4, $5) RETURNING *;";
+  const result = await db.query(query, [title, cookTime, JSON.stringify(ingredients), directions, userId]);
+
+  if (category){
+    const menuQuery = "INSERT INTO menu (title, category, recipe, userid) VALUES ($1, $2, $3, $4)";
+    const menuResult = await db.query(menuQuery, [title, category, result.rows[0].id, userId]);
   }
 }
 
@@ -139,7 +165,7 @@ app.delete("/api/unlinkMenuItem/:id", async (req, res) => {
 })
 
 async function unlinkMenuItem(itemId, userId){
-  const menuDelete = await db.query("DELETE FROM menu WHERE id = $1 AND userid = ;",[itemId, userId]);
+  const menuDelete = await db.query("DELETE FROM menu WHERE id = $1 AND userid = $2;",[itemId, userId]);
 }
 
 
@@ -272,7 +298,7 @@ app.get("/api/menu/:id", async (req, res) => {
 
 app.delete("/api/recipe/:id", async (req, res) => {
   const deleteId = parseInt(req.params.id);
-  removeRecipe(deleteId, req.userId);
+  await removeRecipe(deleteId, req.userId);
   //menu = menu.filter((menu) => menu.id != deleteId);
   res.send("Item Removed");
 
@@ -358,6 +384,13 @@ app.post("/api/menu/add", async (req, res) => {
   const menuQuery = "INSERT INTO menu (title, category, recipe, userid) VALUES ($1, $2, $3, $4)";
   console.log(menuQuery);
   const menuResult = await db.query(menuQuery,[req.body.title, req.body.category, req.body.recipe, req.userId]);
+  res.json(menuResult);
+})
+
+app.put("/api/menu/:id", async (req, res) => {
+  const menuQuery = "UPDATE menu SET title = $1, category = $2 WHERE userid = $3 AND id = $4";
+  console.log(menuQuery);
+  const menuResult = await db.query(menuQuery,[req.body.title, req.body.category, req.userId, req.params.id]);
   res.json(menuResult);
 })
 
@@ -521,7 +554,7 @@ app.get("/api/exchange", async (req, res) => {
 });
 
 async function getExchangeRecipes(){
-  const query = "SELECT exchange.*, users.username FROM exchange LEFT JOIN users ON exchange.userid=users.id";
+  const query = "SELECT exchange.*, users.username FROM exchange LEFT JOIN users ON exchange.userid=users.id ORDER BY title";
   const result = await db.query(query);
   console.log(result)
   return result.rows;
