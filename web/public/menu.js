@@ -33,6 +33,10 @@ async function drawMenu(menu){
     if (!menu){
         menu = await getMenu();
     }
+    if (menu.length == 0){
+        document.querySelector("#menu").innerHTML = "<p>You menu is currently empty. Add some recipes in the <a href=\"/recipes\">Recipe Manager</a> or visit the <a href=\"/exchange\">Recipe Exchange</a>."
+        return;
+    }
 
     menu = createDisplayableMenu(menu);
 
