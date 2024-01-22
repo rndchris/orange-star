@@ -32,10 +32,6 @@ Edit your grocery list anywhere. Getting items into inventory is also a breeze. 
 
 <img height="400px" src="./screenshots/grocery-list.jpg">
 
-The entire app looks good a mobile web browser, which is especially handy at the grocery store.
-
-<img height="600px" src="./screenshots/mobile-grocery-list.jpeg">
-
 The inventory manager enables to to add and remove individual ingredients to your inventory as needed. 
 
 <img height="400px" src="./screenshots/inventory.jpg">
@@ -47,6 +43,13 @@ Jigsaw is a handy feature that allows you to make use of ingredients that don't 
 The recipe manager tracks all of your recipes and allows you to add new recipes. The recipe manager also allows you to create new menu items too. Sick of an eating something? You can remove an item from the menu (done on the menu screen), and when you want to add it back to the menu, use the recipe manager to add it back to the menu, without ever deleting the recipe. 
 
 <img height="400px" src="./screenshots/recipe-manager.jpg">
+
+The entire app looks good a mobile web browser, which is especially handy at the grocery store.
+
+<img height="600px" src="./screenshots/mobile-grocery-list.png">
+<img height="600px" src="./screenshots/mobile-menu.png">
+<img height="600px" src="./screenshots/mobile-exchange-2.png">
+<img height="600px" src="./screenshots/mobile-recipe-interface.png">
 
 ### How is Orange Star different from other nutrition and meal planning apps? Why choose Orange Star?
 
