@@ -1,3 +1,48 @@
+function searchFilter(searchArea,searchItems, searchTerm){
+    //let area = document.querySelector(searchArea);
+    let items = document.querySelectorAll(searchArea + " " + searchItems);
+    if (searchTerm){
+        for (let i = 0; i < items.length; i++){
+            if (items[i].innerHTML.toLowerCase().includes(searchTerm.toLowerCase())){
+                items[i].classList.remove("hidden");
+            } else {
+                items[i].classList.add("hidden");
+            }
+        }
+    } else {
+        for (let i = 0; i < items.length; i++){
+          items[i].classList.remove("hidden");       
+        }
+    }
+}
+
+function initializeSearchInput(inputQuerySelector, searchArea, searchItems){
+    searchInput = document.querySelector(inputQuerySelector)
+    searchInput.addEventListener("keyup", () => {
+        searchFilter(searchArea, searchItems, searchInput.value);
+    })
+}
+
+function hideEmptyMenuCategories(){
+    let searchObjects = document.querySelectorAll("#menu div");
+    let visible = true;
+    let hideCheckObjects;
+    for (let i = 0; i < searchObjects.length; i++){
+        hideCheckObjects = searchObjects[i].children[1].children;
+        visible = false;
+        for (let k=0; k< hideCheckObjects.length; k++){
+            if (!hideCheckObjects[k].classList.contains("hidden")){
+                visible = true;
+            }
+        }
+        if (visible){
+            searchObjects[i].classList.remove("hidden");
+        } else {searchObjects[i].classList.add("hidden")}
+    }
+}
+
+
+
 const screens = [
     ".menuAndRecipeViewer",
     ".inventoryViewer",

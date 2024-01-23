@@ -29,6 +29,7 @@
                     <button id="menuBasedOnInventoryButton" onclick="whatCanICook()">Show what I can Cook based on inventory</button>
                     <button id="fullMenuButton" class="hidden" onclick="fullMenuButton()">See the Full Menu</button>
                 </div>
+                <div><input id="menuSearch" placeholder="Search"></div>
                 <div>
                     <label for="clickAction">Click Action</label>
                     <select id="clickAction">
@@ -106,6 +107,7 @@
                         <option value="remove">Remove From List</option>
                     </select>
                 </div>
+                <div><input id="searchInventory" placeholder="Search"></div>
                 <div>
                     <input id="inventoryInput" placeholder="Item">
                     <button onclick="addInventoryButton()">Add Item</button>
@@ -156,6 +158,13 @@
         startAnimation();
         displayGroceryList();
         displayInventoryList();
+        //initializeSearchInput("#menuSearch", "#menu", "li");
+        initializeSearchInput("#searchInventory","#inventoryList","li");
+        document.querySelector("#menuSearch").addEventListener("keyup", () => {
+            console.log("EventDectected");
+            searchFilter("#menu","li", document.querySelector("#menuSearch").value);
+            hideEmptyMenuCategories();
+        })
     </script>
 </body>
 </html>

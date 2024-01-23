@@ -21,9 +21,8 @@
 <div class="container exchangePanel">
     <div class="content exchangeViewer flyin">
         <h2>Exchange Recipes</h2>
-        <div class="editorbar hidden">
-            <input id="searchInput" placeholder="keyword">
-            <button>Search</button>
+        <div class="editorbar">
+            <input id="searchInput" placeholder="Search Exchange">
         </div>
         <div id="exchangeList" class="content">
             <% if (recipes.length){ %>
@@ -74,5 +73,6 @@
 <script src="./exchange.js"></script>
 <script>
     makeExchangeTableClickable();
+    initializeSearchInput("#searchInput", "#exchangeList", ".exchangeData")
 </script>
 </body>

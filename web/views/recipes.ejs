@@ -44,6 +44,9 @@
 
     <div class="content recipeLibrary">
         <h2>Recipe Library</h2>
+        <div class="editorbar">
+            <input id="searchRecipes" placeholder="Search Recipes">
+        </div>
         <div id="recipeList"></div>
         <p><i>Click on a recipe to inspect in recipe editor.</i></p>
     </div>
@@ -58,6 +61,7 @@
 <script>
     drawRecipes()
     clearRecipeEditorButton();
+    initializeSearchInput("#searchRecipes", "#recipeList", "li")
 </script>    
 </body>
 </html>
