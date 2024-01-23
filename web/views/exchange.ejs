@@ -60,9 +60,13 @@
         </div>
     </div>
 </div>
+
+<div class="hidden" id="groceryList"></div>
+<div class="hidden" id="inventoryList"></div>
+
 <script src="./menu.js"></script>
 <script src="./recipe.js"></script>
-<!--<script src="./list.js"></script>-->
+<script src="./list.js"></script>
 <script src="./interface.js"></script>
 <script src="./recipe-editor.js"></script>
 
@@ -72,6 +76,8 @@
 
 <script src="./exchange.js"></script>
 <script>
+    displayGroceryList();
+    displayInventoryList();
     makeExchangeTableClickable();
     initializeSearchInput("#searchInput", "#exchangeList", ".exchangeData")
 </script>

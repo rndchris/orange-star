@@ -1,14 +1,16 @@
-document.querySelector("#groceryInput").addEventListener("keyup", function(event){
-    if (event.key === "Enter"){
-        addGroceryButton();
-    }
-})
+function initializeListInput(){
+    document.querySelector("#groceryInput").addEventListener("keyup", function(event){
+        if (event.key === "Enter"){
+            addGroceryButton();
+        }
+    })
 
-document.querySelector("#inventoryInput").addEventListener("keyup", function(event){
-    if (event.key === "Enter"){
-        addInventoryButton();
-    }
-})
+    document.querySelector("#inventoryInput").addEventListener("keyup", function(event){
+        if (event.key === "Enter"){
+            addInventoryButton();
+        }
+    })
+}
 
 async function displayGroceryList(){
     const groceryList = await listGET("grocery");
@@ -57,17 +59,20 @@ async function removeFromList(item, listSelector){
     }
 }
 
-function listClicked(item, listSelector){
+async function listClicked(item, listSelector){
     let clickSelection = "#groceryClickAction"
     if (listSelector == "#inventoryList"){clickSelection = "#inventoryClickAction"};
     switch(document.querySelector(clickSelection).value){
         case "remove":
-            removeFromList(item, listSelector);
+            await removeFromList(item, listSelector);
+            await displayGroceryList();
+            displayActiveRecipe();
             break;
         case "buy":
-            listAPI([item],"PUT", "inventory");
-            listAPI([item],"DELETE", "grocery");
-            displayGroceryList();
+            await listAPI([item],"PUT", "inventory");
+            await listAPI([item],"DELETE", "grocery");
+            await displayGroceryList();
+            displayActiveRecipe();
             break;
     }
 }
@@ -85,7 +90,8 @@ function makeListClickable(listSelector){
 async function addGroceryButton(){
     //addToList(document.querySelector("#groceryInput").value, "#groceryList");
     await listAPI([document.querySelector("#groceryInput").value],"PUT","grocery/force");
-    displayGroceryList();
+    await displayGroceryList();
+    displayActiveRecipe();
     document.querySelector("#groceryInput").value = "";
     
 }
@@ -120,8 +126,10 @@ async function listGET(list){
 
 async function goShoppingButton(){
     await goShopping();
-    displayGroceryList();
-    if (!document.querySelector(".menuAndRecipeViewer").classList.contains("hidden") && document.querySelector("#fullMenuButton").classList.contains("hidden")){
+    await displayGroceryList();
+    await displayInventoryList();
+    if (!document.querySelector(".menuAndRecipeViewer").classList.contains("hidden") && !document.querySelector("#fullMenuButton").classList.contains("hidden")){
         whatCanICook();
     }
+    displayActiveRecipe();
 }

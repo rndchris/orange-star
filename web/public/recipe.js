@@ -97,6 +97,26 @@ function ingredientNeeded(isEssential){
     }
 }
 
+function inInventory(ingredient){
+    list = document.querySelectorAll("#inventoryList li");
+    for (let i=0; i<list.length; i++){
+        if (list[i].innerHTML === ingredient){
+            return "🍊"
+        }
+    }
+    return "";
+}
+
+function inGroceryList(ingredient){
+    list = document.querySelectorAll("#groceryList li");
+    for (let i=0; i<list.length; i++){
+        if (list[i].innerHTML === ingredient){
+            return "⭐"
+        }
+    }
+    return "";
+}
+
 function computeDinnerTime(cookTime){
     //compute dinner time
     let dinnerHour = escapeHTML(document.querySelector("#hours").value);
@@ -137,7 +157,7 @@ function displayRecipe(recipe, elementID = "#recipe"){
     recipeHTML+= dinnerString
     recipeHTML+= "<h4>Ingredients</h4><ul>";
     recipe.ingredients.forEach(element => {
-        recipeHTML = recipeHTML + "<li ingredientName=\"" + element.name + "\">" + element.quantity + " " + element.name + " " + ingredientNeeded(element.essential) + "</li>";
+        recipeHTML = recipeHTML + "<li ingredientName=\"" + element.name + "\">" + element.quantity + " " + element.name + " " + ingredientNeeded(element.essential) + inInventory(element.name) + inGroceryList(element.name) + "</li>";
     });
     recipeHTML = recipeHTML + "</ul><h4>Directions</h4><p>" + recipe.directions + "</p>";
     recipeElement.innerHTML = recipeHTML;
@@ -151,7 +171,8 @@ function makeRecipeClickable(){
             if (e.ctrlKey) {
                 console.log(this.getAttribute("ingredientName"))
                 await listAPI([this.getAttribute("ingredientName")],"PUT","grocery/force");
-                displayGroceryList();
+                await displayGroceryList();
+                displayActiveRecipe();
             } else {
                 activeRecipe.ingredients = activeRecipe.ingredients.filter(e => e.name != this.getAttribute("ingredientName"));
                 displayRecipe(activeRecipe, "#recipe");
@@ -181,11 +202,13 @@ function addRecipeToGroceryListButton(){
     addRecipeToGroceryList(activeRecipe);
 };
 
-function cookRecipeButton(){
+async function cookRecipeButton(){
     removeRecipeFromInventory(activeRecipe);
-    if (document.querySelector("#fullMenuButton").classList.contains("hidden")){
-        whatCanICook();
+    if (!document.querySelector("#fullMenuButton").classList.contains("hidden")){
+        await whatCanICook();
     }
+    await displayInventoryList();
+    displayActiveRecipe();
 };
 
 async function addRecipeToGroceryList(recipe){
@@ -196,7 +219,8 @@ async function addRecipeToGroceryList(recipe){
         }
     }
     await listAPI(ingredients,"PUT","grocery");
-    displayGroceryList();
+    await displayGroceryList();
+    displayActiveRecipe();
 }
 
 function forceRecipeToGroceryListButton(){
