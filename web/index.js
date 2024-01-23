@@ -40,7 +40,18 @@ app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(authorize);
+app.use(timestampUser);
 
+//Timestamp User Visits Middleware
+async function timestampUser(req, res, next){
+  try {
+    let result = db.query("UPDATE users SET last_seen = $1 WHERE id = $2", [Date(), req.userId]);
+    next();
+  } catch (error){
+    console.log(error)
+    next();
+  }
+}
 
 //Authenticator Middleware
 async function authorize(req, res, next){
