@@ -27,7 +27,14 @@ CREATE TABLE grocery_list (
 
 CREATE TABLE users (
 	id SERIAL PRIMARY KEY,
-	username TEXT UNIQUE
+	username TEXT UNIQUE,
+	last_seen TEXT
+);
+
+CREATE TABLE userinfo (
+	id INTEGER UNIQUE REFERENCES users(id),
+	dinner_hour INTEGER,
+	dinner_min INTEGER
 );
 
 CREATE TABLE exchange (

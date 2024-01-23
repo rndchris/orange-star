@@ -125,11 +125,24 @@ async function createRecipe(title, cookTime, ingredients, directions, userId, ca
 }
 
 //GET for main pages
+
 app.get("/", async (req, res) => {
-    res.render("app.ejs", {
+  let dinnerTime =  await getUserDinnerTime(req.userId); 
+  res.render("app.ejs", {
       user: req.userInfo,
+      dinnerTime: dinnerTime,
     });
   })
+
+app.post("/api/user/dinnertime", async (req, res) => {
+  console.log(req.body);
+  let result = await updateUserDinnerTime(req.body.hours, req.body.minutes, req.userId);
+  if (result){
+    res.send("SUCCESS");
+  } else {
+    res.status(500).send("FAILURE");
+  }
+})
 
 app.get("/recipes", async (req, res) => {
   res.render("recipes.ejs",{
@@ -149,6 +162,52 @@ app.get("/exchange", async (req, res) => {
 app.get("/login", async (req, res) => {
   res.render("login.ejs");
 })
+
+async function getUserDinnerTime(userId){
+try {
+      let query = "SELECT dinner_hour,dinner_min FROM userinfo WHERE id = $1"
+      let result = await db.query(query, [userId]);
+      console.log(result.rows);
+      if (!result.rows.length){
+        return {
+          hours: 6,
+          minutes: 0,
+          exists: false,
+        };
+      } else {
+        return {
+          hours: result.rows[0].dinner_hour,
+          minutes: result.rows[0].dinner_min,
+          exists: true,
+        };
+      }
+} catch (error) {
+  console.log(error);
+  return {
+    hours: 6,
+    minutes: 0,
+  };
+}
+}
+
+async function updateUserDinnerTime(hours,minutes,userId){
+  try {
+    let exists = await getUserDinnerTime(userId);
+    let query;
+    console.log(exists);
+    if (exists.exists){
+      query = "UPDATE userinfo SET dinner_hour=$2,dinner_min=$3 WHERE id=$1;";
+    } else {
+      query = "INSERT INTO userinfo (id, dinner_hour, dinner_min) VALUES ($1,$2,$3);";
+    }
+    console.log(query);
+    let result = await db.query(query,[userId,hours,minutes]);
+    return true;
+  } catch (error) {
+      console.log(error);
+    return false;
+  }
+}
 
 //MENU API Endpoints////////////////////////////////////////////////////////////////////////////////////////////////
 async function getMenuItem(menuID, userId){

@@ -274,3 +274,20 @@ async function shareRecipe(recipe){
     //console.log(response);
     return data;
 }
+
+function updateDinnerTimeButton(){
+    updateDinnerTime(document.querySelector("#hours").value,document.querySelector("#minutes").value);
+    displayActiveRecipe()
+}
+
+async function updateDinnerTime(hours, minutes){
+    const response = await fetch("/api/user/dinnertime", {
+        method: "POST",
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+            hours: hours,
+            minutes: minutes,
+        }),
+    });
+    console.log(response);
+}
