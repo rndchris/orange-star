@@ -10,19 +10,20 @@ async function displayJigsawReport(){
     const jigsawReport = await getJigsawReport();
     let jigsawHTML = "";
     for (let i=0; i<jigsawReport.length; i++){
-        jigsawHTML+= "<h3>Suggestions for: " + jigsawReport[i].ingredient + "</h3><ul>"
-        for (let j=0;j<jigsawReport[i].recipes.length; j++){
-            jigsawHTML+= "<li recipeid=\"" + jigsawReport[i].recipes[j].id + "\">" + jigsawReport[i].recipes[j].title + "</li>";
+        jigsawHTML+= "<div class=\"content jigsawrecipe\" recipeid=\"" + jigsawReport[i].id + "\">";
+        jigsawHTML+= "<h3>" + jigsawReport[i].title + "</h3><ul>"
+        for (let k=0; k<jigsawReport[i].ingredients.length; k++){
+            let ingredient = jigsawReport[i].ingredients[k].name
+            jigsawHTML+= "<li>" + ingredient + ingredientNeeded(ingredient) + inInventory(ingredient) + inGroceryList(ingredient) + "</li>";
         }
-        if (!jigsawReport[i].recipes.length){jigsawHTML+= "<p>No recipes currently use this ingredient</p>"}
-        jigsawHTML+= "</ul>";
+        jigsawHTML+= "</ul></div>";
     }
     document.querySelector("#jigsawReport").innerHTML = jigsawHTML;
     makeJigsawClickable();
 }
 
 function makeJigsawClickable(){
-    let renderedMenu = document.querySelectorAll("#jigsawReport li");
+    let renderedMenu = document.querySelectorAll("#jigsawReport div");
     for (var i = 0; i<renderedMenu.length; i++){
         renderedMenu[i].addEventListener("click", async function(){
             let recipe = await getRecipe(this.getAttribute("recipeid"));

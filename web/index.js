@@ -317,12 +317,22 @@ app.get("/api/jigsaw", async (req, res) => {
     recipe.ingredients = JSON.parse(recipe.ingredients);
   })
   
-  for (let x=0; x<inventory.length; x++){
+  /*for (let x=0; x<inventory.length; x++){
     jigsawReport.push({
       ingredient: inventory[x],
       recipes: getRecipesUsingIngredient(inventory[x],recipes)
       }
     )
+  }*/
+
+  for (let x=0; x<inventory.length; x++){
+    let suggestedRecipes = getRecipesUsingIngredient(inventory[x],recipes);
+    console.log(suggestedRecipes);
+    for (let y=0; y<suggestedRecipes.length; y++){
+      if (!jigsawReport.filter(recipe => recipe.id == suggestedRecipes[y].id).length){
+        jigsawReport.push(suggestedRecipes[y]);
+      }
+    }
   }
   
   res.json(jigsawReport);
