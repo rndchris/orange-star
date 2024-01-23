@@ -133,3 +133,15 @@ async function goShoppingButton(){
     }
     displayActiveRecipe();
 }
+
+async function bombGroceryList(){
+    let list = document.querySelectorAll("#groceryList li");
+    let groceryList = [];
+    for (let i=0; i<list.length; i++){
+        groceryList.push(list[i].innerHTML)
+    }
+    console.log(groceryList);
+    await listAPI(groceryList,"DELETE","grocery");
+    await displayGroceryList();
+    displayActiveRecipe();
+}
