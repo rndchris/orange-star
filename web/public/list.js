@@ -33,7 +33,7 @@ function displayList(list, listSelector){
 
 async function addToList(item, listSelector){
     if (item != ""){
-        if (listSelector == "#groceryList" && list.filter(e => e == item).length == 0){
+        if (listSelector == "#groceryList"){
             await listAPI([item],"PUT","grocery");
             //list.push(item);
             displayGroceryList();
@@ -121,4 +121,7 @@ async function listGET(list){
 async function goShoppingButton(){
     await goShopping();
     displayGroceryList();
+    if (!document.querySelector(".menuAndRecipeViewer").classList.contains("hidden") && document.querySelector("#fullMenuButton").classList.contains("hidden")){
+        whatCanICook();
+    }
 }

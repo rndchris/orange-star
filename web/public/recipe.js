@@ -147,10 +147,16 @@ function displayRecipe(recipe, elementID = "#recipe"){
 function makeRecipeClickable(){
     let ingredientBullets = document.querySelectorAll("#recipe li");
     for (let i=0; i<ingredientBullets.length; i++){
-        ingredientBullets[i].addEventListener("click", function(){
-            activeRecipe.ingredients = activeRecipe.ingredients.filter(e => e.name != this.getAttribute("ingredientName"));
-            displayRecipe(activeRecipe, "#recipe");
-            console.log(this.getAttribute("ingredientName"));
+        ingredientBullets[i].addEventListener("click", async function(e){
+            if (e.ctrlKey) {
+                console.log(this.getAttribute("ingredientName"))
+                await listAPI([this.getAttribute("ingredientName")],"PUT","grocery/force");
+                displayGroceryList();
+            } else {
+                activeRecipe.ingredients = activeRecipe.ingredients.filter(e => e.name != this.getAttribute("ingredientName"));
+                displayRecipe(activeRecipe, "#recipe");
+                console.log(this.getAttribute("ingredientName"));
+            }
         })
     }
 }
@@ -177,6 +183,9 @@ function addRecipeToGroceryListButton(){
 
 function cookRecipeButton(){
     removeRecipeFromInventory(activeRecipe);
+    if (document.querySelector("#fullMenuButton").classList.contains("hidden")){
+        whatCanICook();
+    }
 };
 
 async function addRecipeToGroceryList(recipe){

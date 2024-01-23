@@ -63,6 +63,7 @@
                     <label for="hours">min</label><input id="minutes" placeholder="Min" value="<%= dinnerTime.minutes %>">
                     <button onclick="updateDinnerTimeButton()">Update</button>
                     <p>You can click on ingredients to remove them from the viewer and exclude them from being added to the grocery list/inventory. Don't worry, this doesn't remove them from recipe. Click on the recipe on the menu to get them back.</p>
+                    <p>CTRL + Click adds individual ingredients from the recipe viewer directly to your grocery list. Does not check against inventory, and adds the item even if you already have it on hand.</p>
                     <p>The eye icon indicates that an ingredient is tracked and will be included in grocery/inventory calculations.</p>
                     <p>'Force to Grocery List' skips checking if an item is already in inventory and adds all tracked ingredients to the grocery list.</p>
                     <p>The Share button copies the recipe to the Recipe Exchange, where others will be able copy and use your recipe.</p>
