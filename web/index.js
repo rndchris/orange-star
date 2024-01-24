@@ -284,14 +284,17 @@ app.get("/api/menu/inventory", async (req, res) => {
 
 //return ingredients that are not in any complete recipe
 app.get("/api/jigsaw", async (req, res) => {
-  const menu = await db.query("SELECT * FROM menu WHERE userid = $1;", [req.userId]);
+  
+  //STEP 1: Get all of the ingredients that can be used to complete a recipe.
+  let recipes = await getRecipes(req.userId);
   let inventory = await getList("inventory", req.userId);
   var cookable = [];
+  let jigsawReport = [];
 
-  for (let i=0; i<menu.rows.length; i++){
+  for (let i=0; i<recipes.length; i++){
     let ingredients = [];
-    let recipe = await getRecipe(menu.rows[i].recipe, req.userId);
-    recipe.ingredients.forEach((ingredient) => {
+    recipes[i].ingredients = JSON.parse(recipes[i].ingredients);
+    recipes[i].ingredients.forEach((ingredient) => {
       if (ingredient.essential){
         ingredients.push(ingredient.name);
       }  
@@ -302,29 +305,15 @@ app.get("/api/jigsaw", async (req, res) => {
       }
     }
   }
-
+  
   //console.log(cookable);
-  //subtract cookable ingredients from inventory
+  //STEP 2: Subtract those cookable ingredients from inventory
   for (let k=0;k<cookable.length;k++){
     inventory = inventory.filter(e => e != cookable[k]);
   }
-
-  let jigsawReport = [];
-  let recipes = await getRecipes(req.userId);
-
-  //parse ingredients;
-  recipes.forEach((recipe) => {
-    recipe.ingredients = JSON.parse(recipe.ingredients);
-  })
   
-  /*for (let x=0; x<inventory.length; x++){
-    jigsawReport.push({
-      ingredient: inventory[x],
-      recipes: getRecipesUsingIngredient(inventory[x],recipes)
-      }
-    )
-  }*/
-
+  //STEP 3: Get each recipes the use those ingredients
+  let unusedIngredients = []
   for (let x=0; x<inventory.length; x++){
     let suggestedRecipes = getRecipesUsingIngredient(inventory[x],recipes);
     console.log(suggestedRecipes);
@@ -333,9 +322,12 @@ app.get("/api/jigsaw", async (req, res) => {
         jigsawReport.push(suggestedRecipes[y]);
       }
     }
+    if (suggestedRecipes.length == 0){
+      unusedIngredients.push(inventory[x]);
+    }
   }
   
-  res.json(jigsawReport);
+  res.json({recipes: jigsawReport, unusedIngredients: unusedIngredients});
 });
 
 function getRecipesUsingIngredient(ingredient, recipes){
