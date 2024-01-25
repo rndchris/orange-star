@@ -552,13 +552,13 @@ app.put("/api/inventory", async (req, res) => {
 app.delete("/api/grocery", async (req, res) => {
   let items = cleanArray(req.body);
   console.log(items);
-  removeFromList(items, "grocery", req.userId);
+  await removeFromList(items, "grocery", req.userId);
   res.send("SUCESSFUL");
 });
 
 app.delete("/api/inventory", async (req, res) => {
   console.log(req.body);
-  removeFromList(cleanArray(req.body), "inventory", req.userId);
+  await removeFromList(cleanArray(req.body), "inventory", req.userId);
   res.send("SUCESSFUL");
 });
 
