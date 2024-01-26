@@ -18,11 +18,11 @@ async function displayJigsawReport(){
         }
         jigsawHTML+= "</ul></div>";
     }
-    jigsawHTML+= "<div style=\"background-color: rgba(0,255,255,.3);\" class=\"content\" id=\"Unused Ingredients\"><h3>Unused Ingredients</h3><p>These ingredients are in your inventory, but are not used in any recipes.<p><ul>";
+    if (jigsawReport.unusedIngredients.length){jigsawHTML+= "<div style=\"background-color: rgba(0,255,255,.3);\" class=\"content\" id=\"Unused Ingredients\"><h3>Unused Ingredients</h3><p>These ingredients are in your inventory, but are not used in any recipes.<p><ul>";
     for (let i=0; i<jigsawReport.unusedIngredients.length; i++){
         jigsawHTML+= "<li>" + jigsawReport.unusedIngredients[i] + "</li>";
     }
-    jigsawHTML+= "</ul></div>"
+    jigsawHTML+= "</ul></div>"}
     document.querySelector("#jigsawReport").innerHTML = jigsawHTML;
     makeJigsawClickable();
 }
