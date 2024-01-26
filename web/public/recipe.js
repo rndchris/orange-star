@@ -324,3 +324,13 @@ async function updateDinnerTime(hours, minutes){
     });
     console.log(response);
 }
+
+function haveAllIngredients(recipe){
+    for (let i = 0; i < recipe.ingredients.length; i++){
+        let ingredient = recipe.ingredients[i].name;
+        if (inInventory(ingredient) != "🍊"){
+            return false;
+        }
+    }
+    return true;
+}

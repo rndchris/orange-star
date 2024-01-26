@@ -319,6 +319,7 @@ app.get("/api/jigsaw", async (req, res) => {
     console.log(suggestedRecipes);
     for (let y=0; y<suggestedRecipes.length; y++){
       if (!jigsawReport.filter(recipe => recipe.id == suggestedRecipes[y].id).length){
+        suggestedRecipes[y].orphanIngredient = inventory[x];
         jigsawReport.push(suggestedRecipes[y]);
       }
     }
@@ -338,6 +339,17 @@ function getRecipesUsingIngredient(ingredient, recipes){
     }
   }
   return ingredientRecipes;
+}
+
+//gets the essential ingredients of a recipe in a list.
+function getRecipeIngredients(recipe){
+  let ingredients = [];
+  for (let i = 0; i < recipe.ingredients.length; i++){
+    if (recipe.ingredients[i].essential){
+      ingredients.push(recipe.ingredients[i].name);
+    }
+  }
+  return ingredients;
 }
 
 function isIngredientUsed(ingredient, recipe){

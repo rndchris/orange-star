@@ -16,7 +16,12 @@ async function displayJigsawReport(){
             let ingredient = jigsawReport.recipes[i].ingredients[k].name
             jigsawHTML+= "<li>" + ingredient + ingredientNeeded(jigsawReport.recipes[i].ingredients[k].essential) + inInventory(ingredient) + inGroceryList(ingredient) + "</li>";
         }
-        jigsawHTML+= "</ul></div>";
+        jigsawHTML+= "</ul>";
+        console.log(haveAllIngredients(jigsawReport.recipes[i]));
+        if (haveAllIngredients(jigsawReport.recipes[i])){
+            jigsawHTML+= "<p style=\"width: 200px;\">Added because " + jigsawReport.recipes[i].orphanIngredient + " is not used in inventory calculations.</p>"
+        }
+        jigsawHTML+= "</div>";
     }
     if (jigsawReport.unusedIngredients.length){jigsawHTML+= "<div style=\"background-color: rgba(0,255,255,.3);\" class=\"content\" id=\"Unused Ingredients\"><h3>Unused Ingredients</h3><p>These ingredients are in your inventory, but are not used in any recipes.<p><ul>";
     for (let i=0; i<jigsawReport.unusedIngredients.length; i++){
