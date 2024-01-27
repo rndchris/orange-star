@@ -28,6 +28,7 @@ async function displayJigsawReport(){
         jigsawHTML+= "<li>" + jigsawReport.unusedIngredients[i] + "</li>";
     }
     jigsawHTML+= "</ul></div>"}
+    if (jigsawHTML == ""){jigsawHTML = "<div class=\"content\">All of your items can currently be used to complete a recipe. No suggestions right now.</div>"}
     document.querySelector("#jigsawReport").innerHTML = jigsawHTML;
     makeJigsawClickable();
 }

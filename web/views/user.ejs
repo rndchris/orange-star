@@ -1,0 +1,37 @@
+<%- include("partials/head.ejs") %>
+
+<div class="title">
+    <div class="menubar">
+        <a href="/"><button>Menu, Planning, and Inventory 🍽️</button></a>
+        <a href="/recipes"><button>Recipe Manager 🥣</button></a>
+        <a href="/exchange"><button>Recipe Exchange 🌎</button></a>
+    </div>
+    <div id="userDisplay">
+        <h3>Hello, <a class="username" href="/user"><%= user.userName %></a></h3>
+        <% if (user.logOut){ %>
+            <a href="/logoff"><button>Log Out</button></a>
+        <% } %>
+    </div>
+    <div class="bannerlogo">
+        <h1 class="banner" style="padding: 10px;">Orange Star</h1>
+        <img src="./assets/images/logo.png" alt="Orange Star Logo">
+    </div>
+</div>
+
+<div class="container">
+    <div class="content flyin">
+        <h2><%= user.userName %></h2>
+        <div class="editorbar">
+            <button>Clear Entire Inventory</button>
+            <button>Delete my account</button>
+        </div>
+        <div class="editorbar">
+            <form method="POST" action="/user">
+                <input name="newPassword" type="password" placeholder="New Password">
+                <input type="submit">
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="content" style="background-color: rgb(255,100,100,.3);">The page is currently under development and the user options do not yet work.</div>

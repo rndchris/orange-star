@@ -28,10 +28,12 @@ services:
       - POSTGRES_PORT=5432
       - DB_HOST=db
 
+      #Native Auth
+      - ACCOUNT_CREATION=true
+      - NATIVE_AUTH=true
+
       #If an unauthenticated user connects, they will be logged in as this user. If this user does not exist, they will be created. 
-      #It is STRONGLY reccomended that you use this on internal trusted networks only.
-      #I'm not done building native auth yet, so forced auth is the only option you don't have a reverse proxy like authentik/authelia that can handle authentication for you.
-      - NO_AUTHENTICATION_FORCED_USER=guest
+      #- NO_AUTHENTICATION_FORCED_USER=guest
 
       #User a reverse proxy for to authenticate users. WARNING: If your reverse proxy is not carefully set up, anyone forward a user header and log in.
       #- REVERSE_PROXY_AUTH=true

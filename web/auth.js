@@ -1,7 +1,9 @@
 export const authInfo = {
     reverseProxy: reverseProxyValue(),
     userHeader: process.env.REVERSE_PROXY_USER_HEADER,
-    user: forcedUser()
+    user: forcedUser(),
+    accountCreation: newAccounts(),
+    nativeAuth: nativeAuth(),
   }
 
 export default authInfo;
@@ -20,5 +22,23 @@ function forcedUser(){
         return forcedUser;
     } else {
         return null;
+    }
+}
+
+function newAccounts(){
+    let forcedUser = process.env.ACCOUNT_CREATION;
+    if (forcedUser){
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function nativeAuth(){
+    let forcedUser = process.env.NATIVE_AUTH;
+    if (forcedUser){
+        return true;
+    } else {
+        return false;
     }
 }

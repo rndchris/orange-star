@@ -10,14 +10,32 @@
             </div>
     </div>
     <div class="container">
-        <div class="content flyin">
-            <h2>Log into Orange Star</h2>
-            <form action="/login" method="POST">
-                <input name="username" placeholder="User Name">
-                <input name="password" placeholder="Password">
-                <input type="submit" value="Log In">
-            </form>
-            <p style="background-color: yellow;">Native authentication has not been fully built yet. Please configure a reverse proxy to provide authentication OR add a forced user to the NO_AUTHENTICATION_FORCED_USER environment variable.</p>
-        </div>
+        <% if (!locals.userId){ %>
+            <div class="content flyin">
+                <h2>Log into Orange Star</h2>
+                <form action="/login" method="POST">
+                    <input name="username" placeholder="User Name">
+                    <input name="password" type="password" placeholder="Password">
+                    <input name="newUser" type="checkbox">
+                    <label for="newUser">New User?</label>
+                    <input type="submit" value="Log In">
+                </form>
+            </div>
+        <% } else { %>
+            <div class="content flyin">
+                You are currently logged in as <%= userInfo.userName %>.
+                <% if (authInfo.user){ %>
+                    You can't log out, because this user login is set to force.
+                <% } else { %>
+                    <form method="POST" action="/login">
+                        <input type="hidden" name="logOff" value="true">
+                        <input type="submit" value="Log Out">
+                    </form>
+                <% } %>
+            </div>
+        <% } %>
+        <% if (locals.message){ %>
+            <div class="content" style="background-color: rgba(255,150,150,.3);"><%= message %></div>
+        <% } %>
     </div>
 </body>

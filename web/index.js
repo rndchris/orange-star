@@ -1,5 +1,8 @@
 import express from "express";
 import bodyParser from "body-parser";
+import cookieParser from "cookie-parser";
+import crypto from "crypto";
+import bcrypt from "bcryptjs";
 import pg from "pg";
 import dbInfo from "./database.js";
 import authInfo from "./auth.js";
@@ -36,6 +39,7 @@ db.connect();
 
 //middleware
 app.use(limiter);
+app.use(cookieParser());
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -55,6 +59,22 @@ async function timestampUser(req, res, next){
 
 //Authenticator Middleware
 async function authorize(req, res, next){
+  //Check For Existing Session
+  if (req.cookies.session){
+    let userId = await getSession(req.cookies.session);
+    console.log(userId);
+    if (userId){
+      req.userId = userId;
+      req.userInfo = {
+        userName: await getUserName(userId),
+        logOut: true
+      }
+      next();
+      return;
+    }
+  }
+
+  //Reverse Proxy Session
   if (authInfo.reverseProxy === true){
     try {
       let username = req.headers[authInfo.userHeader];
@@ -85,8 +105,137 @@ async function authorize(req, res, next){
     return;
   }
 
-  //If no other authentication method completes, send unauthorized
-  res.redirect("/login")
+  //Redirect if native auth enabled. 
+  if (authInfo.nativeAuth){
+    let message;
+    if (req.body.newUser && req.body.username && req.body.username.length > 0 && req.body.password && req.body.password.length > 0){
+      try {
+        let userId = await createUser(req.body.username);
+        if (!userId){
+          message = "user creation failed. Username already taken?";
+        } else {
+          let result = setPassword(userId, req.body.password);
+          let sessionCookie = await createSession(userId);
+          console.log(sessionCookie);
+          res.cookie("session", sessionCookie, {httpOnly: true});
+          req.userId = userId;
+          req.userInfo = {userName: req.body.username, logOut: true};
+          next();
+          return;
+        }
+      } catch {
+        message = "User creation failed. Try a different username."
+      }
+    } else if (req.body.username && req.body.username.length > 0 && req.body.password && req.body.password.length > 0){
+      let userId = await getUserID(req.body.username);
+      if (userId){
+        let goodPassword = await confirmPassword(userId, req.body.password);
+        if (goodPassword){
+          let sessionCookie = await createSession(userId);
+          res.cookie("session", sessionCookie, {httpOnly: true});
+          req.userInfo = {
+            userName: req.body.username,
+            logOut: true,
+          }
+          next();
+          return;
+        } else {
+          message = "Wrong password!";
+        }
+      } else {message = "Wrong password!"}
+    } else if (req.body.username && !req.body.password){
+      message = "Password can't be blank.";
+    }
+    res.render("login.ejs", {
+      authInfo: authInfo,
+      userInfo: req.userInfo,
+      userId: req.userId,
+      message: message,
+    });
+  } else {
+    res.status(403).send("UNAUTHORIZED");
+  }
+}
+
+//Auth Functions;
+async function createSession(userId, sessionLength = 0){
+  let cookie = crypto.randomBytes(64).toString("hex");
+  let query = "INSERT INTO sessions (id, cookie, session_created) VALUES ($1,$2,$3);"
+  try {
+      await db.query(query, [userId, cookie, Date()])
+  } catch (error) {
+      console.log(error);
+      cookie = "";
+  }
+  return cookie;
+  //res.cookie("session", cookie, { httpOnly: true, maxAge: sessionLength});
+}
+
+async function getSession(cookie){
+  let result;
+  let query = "SELECT id FROM sessions WHERE cookie=$1;"
+  try {
+      result = await db.query(query, [cookie]);
+  } catch (error) {
+      console.log(error);
+  }
+  if (result.rows.length){
+    db.query("UPDATE sessions SET last_seen = $1 WHERE cookie = $2", [Date(), cookie])
+    return result.rows[0].id;
+  } else {
+    return false;
+  }
+}
+
+async function endSession(cookie){
+  let query = "DELETE FROM sessions WHERE cookie = $1";
+  let result = await db.query(query, [cookie]);
+}
+
+async function clearAllSessions(userId){
+  let query = "DELETE FROM sessions WHERE id = $1";
+  let result = await db.query(query, [userId]);
+}
+
+async function setPassword(userId,password){
+  let query = "INSERT INTO auth (id, salt, password) VALUES ($1,$2,$3)"
+  var salt = bcrypt.genSaltSync(10);
+  
+  password = bcrypt.hashSync(password, salt);
+
+  try {
+      let result = await db.query(query, [userId,salt,password]);
+  } catch (error) {
+      console.log(error);
+      query = "UPDATE auth SET salt=$1,password=$2 WHERE id=$3";
+      let result = await db.query(query, [salt, password, id]);
+  }
+}
+
+async function confirmPassword(userId, password){
+  let query = "SELECT salt,password FROM auth WHERE id = $1"
+  let result = await db.query(query, [userId]);
+  //let salt = result.rows[0].salt;
+  let hash;
+  if (result.rows.length){
+    hash = result.rows[0].password;
+  } else {
+    return false;
+  }
+  if (bcrypt.compareSync(password, hash)){
+      return true;
+  } else {
+      return false;
+  }
+}
+
+async function getUserName(userId){
+  let result = await db.query("SELECT username FROM users WHERE id = $1",[userId]);
+  if (result.rows.length){
+    return result.rows[0].username;
+  } else {
+    return false;
+  }
 }
 
 async function getOrCreateUser(username){
@@ -137,6 +286,24 @@ async function createRecipe(title, cookTime, ingredients, directions, userId, ca
 
 //GET for main pages
 
+app.post("/login", async (req,res) => {
+  res.redirect("/");
+});
+
+app.get("/logoff", async (req,res) => {
+  //ends ession if there's a logoff request;
+  endSession(req.cookies.session);
+  res.cookie("session","LOGGEDOFF", {httpOnly: true});
+  res.redirect("/");
+});
+
+app.get("/user", async (req,res) => {
+  res.render("user.ejs", {
+    user: req.userInfo,
+    userId: req.userId,
+  });
+});
+
 app.get("/", async (req, res) => {
   let dinnerTime =  await getUserDinnerTime(req.userId); 
   res.render("app.ejs", {
@@ -171,7 +338,13 @@ app.get("/exchange", async (req, res) => {
 })
 
 app.get("/login", async (req, res) => {
-  res.render("login.ejs");
+  let message;
+  res.render("login.ejs", {
+    authInfo: authInfo,
+    userInfo: req.userInfo,
+    userId: req.userId,
+    message: message,
+  });
 })
 
 async function getUserDinnerTime(userId){

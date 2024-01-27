@@ -7,9 +7,9 @@
         <a href="/recipes"><button>Recipe Manager</button></a>
     </div>
     <div id="userDisplay">
-        <h3>Hello, <%= user.userName %></h3>
+        <h3>Hello, <a class="username" href="/user"><%= user.userName %></a></h3>
         <% if (user.logOut){ %>
-            <button>Log Out</button>
+            <a href="/logoff"><button>Log Out</button></a>
         <% } %>
     </div>
     <div class="bannerlogo">

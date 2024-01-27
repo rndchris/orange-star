@@ -31,6 +31,20 @@ CREATE TABLE users (
 	last_seen TEXT
 );
 
+CREATE TABLE sessions (
+	id INTEGER REFERENCES users(id),
+	cookie UNIQUE TEXT,
+	last_seen TEXT,
+	ip_address TEXT,
+	session_created TEXT
+);
+
+CREATE TABLE auth (
+	id INTEGER UNIQUE REFERENCES users(id),
+	salt TEXT,
+	password TEXT
+);
+
 CREATE TABLE userinfo (
 	id INTEGER UNIQUE REFERENCES users(id),
 	dinner_hour INTEGER,
