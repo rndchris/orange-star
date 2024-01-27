@@ -98,8 +98,8 @@ function viewRecipeEditor(){
 }
 
 function viewJigsaw(){
+    displayJigsawReport();
     hideAll(".jigsaw");
-
 }
 
 function clickAnimation(element){
@@ -150,4 +150,21 @@ function exchangeHideRecipeViewer(){
             document.querySelector(".recipeViewer").classList.remove("flyout");
         }, 500);
     }
+}
+
+function flyOut(element){
+    element.classList.add("flyout");
+    setTimeout(() => {
+        element.classList.add("hidden");
+        element.classList.remove("flyout");
+    }, 300)
+}
+
+function flyIn(element){
+    element.classList.add("flyin");
+    element.classList.remove("hidden");
+    setTimeout(() => {
+        //element.classList.add("hidden");
+        element.classList.remove("flyin");
+    }, 300)
 }

@@ -37,13 +37,15 @@ function makeJigsawClickable(){
     for (var i = 0; i<renderedMenu.length; i++){
         renderedMenu[i].addEventListener("click", async function(){
             let recipe = await getRecipe(this.getAttribute("recipeid"));
-            addRecipeToGroceryList(recipe);
+            await addRecipeToGroceryList(recipe);
             let checkMenu = await onMenu(recipe.id)
             if (!checkMenu){
                 let category = prompt("This item needs to be added to your menu. What category should it be added to?");
                 addMenuItem(category, recipe.title, recipe.id);
             }
-            clickAnimation(this);
+            //this.innerHTML = jigsawRecipeHTML(recipe);
+            //clickAnimation(this);
+            flyOut(this);
         })
     }
 }
@@ -60,4 +62,16 @@ async function onMenu(recipeId){
 
 function jigsawMagicButton(){
     displayJigsawReport();
+}
+
+function jigsawRecipeHTML(recipe){
+    let jigsawHTML = "";
+    jigsawHTML+= "<h3>" + recipe.title + "</h3><ul>"
+    for (let k=0; k<recipe.ingredients.length; k++){
+        let ingredient = recipe.ingredients[k].name
+        jigsawHTML+= "<li>" + ingredient + ingredientNeeded(recipe.ingredients[k].essential) + inInventory(ingredient) + inGroceryList(ingredient) + "</li>";
+    }
+    jigsawHTML+= "</ul>";
+    jigsawHTML+= "</div>";
+    return jigsawHTML;
 }

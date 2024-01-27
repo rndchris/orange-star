@@ -328,7 +328,7 @@ async function updateDinnerTime(hours, minutes){
 function haveAllIngredients(recipe){
     for (let i = 0; i < recipe.ingredients.length; i++){
         let ingredient = recipe.ingredients[i].name;
-        if (inInventory(ingredient) != "🍊"){
+        if (recipe.ingredients[i].essential && inInventory(ingredient) != "🍊"){
             return false;
         }
     }
